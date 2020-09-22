@@ -1,0 +1,40 @@
+.sidebarLeft {
+	padding                : 2rem 1rem;
+	background-color       : #ffffff;
+	border-top-right-radius: 2.5rem;
+	border-top-left-radius : 2.5rem;
+	height                 : calc(100% + 7rem);
+
+	&_infor {
+		padding      : 2rem 0;
+		margin-bottom: 1.5rem;
+
+		&__imgAvatar {
+			border-radius: 50%;
+		}
+
+		&__desc {
+			margin-left: 0rem;
+		}
+
+		&__name {
+			.userName {
+				font-size  : 2rem;
+				color      : #4b4949;
+				font-weight: bold;
+			}
+		}
+
+		&__money {
+			font-size  : 24px;
+			line-height: 28px;
+			color      : #2175b3;
+		}
+	}
+}
+
+@media only screen and (min-width: 992px) {
+	.sidebarLeft {
+		margin-top: -5rem;
+	}
+}

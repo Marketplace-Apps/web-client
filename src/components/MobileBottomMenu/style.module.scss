@@ -1,0 +1,50 @@
+.buttonMobile {
+	background-color  : #fff;
+	display           : flex;
+	justify-content   : space-around;
+	padding           : .6rem 5px 1px 5px;
+	-webkit-box-shadow: 0px -1px 5px 0px rgba(226, 229, 228, 0.515);
+	-moz-box-shadow   : 0px -1px 5px 0px rgba(226, 229, 228, 0.515);
+	box-shadow        : 0px -1px 5px 0px rgba(226, 229, 228, 0.515);
+
+	&__item {
+		text-align: center;
+		padding   : 0;
+	}
+
+	&__btn {
+		margin-bottom: 5px;
+		width        : 35px;
+		height       : 35px;
+	}
+
+	&__btnHome {
+		transform: scale(1.1);
+	}
+
+	&__name {
+		font-size: .8rem;
+
+		font-weight: bold;
+	}
+}
+
+.fixedBottom {
+	position: fixed;
+	bottom  : 0;
+	left    : 0;
+	right   : 0;
+	z-index : 200;
+}
+
+.icon {
+	color        : red;
+	font-size    : 2.5rem;
+	border-radius: 20%;
+	border       : 1px solid #20c997;
+	padding      : 5px;
+}
+
+.active {
+	color: #dc3545
+}
