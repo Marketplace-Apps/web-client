@@ -1,0 +1,41 @@
+.sidebarRight {
+	&_guild {
+		margin-bottom: 3rem;
+
+		&__item {
+			display: flex;
+		}
+
+		&__text {
+			display    : flex;
+			align-items: center;
+			margin-left: 1.5rem;
+			font-size  : 1.3rem;
+			font-weight: 600;
+			color      : #706969;
+		}
+	}
+}
+
+//Responsive
+@media screen and (min-device-width: 1600px) {
+	.sidebarRight_guild {
+		&__img {
+			max-width: 50%;
+		}
+	}
+}
+
+@media screen and (max-device-width: 1599.98px) {
+	.sidebarRight_guild {
+		&__item {
+			display       : flex;
+			flex-direction: column;
+		}
+
+		&__text {
+			margin-top : 5px;
+			margin-left: 1px;
+		}
+	}
+}

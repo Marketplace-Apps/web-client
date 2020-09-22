@@ -13,7 +13,7 @@ type Props = {
 	title?: string
 }
 
-export const Layout = ({
+const MainLayout = ({
 	children,
 	title = 'This is the default title',
 }: Props) => (
@@ -49,3 +49,5 @@ export const Layout = ({
 			</body>
 		</div>
 	)
+
+export default MainLayout

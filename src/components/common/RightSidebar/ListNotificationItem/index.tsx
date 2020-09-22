@@ -1,6 +1,6 @@
 import React from 'react'
 import {Image} from 'react-bootstrap'
-import styles from './_notification.module.scss'
+import styles from './index.module.scss'
 
 interface IListNotificationItemProps {
 	thumbnail: string
@@ -24,7 +24,7 @@ const ListNotificationItem = ({
 				<div className={styles.pageNotification_content__time}>
 					<small>
 						{
-							new Date(created_time)
+							new Date(created_time).toLocaleDateString()
 						}
 					</small>
 				</div>

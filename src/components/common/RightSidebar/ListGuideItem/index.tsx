@@ -1,6 +1,6 @@
 import React from 'react'
 import {Image, ListGroup} from 'react-bootstrap'
-import styles from './_SidebarRight.module.scss'
+import styles from './index.module.scss'
 
 interface IListGuideItemProps {
 	thumbnail: string

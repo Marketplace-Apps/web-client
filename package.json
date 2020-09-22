@@ -2,7 +2,7 @@
   "name": "market-apps",
   "version": "1.0.0",
   "scripts": {
-		"dev": "NODE_OPTIONS=--max_old_space_size=4096 next",
+		"dev": "NODE_OPTIONS=--max_old_space_size=4096 next -- -p 9999",
 		"start": "next start",
     "build": "next build && next export",
     "pretty": "prettier --write \"**/*.{ts,tsx}\"",
