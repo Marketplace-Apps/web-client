@@ -1,0 +1,14 @@
+.PopupAddAction {
+	&__header {
+		display        : flex;
+		justify-content: space-between;
+		background     : #2d7ac0;
+		align-items    : center;
+		padding        : 0.3rem 1rem;
+	}
+
+	&__headerText {
+		color    : #ffffff;
+		font-size: 1.2rem;
+	}
+}

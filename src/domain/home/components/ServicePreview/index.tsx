@@ -1,19 +1,18 @@
 import Link from 'next/link'
 import React from 'react'
 import {Col, Image} from 'react-bootstrap'
-import {v4 as uuidv4} from 'uuid'
-import styles from './index.module.scss'
+import styles from '../index.module.scss'
 
 interface IServiceListActionItemProps {
 	iconUrl: string
 	name: string
 }
 
-const ServiceListActionItem = ({iconUrl, name}: IServiceListActionItemProps) => (
+const ServicePreview = ({iconUrl, name}: IServiceListActionItemProps) => (
 	<Col xs={4} xl={3}>
 		<Link
-			href="[id]/settings"
-			as={`/${uuidv4()}/settings`}
+			href="/service/[serviceId]/general-settings"
+			as="/service/123/general-settings"
 		>
 			<div className={styles.service__item}>
 				<Image fluid className={styles.service__img} src={iconUrl} />
@@ -26,4 +25,4 @@ const ServiceListActionItem = ({iconUrl, name}: IServiceListActionItemProps) => 
 	</Col>
 )
 
-export default ServiceListActionItem 
+export default ServicePreview 

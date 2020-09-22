@@ -1,9 +1,9 @@
+import GroupedByTypeListServicesContainer from 'domain/home/components/GroupedByTypeListServicesContainer'
+import GroupedByTypeListServicesHeader from 'domain/home/components/GroupedByTypeListServicesHeader'
+import ServicePreview from 'domain/home/components/ServicePreview'
+import MainLayout from 'layouts/MainLayout'
 import React from 'react'
 import {Button, Container, Form, FormControl, Image, Row} from 'react-bootstrap'
-import ServiceContainer from '../components/Service/ServiceContainer'
-import ServiceHeader from '../components/Service/ServiceHeader'
-import ServiceListActionItem from '../components/Service/ServiceListActionItem'
-import MainLayout from '../layouts/MainLayout'
 import styles from './index.module.scss'
 
 const SERVICES = [
@@ -71,22 +71,22 @@ const HomePage = () => (
 		</div>
 		{
 			SERVICES.map(service => (
-				<ServiceContainer>
-					<ServiceHeader
+				<GroupedByTypeListServicesContainer>
+					<GroupedByTypeListServicesHeader
 						iconUrl={service.icon}
 						name={service.name}
 					/>
 					<Row>
 						{
 							service.actions.map(serviceAction => (
-								<ServiceListActionItem
+								<ServicePreview
 									iconUrl={serviceAction.icon}
 									name={serviceAction.name}
 								/>
 							))
 						}
 					</Row>
-				</ServiceContainer>
+				</GroupedByTypeListServicesContainer>
 			))
 		}
 	</MainLayout>

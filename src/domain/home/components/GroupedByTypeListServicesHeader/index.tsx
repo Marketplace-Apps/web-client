@@ -6,7 +6,7 @@ interface IServiceHeaderProps {
 	name: string
 }
 
-const ServiceHeader = ({iconUrl, name}: IServiceHeaderProps) => {
+const GroupedByTypeListServicesHeader = ({iconUrl, name}: IServiceHeaderProps) => {
 	return (
 		<div
 			className="service__title"
@@ -20,4 +20,4 @@ const ServiceHeader = ({iconUrl, name}: IServiceHeaderProps) => {
 	)
 }
 
-export default ServiceHeader
+export default GroupedByTypeListServicesHeader

@@ -1,8 +1,8 @@
 import React from 'react'
 import {Container} from 'react-bootstrap'
-import styles from './index.module.scss'
+import styles from '../index.module.scss'
 
-const ServiceContainer = (props: {children: any}) => {
+const GroupedByTypeListServicesContainer = (props: {children: any}) => {
 	return (
 		<div className={styles.service}>
 			<Container>
@@ -14,4 +14,4 @@ const ServiceContainer = (props: {children: any}) => {
 	)
 }
 
-export default ServiceContainer
+export default GroupedByTypeListServicesContainer

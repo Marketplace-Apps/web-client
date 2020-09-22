@@ -1,0 +1,37 @@
+//item
+.order_item {
+	border       : 1px solid #30ff45;
+	border-radius: 20px;
+	padding      : 1rem;
+	margin-bottom: 1.5rem;
+
+	&__title {
+		display        : flex;
+		justify-content: space-between;
+	}
+
+	&__name {
+		color        : #71a7f9;
+		font-weight  : bold;
+		margin-bottom: 4px;
+	}
+
+	&__time {
+		color      : #8f8c8c;
+		font-size  : 0.8rem;
+		font-weight: bold;
+	}
+
+	&__idOrder {
+		color        : #71a7f9;
+		margin-bottom: 7px;
+	}
+
+	&__content {
+		font-weight: bold;
+		font-size  : 0.8rem;
+		line-height: 1rem;
+
+		color: #656565;
+	}
+}

@@ -1,0 +1,26 @@
+.ServiceManager {
+	margin-bottom: 5rem;
+
+	&_main {
+		padding: 0 1.5rem;
+	}
+
+	&_id {
+		margin-top : 1.5rem;
+		display    : flex;
+		align-items: center;
+
+		&__text {
+			font-weight: bold;
+		}
+
+		&__id {
+			margin-left: 5rem;
+		}
+	}
+
+	// form
+	&__form {
+		margin-top: 3rem;
+	}
+}

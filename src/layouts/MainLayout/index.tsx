@@ -1,11 +1,11 @@
+import Header from 'components/Header'
+import LeftSidebar from 'components/LeftSidebar'
 import MobileBottomMenu from 'components/MobileBottomMenu'
+import RightSidebar from 'components/RightSidebar'
+import TopBanner from 'components/TopBanner'
 import Head from 'next/head'
 import React, {ReactNode} from 'react'
 import {Col, Row} from 'react-bootstrap'
-import Header from '../../components/common/Header'
-import LeftSidebar from '../../components/common/LeftSidebar'
-import RightSidebar from '../../components/common/RightSidebar'
-import TopBanner from '../../components/common/TopBanner'
 import styles from './index.module.scss'
 
 type Props = {
