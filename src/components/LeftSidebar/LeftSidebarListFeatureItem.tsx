@@ -18,7 +18,7 @@ const LIST_FEATURES = [
 	{
 		name: 'Cài đặt site',
 		Icon: FiSettings,
-		pathname: '/sitesettings',
+		pathname: '/site-settings',
 		color: '#17a2b8',
 	},
 	{
@@ -30,36 +30,34 @@ const LIST_FEATURES = [
 	{
 		name: 'Quản lý người dùng',
 		Icon: FaUsers,
-		pathname: '/usermanagement',
+		pathname: '/users',
 		color: '#1e89ed',
 	},
 	{
 		name: 'Cài đặt thanh toán',
 		Icon: FaAmazonPay,
-		pathname: '/paymentsettings',
+		pathname: '/payment-settings',
 		color: '#00c7ff',
 	},
 	{
 		name: 'Nạp tiền',
 		Icon: RiMoneyDollarBoxLine,
-		pathname: '/naptien',
+		pathname: '/deposit',
 		color: '#089b06',
 	},
 	{
 		name: 'Cá Nhân',
 		Icon: FaUser,
-		pathname: '/user',
+		pathname: '/me',
 		color: '#00ff7f',
-	},
-	{
-		name: 'Đăng xuất',
-		Icon: HiLogout,
-		pathname: '/',
-		color: '#6507fc',
 	},
 ]
 const LeftSidebarListFeatureItem = () => {
 	const router = useRouter()
+
+	const onLogout = () => {
+		console.log("log out")
+	}
 
 	return (
 		<ListGroup.Item
@@ -105,6 +103,30 @@ const LeftSidebarListFeatureItem = () => {
 					)
 				)
 			}
+			<div onClick={onLogout} className="mb-4">
+				<HiLogout
+					style={{
+						color: '#6507fc',
+						fontSize: '3rem',
+						borderRadius: '20%',
+						border: '1px solid #20c997',
+						padding: '5px',
+					}}
+					className="list_group_item__icon"
+				/>
+
+				<span
+					style={{
+						marginLeft: '.5rem',
+						fontSize: '1.1rem',
+						color: '#666666',
+						fontWeight: 'bold',
+					}}
+					className="list_group_item__text"
+				>
+					Đăng xuất
+				</span>
+			</div>
 		</ListGroup.Item>
 	)
 }

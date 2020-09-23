@@ -21,7 +21,7 @@ const ModalHeader = ({
 			{
 				hasCloseButton && <Image
 					onClick={onClose}
-					style={{height: '20px'}}
+					style={{height: '20px', cursor: "pointer"}}
 					className={styles.PopupAddAction__close}
 					src="/images/+.png"
 				/>
