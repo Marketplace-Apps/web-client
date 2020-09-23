@@ -1,6 +1,6 @@
+import ModalHeader from 'components/ModalHeader'
 import React from 'react'
 import {Button, Col, Form, Modal, Row} from 'react-bootstrap'
-import ModalHeader from '../../../components/ModalHeader'
 import styles from './index.module.scss'
 
 type CreateUpdateVoucherModalProps = {

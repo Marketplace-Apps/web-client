@@ -1,12 +1,12 @@
+import CreateUpdateVoucherModal from 'domain/vouchers/components/CreateUpdateVoucherModal'
+import ListVouchersItem from 'domain/vouchers/components/ListVouchersItem'
+import VoucherDetailModal from 'domain/vouchers/components/VoucherDetailModal'
+import MainLayout from 'layouts/MainLayout'
 import React, {useState} from 'react'
 import {Button, Row} from 'react-bootstrap'
-import CreateUpdateVoucherModal from '../../domain/vouchers/CreateUpdateVoucherModal'
-import ListVouchersItem from '../../domain/vouchers/ListVouchersItem'
-import VoucherDetailModal from '../../domain/vouchers/VoucherDetailModal'
-import MainLayout from '../../layouts/MainLayout'
 import styles from './index.module.scss'
 
-const VouchersPage = props => {
+const VouchersPage = () => {
 	const [isShowVoucherDetailModal, setIsShowVoucherDetailModal] = useState<boolean>(false)
 	const [isShowCreateUpdateVoucherModal, setIsShowCreateUpdateVoucherModal] = useState<boolean>(false)
 
