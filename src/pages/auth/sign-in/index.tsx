@@ -130,8 +130,16 @@ const SignInPage = () => {
 									style={{fontSize: '1.4rem'}}
 									variant="primary"
 									type="submit"
+									disabled={isSigningIn}
 								>
-									Đăng nhập
+									<div
+										style={{display: "flex", alignItems: "center"}}
+									>
+										<span>Đăng nhập</span>
+										{
+											isSigningIn && <Spinner animation="border" variant="light" size="sm" />
+										}
+									</div>
 								</Button>
 							</Form>
 						</div>
@@ -144,27 +152,18 @@ const SignInPage = () => {
 							}}
 							variant="primary mt-5"
 							onClick={signInWithGoogleProvider}
-							disabled={isSigningIn}
 						>
-							{
-								isSigningIn ? (
-									<Spinner animation="border" variant="light" size="sm" />
-								) : (
-										<>
-											<Image
-												style={{
-													width: '25px',
-													height: '25px',
-													marginRight: '5px',
-												}}
-												src="/images/iconGG.png"
-												roundedCircle
-												fluid
-											/>
-										Đăng nhập bằng Google
-									</>
-									)
-							}
+							<Image
+								style={{
+									width: '25px',
+									height: '25px',
+									marginRight: '5px',
+								}}
+								src="/images/iconGG.png"
+								roundedCircle
+								fluid
+							/>
+							Đăng nhập bằng Google
 						</Button>
 					</div>
 				</Col>
