@@ -1,3 +1,4 @@
+import {auth} from 'firebase/app'
 import {useRouter} from 'next/router'
 import React from 'react'
 import {ListGroup} from 'react-bootstrap'
@@ -57,7 +58,8 @@ const LeftSidebarMenu = () => {
 	const router = useRouter()
 
 	const onLogout = () => {
-		console.log("log out")
+		auth().signOut()
+		router.push('/auth/sign-in')
 	}
 
 	return (
