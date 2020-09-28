@@ -1,0 +1,14 @@
+.singleOrder {
+
+	&__touchs {
+			display: flex;
+			justify-content: space-around;
+			margin-top: 2rem;
+	}
+
+	&__touchText {
+			font-weight: bold;
+			margin-top: .3rem;
+			text-align: center;
+	}
+}

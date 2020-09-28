@@ -29,7 +29,7 @@ const SignInPage = () => {
 	const [user] = useAuthState(auth())
 
 	useEffect(() => {
-		if (user) router.replace('/')
+		if (user) router.replace('/select-domain')
 	}, [user])
 
 	const {register, handleSubmit, reset, errors, clearErrors} = useForm<
@@ -38,6 +38,13 @@ const SignInPage = () => {
 		resolver: yupResolver(schema),
 	})
 
+	useEffect(() => {
+		toast.error("error", {
+			position: toast.POSITION.TOP_RIGHT,
+			autoClose: 4000,
+		})
+	}, [])
+
 	const [isSigningIn, setIsSigningIn] = useState<boolean>(false)
 
 	const onSubmit = handleSubmit(async ({email, password}) => {
@@ -45,7 +52,7 @@ const SignInPage = () => {
 		try
 		{
 			await auth().signInWithEmailAndPassword(email, password)
-			router.push('/')
+			router.push('/select-domain')
 			reset()
 			clearErrors()
 		} catch (error)
