@@ -10,6 +10,13 @@ export enum INPUT_TYPES {
 	CHECKBOX = 'checkbox'
 }
 
+export const BASIC_INPUTS = [
+	INPUT_TYPES.NUMBER,
+	INPUT_TYPES.TEXT,
+	INPUT_TYPES.CHECKBOX,
+	INPUT_TYPES.RADIO,
+	INPUT_TYPES.SELECT
+]
 interface IInputProps {
 	type: INPUT_TYPES
 	data: {
