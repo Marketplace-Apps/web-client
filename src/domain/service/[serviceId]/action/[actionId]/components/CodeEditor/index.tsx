@@ -10,7 +10,6 @@ const CodeEditor = ({
 	onChange,
 	defaultValue
 }: ICodeEditorProps) => {
-	console.log({defaultValue})
 	const [isReady, setIsReady] = useState<boolean>(false)
 	const valueGetter = useRef()
 

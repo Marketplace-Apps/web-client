@@ -44,6 +44,7 @@ export type ServiceActionDocument = {
 	name: string
 	form: any
 	price_function: string
+	advanced_options: any
 }
 
 export type ServiceActionConfigDocument = {

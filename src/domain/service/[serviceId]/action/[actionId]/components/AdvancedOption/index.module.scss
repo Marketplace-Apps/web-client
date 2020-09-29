@@ -1,0 +1,25 @@
+.PopupAddAction {
+	&__OptionsAdvanced {
+		padding      : 2rem;
+		border       : 1px solid #0da4e4;
+		border-radius: 10px;
+		margin-bottom: 15px;
+
+		&__title {
+			font-size    : 1.2rem;
+			line-height  : 1.5rem;
+			color        : #000000;
+			margin-bottom: 1.5rem;
+		}
+
+		&__btn {
+			font-size    : 14px;
+			line-height  : 16px;
+			color        : #fff;
+			background   : #2d48aa;
+			border-radius: 20px;
+			text-align   : center;
+			margin-left  : 2rem;
+		}
+	}
+}

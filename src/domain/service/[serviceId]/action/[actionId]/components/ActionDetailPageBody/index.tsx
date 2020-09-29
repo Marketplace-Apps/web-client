@@ -1,6 +1,6 @@
 import CenteredSpinner from 'components/CenteredSpinner'
 import ActionAlert from 'domain/service/[serviceId]/action/[actionId]/components/ActionAlert'
-import AddInputButton from 'domain/service/[serviceId]/action/[actionId]/components/AddInputButton'
+import AddElementButton from 'domain/service/[serviceId]/action/[actionId]/components/AddElementButton'
 import CodeEditor from 'domain/service/[serviceId]/action/[actionId]/components/CodeEditor'
 import Input, {BASIC_INPUTS} from 'domain/service/[serviceId]/action/[actionId]/components/Input'
 import SelectInputTypeModal from 'domain/service/[serviceId]/action/[actionId]/components/SelectInputTypeModal'
@@ -12,6 +12,7 @@ import {Alert, Button, Col, Form, Row} from 'react-bootstrap'
 import {FormProvider, useFieldArray, useForm} from 'react-hook-form'
 import {toast} from 'react-toastify'
 import {ServiceActionConfigDocument, ServiceActionDocument} from 'types/firebase'
+import AdvancedOptions from '../AdvancedOptions'
 import styles from './index.module.scss'
 
 interface IActionDetailPageBodyProps {
@@ -31,7 +32,8 @@ const ActionDetailPageBody = ({
 
 	const methods = useForm({
 		defaultValues: {
-			form: action.form
+			form: action.form,
+			advanced_options: action.advanced_options
 		}
 	})
 
@@ -46,6 +48,7 @@ const ActionDetailPageBody = ({
 		{
 			await firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).collection('actions').doc(actionId).update({
 				form: data.form,
+				advanced_options: data.advanced_options,
 				price_function: priceFunction
 			})
 			await firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).collection('actions').doc(`${actionId}_config`).update({
@@ -186,9 +189,11 @@ const ActionDetailPageBody = ({
 										</>
 									))
 								}
-								<AddInputButton
+								<AddElementButton
 									onClick={onShowSelectInputTypeModal}
+									text="Thêm input"
 								/>
+								<AdvancedOptions />
 								<CodeEditor
 									onChange={code => setPriceFunction(code)}
 									defaultValue={action?.price_function}
