@@ -6,22 +6,22 @@ const SETTINGS = [
 	{
 		Icon: '/images/SettingsService.png',
 		title: 'Cài đặt chung',
-		route: 'general-settings',
+		route: '',
 	},
 	{
 		Icon: '/images/auth.png',
 		title: 'Xác thực',
-		route: 'auth-settings',
+		route: '/auth-settings',
 	},
 	{
 		Icon: '/images/cart.png',
 		title: 'Đơn hàng',
-		route: 'orders',
+		route: '/orders',
 	},
 	{
 		Icon: '/images/settingForm.png',
-		title: 'Cài đặt Form',
-		route: 'form-settings',
+		title: 'Cài đặt action',
+		route: '/action',
 	},
 ]
 

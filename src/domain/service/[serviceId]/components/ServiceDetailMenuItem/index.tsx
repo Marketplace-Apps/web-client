@@ -16,8 +16,10 @@ const ServiceDetailMenuItem = ({
 	title
 }: ServiceDetailMenuItemProps) => {
 	const router = useRouter()
-	const href = `/service/[serviceId]/${route}`
-	const as = `/service/123/${route}`
+	const {domainId, serviceId} = router.query as {domainId: string, serviceId: string}
+
+	const href = `/domain/[domainId]/service/[serviceId]${route}`
+	const as = `/domain/${domainId}/service/${serviceId}${route}`
 
 	return (
 		<Col xs={6} md={3} className="mb-4">
@@ -31,7 +33,9 @@ const ServiceDetailMenuItem = ({
 					margin: '0 auto',
 				}}
 			>
-				<Link href={href} as={as}>
+				<Link
+					href={href}
+					as={as}>
 					<div
 						style={{
 							cursor: "pointer"

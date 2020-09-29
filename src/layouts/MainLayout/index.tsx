@@ -6,6 +6,7 @@ import TopBanner from 'components/TopBanner'
 import Head from 'next/head'
 import React, {ReactNode} from 'react'
 import {Col, Row} from 'react-bootstrap'
+import {ToastContainer} from 'react-toastify'
 import styles from './index.module.scss'
 
 type Props = {
@@ -23,7 +24,7 @@ const MainLayout = ({
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			</Head>
-			<body>
+			<div>
 				<TopBanner />
 				<div className={styles.page_wrapper}>
 					<div>
@@ -46,7 +47,8 @@ const MainLayout = ({
 						</Row>
 					</div>
 				</div>
-			</body>
+			</div>
+			<ToastContainer />
 		</div>
 	)
 

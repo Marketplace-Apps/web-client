@@ -1,0 +1,28 @@
+.PopupAddAction {
+	border: 1px solid #e4e4e4;
+
+	border-bottom-left-radius : 20px;
+	border-bottom-right-radius: 20px;
+
+	&__content {
+		padding: 1.5rem 1rem;
+	}
+
+	// -----------------------
+	// add block
+	&__contentBlock {
+		height: 100vh;
+	}
+
+	&__btnBlock {
+		display        : flex;
+		justify-content: space-around;
+		margin-bottom  : 1rem;
+	}
+
+	&__btnTextBlock {
+		margin-right: 1rem;
+	}
+
+	// end add block
+}
