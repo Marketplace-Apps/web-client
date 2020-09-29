@@ -1,4 +1,5 @@
 import AddInputButton from 'domain/service/[serviceId]/action/[actionId]/components/AddInputButton'
+import Input from 'domain/service/[serviceId]/action/[actionId]/components/Input'
 import SelectInputTypeModal from 'domain/service/[serviceId]/action/[actionId]/components/SelectInputTypeModal'
 import ServiceDetailContainer from 'domain/service/[serviceId]/components/ServiceDetailContainer'
 import {firestore} from 'firebase/app'
@@ -7,10 +8,8 @@ import {useRouter} from 'next/router'
 import React, {useState} from 'react'
 import {Button, Col, Form, Row} from 'react-bootstrap'
 import {useDocumentData} from 'react-firebase-hooks/firestore'
-import {useFieldArray, useForm} from 'react-hook-form'
+import {FormProvider, useFieldArray, useForm} from 'react-hook-form'
 import {ServiceActionConfigDocument, ServiceActionDocument} from 'types/firebase'
-import CreateUpdateInputModal from '../../../../../../../domain/service/[serviceId]/action/[actionId]/components/CreateUpdateInputModal'
-import Input from '../../../../../../../domain/service/[serviceId]/action/[actionId]/components/Input'
 import styles from './index.module.scss'
 
 const ActionDetailPage = () => {
@@ -25,6 +24,10 @@ const ActionDetailPage = () => {
 		name: "form"
 	})
 
+	const onSubmit = methods.handleSubmit(data => {
+		console.log({data})
+	})
+
 	const [action] = useDocumentData<ServiceActionDocument>(
 		firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).collection('actions').doc(actionId)
 	)
@@ -33,22 +36,15 @@ const ActionDetailPage = () => {
 		firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).collection('actions').doc(`${actionId}_config`)
 	)
 
-	const [updatedInput, setUpdatedInput] = useState<any>(null)
-
-
 	const [isShowSelectInputTypeModal, setIsShowSelectInputTypeModal] = useState<boolean>(false)
 	const onShowSelectInputTypeModal = () => setIsShowSelectInputTypeModal(true)
 	const onHideSelectInputTypeModal = () => setIsShowSelectInputTypeModal(false)
-	const onSelectInputType = (type: string) => {
-		append({
-			type,
-			required: true
-		})
-	}
-
-	const [isShowCreateUpdateInputModal, setIsShowCreateUpdateInputModal] = useState<boolean>(false)
-	const onShowCreateUpdateInputModal = () => setIsShowCreateUpdateInputModal(true)
-	const onHideCreateUpdateInputModal = () => setIsShowCreateUpdateInputModal(false)
+	const onSelectInputType = (type: string) => append({
+		label: "Label",
+		name: "Name",
+		type,
+		required: true,
+	})
 
 	return (
 		<MainLayout
@@ -62,75 +58,68 @@ const ActionDetailPage = () => {
 					onHideSelectInputTypeModal()
 				}}
 			/>
-			{
-				updatedInput && (
-					<CreateUpdateInputModal
-						onHide={onHideCreateUpdateInputModal}
-						show={isShowCreateUpdateInputModal}
-						fields={fields}
-						updatedItem={updatedInput}
-					/>
-				)
-			}
 			<ServiceDetailContainer>
 				<h2 className={styles.ServiceManager__title}>Cài đặt action</h2>
 				<div className={styles.PopupAddAction}>
 					<div className={styles.PopupAddAction__content}>
-						<Form>
-							<Form.Group as={Row}>
-								<Col sm="12">
-									<Form.Control
-										type="text"
-										placeholder="Tên method"
-										defaultValue={actionConfig?.method}
-									/>
-								</Col>
-							</Form.Group>
-							<Form.Group as={Row}>
-								<Col sm="12">
-									<Form.Control
-										type="text"
-										placeholder="Url"
-										defaultValue={actionConfig?.endpoint}
-									/>
-								</Col>
-							</Form.Group>
-							{
-								!!fields.length && fields.filter(item => item.type === "text").map(item => (
-									<Input.Text
-										label={item.label ?? "Input label"}
-										name={item.name ?? "Input name"}
-										placeholder={item.placeholder ?? "Input placeholder"}
-										required={item.required}
-										type={item.type}
-										onRemove={() => remove(
-											fields.findIndex(el => el.id === item.id)
-										)}
-										onUpdate={() => {
-											setUpdatedInput(item)
-											onShowCreateUpdateInputModal()
+						<FormProvider {...methods}>
+							<Form
+								onSubmit={onSubmit}
+							>
+								<Form.Group as={Row}>
+									<Col sm="12">
+										<Form.Control
+											type="text"
+											placeholder="Tên method"
+											defaultValue={actionConfig?.method}
+										/>
+									</Col>
+								</Form.Group>
+								<Form.Group as={Row}>
+									<Col sm="12">
+										<Form.Control
+											type="text"
+											placeholder="Url"
+											defaultValue={actionConfig?.endpoint}
+										/>
+									</Col>
+								</Form.Group>
+								{
+									!!fields.length && fields.map((item, index) => (
+										<Input
+											type={item.type}
+											data={{
+												label: item.label,
+												name: item.name,
+												placeholder: item.placeholder,
+												required: item.required,
+											}}
+											onRemove={() => remove(
+												fields.findIndex(el => el.id === item.id)
+											)}
+											baseName={`form[${index}]`}
+										/>
+									))
+								}
+								<AddInputButton
+									onClick={onShowSelectInputTypeModal}
+								/>
+								<div className="text-center mt-5">
+									<Button
+										style={{
+											padding: '10px 35px',
+											backgroundColor: '#71A7F9',
+											color: '#fff',
+											fontWeight: 'bold',
 										}}
-									/>
-								))
-							}
-							<AddInputButton
-								onClick={onShowSelectInputTypeModal}
-							/>
-							<div className="text-center mt-5">
-								<Button
-									style={{
-										padding: '10px 35px',
-										backgroundColor: '#71A7F9',
-										color: '#fff',
-										fontWeight: 'bold',
-									}}
-									variant="outline-primary"
-									type="submit"
-								>
-									Save
+										variant="outline-primary"
+										type="submit"
+									>
+										Save
 								</Button>
-							</div>
-						</Form>
+								</div>
+							</Form>
+						</FormProvider>
 					</div>
 				</div>
 			</ServiceDetailContainer>

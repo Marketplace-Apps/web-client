@@ -1,14 +1,15 @@
+import CenteredSpinner from 'components/CenteredSpinner'
 import {auth, firestore} from 'firebase'
 import {useRouter} from 'next/router'
 import React, {useEffect, useState} from 'react'
 import {Form} from 'react-bootstrap'
 import {useCollectionData} from 'react-firebase-hooks/firestore'
-import {DomainDocument} from '../../types/firebase'
+import {DomainDocument} from 'types/firebase'
 
 const SelectDomainPage = () => {
 	const router = useRouter()
 
-	const [domains] = useCollectionData<DomainDocument>(
+	const [domains, loading] = useCollectionData<DomainDocument>(
 		firestore().collection('domains').where("owner", "==", auth().currentUser.email)
 	)
 
@@ -29,6 +30,9 @@ const SelectDomainPage = () => {
 
 	return (
 		<>
+			{
+				loading || !isDisplayDomainSelection && <CenteredSpinner />
+			}
 			{
 				domains && isDisplayDomainSelection && (
 					<Form>
