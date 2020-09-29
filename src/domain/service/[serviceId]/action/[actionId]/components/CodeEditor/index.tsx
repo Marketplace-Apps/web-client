@@ -10,7 +10,7 @@ const CodeEditor = ({
 	onChange,
 	defaultValue
 }: ICodeEditorProps) => {
-
+	console.log({defaultValue})
 	const [isReady, setIsReady] = useState<boolean>(false)
 	const valueGetter = useRef()
 
@@ -29,7 +29,10 @@ const CodeEditor = ({
 				language="javascript"
 				value={defaultValue}
 				editorDidMount={handleEditorDidMount}
-				onChange={(ev, value) => onChange(value)}
+				onChange={(ev, value) => onChange(value.replace("\n", "\r\n"))}
+				options={{
+					renderWhitespace: "all"
+				}}
 			/>
 		</>
 	)

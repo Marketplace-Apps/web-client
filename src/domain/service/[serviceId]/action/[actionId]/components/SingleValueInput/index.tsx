@@ -28,7 +28,7 @@ const SingleValueInput = ({
 	baseName,
 }: ISingleValueInputProps) => {
 	const methods = useFormContext()
-	const [currnentRequired, setCurrentRequired] = useState<boolean>(required)
+	const [currentRequired, setCurrentRequired] = useState<boolean>(typeof required === "string" ? JSON.parse(required) : required)
 
 	return (
 		<Form.Group className={styles.PopupAddAction__FormGroup} as={Row}>
@@ -50,7 +50,7 @@ const SingleValueInput = ({
 			<Form.Control
 				type="hidden"
 				name={`${baseName}.required`}
-				defaultValue={currnentRequired.toString()}
+				defaultValue={currentRequired.toString()}
 				ref={methods.register}
 			/>
 			<Col sm="9">
@@ -76,13 +76,13 @@ const SingleValueInput = ({
 						/>
 					</Form.Label>
 					<Form.Label
-						className={currnentRequired ? styles.PopupAddAction__label3 : styles.PopupAddAction__label4 + ' mb-2'}
+						className={currentRequired ? styles.PopupAddAction__label3 : styles.PopupAddAction__label4 + ' mb-2'}
 						column
 						sm="3"
 						style={{cursor: "pointer"}}
-						onClick={() => setCurrentRequired(!currnentRequired)}
+						onClick={() => setCurrentRequired(!currentRequired)}
 					>
-						{currnentRequired ? "required" : "optional"}
+						{currentRequired ? "required" : "optional"}
 					</Form.Label>
 				</div>
 				<Form.Control
