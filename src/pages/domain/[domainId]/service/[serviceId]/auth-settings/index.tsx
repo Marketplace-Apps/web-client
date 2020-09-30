@@ -87,116 +87,118 @@ const ServiceActionAuthSettingsPage = () => {
 			title="Cài đặt xác thực"
 		>
 			{
-				(loadingServiceConfig || loadingDomain || loadingService) && <CenteredSpinner />
-			}
-			{
-				(!domain && !loadingDomain) || (!service && !loadingService) && <Error statusCode={400} title="Không tồn tại dịch vụ này" />
-			}
-			{
-				isAllowed && service && domain && (
+				(!domain && !loadingDomain) || (!service && !loadingService) ? <Error statusCode={400} title="Không tồn tại dịch vụ này" /> : (
 					<ServiceDetailContainer>
-						<Form
-							className={styles.ServiceManager__form}
-							onSubmit={onSubmit}
-						>
-							<Form.Group>
-								<Form.Control
-									isInvalid={!!errors.method}
-									as="select"
-									custom
-									name="method"
-									ref={register({
-										required: {
-											value: true,
-											message: "Vui lòng chọn phương thức xác thực"
-										}
-									})}
-									defaultValue={serviceConfig?.auth?.method}
+						{
+							(loadingServiceConfig || loadingDomain || loadingService) && <CenteredSpinner />
+						}
+						{
+							isAllowed && service && domain && (
+								<Form
+									className={styles.ServiceManager__form}
+									onSubmit={onSubmit}
 								>
-									{
-										AUTH_METHODS.map(method => (
-											<option
-												value={method.value}
-											>
-												{
-													method.name
+									<Form.Group>
+										<Form.Control
+											isInvalid={!!errors.method}
+											as="select"
+											custom
+											name="method"
+											ref={register({
+												required: {
+													value: true,
+													message: "Vui lòng chọn phương thức xác thực"
 												}
-											</option>
-										))
-									}
-								</Form.Control>
-								{
-									errors.method && (
-										<Alert className="mt-1" variant="warning">
-											{errors.method.message}
-										</Alert>
-									)
-								}
-							</Form.Group>
-							<Form.Group>
-								<Form.Control
-									type="text"
-									placeholder="Tên header"
-									name="header_name"
-									ref={register({
-										required: {
-											value: true,
-											message: "Vui lòng điền tên header"
+											})}
+											defaultValue={serviceConfig?.auth?.method}
+										>
+											{
+												AUTH_METHODS.map(method => (
+													<option
+														value={method.value}
+													>
+														{
+															method.name
+														}
+													</option>
+												))
+											}
+										</Form.Control>
+										{
+											errors.method && (
+												<Alert className="mt-1" variant="warning">
+													{errors.method.message}
+												</Alert>
+											)
 										}
-									})}
-									defaultValue={serviceConfig?.auth?.header_name}
-									isInvalid={!!errors.header_name}
-									autoComplete="off"
-								/>
-								{
-									errors.header_name && (
-										<Alert className="mt-1" variant="warning">
-											{errors.header_name.message}
-										</Alert>
-									)
-								}
-							</Form.Group>
-							<Form.Group>
-								<Form.Control
-									type="text"
-									placeholder="Giá trị header"
-									name="header_value"
-									ref={register({
-										required: {
-											value: true,
-											message: "Vui lòng giá trị header"
+									</Form.Group>
+									<Form.Group>
+										<Form.Control
+											type="text"
+											placeholder="Tên header"
+											name="header_name"
+											ref={register({
+												required: {
+													value: true,
+													message: "Vui lòng điền tên header"
+												}
+											})}
+											defaultValue={serviceConfig?.auth?.header_name}
+											isInvalid={!!errors.header_name}
+											autoComplete="off"
+										/>
+										{
+											errors.header_name && (
+												<Alert className="mt-1" variant="warning">
+													{errors.header_name.message}
+												</Alert>
+											)
 										}
-									})}
-									defaultValue={serviceConfig?.auth?.header_value}
-									isInvalid={!!errors.header_value}
-									autoComplete="off"
-								/>
-								{
-									errors.header_value && (
-										<Alert className="mt-1" variant="warning">
-											{errors.header_value.message}
-										</Alert>
-									)
-								}
-							</Form.Group>
+									</Form.Group>
+									<Form.Group>
+										<Form.Control
+											type="text"
+											placeholder="Giá trị header"
+											name="header_value"
+											ref={register({
+												required: {
+													value: true,
+													message: "Vui lòng giá trị header"
+												}
+											})}
+											defaultValue={serviceConfig?.auth?.header_value}
+											isInvalid={!!errors.header_value}
+											autoComplete="off"
+										/>
+										{
+											errors.header_value && (
+												<Alert className="mt-1" variant="warning">
+													{errors.header_value.message}
+												</Alert>
+											)
+										}
+									</Form.Group>
 
-							<div className="text-center">
-								<CustomButton
-									isLoading={isSavingAuthSettings}
-									loadingText="Đang lưu"
-									style={{
-										backgroundColor: '#3EADFD',
-										color: '#fff',
-										padding: '5px 20px',
-									}}
-									variant="outline-info"
-									type="submit"
-								>
-									Lưu
-								</CustomButton>
-							</div>
-						</Form>
+									<div className="text-center">
+										<CustomButton
+											isLoading={isSavingAuthSettings}
+											loadingText="Đang lưu"
+											style={{
+												backgroundColor: '#3EADFD',
+												color: '#fff',
+												padding: '5px 20px',
+											}}
+											variant="outline-info"
+											type="submit"
+										>
+											Lưu
+									</CustomButton>
+									</div>
+								</Form>
+							)
+						}
 					</ServiceDetailContainer>
+
 				)
 			}
 		</MainLayout>

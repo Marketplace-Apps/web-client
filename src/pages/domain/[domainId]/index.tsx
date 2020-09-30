@@ -7,10 +7,11 @@ import {classifyDataByTag} from 'helpers'
 import MainLayout from 'layouts/MainLayout'
 import Error from 'next/error'
 import {useRouter} from 'next/router'
-import React from 'react'
+import React, {useState} from 'react'
 import {Button, Container, Form, FormControl, Image, Row} from 'react-bootstrap'
 import {useCollectionData, useDocumentData} from 'react-firebase-hooks/firestore'
 import {DomainDocument, DomainServiceDocument} from 'types/firebase'
+import CustomButton from '../../../components/CustomButton'
 import styles from './index.module.scss'
 
 const SERVICES = [
@@ -39,7 +40,10 @@ const HomePage = () => {
 		firestore().collection('domains').doc(domainId).collection('services').where("published", "==", true)
 	)
 
+	const [isCreatingNewService, setIsCreatingNewService] = useState<boolean>(false)
+
 	const onCreateNewService = async () => {
+		setIsCreatingNewService(true)
 		const serviceId = firestore().collection('domains').doc(domainId).collection('services').doc().id
 		await firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).set({
 			visible: true,
@@ -50,6 +54,7 @@ const HomePage = () => {
 			'/domain/[domainId]/service/[serviceId]',
 			`/domain/${domainId}/service/${serviceId}`
 		)
+		setIsCreatingNewService(false)
 	}
 
 	const classifiedByTagServices = classifyDataByTag(domainServices ?? [])
@@ -69,7 +74,9 @@ const HomePage = () => {
 					/>
 						Copy dịch vụ
 				</Button>
-				<Button
+				<CustomButton
+					isLoading={isCreatingNewService}
+					loadingText="Đang tạo"
 					className={styles.list_button__btn}
 					variant="outline-secondary"
 					size="sm"
@@ -80,8 +87,8 @@ const HomePage = () => {
 						src="/images/createservice.png"
 						fluid
 					/>
-						Tạo dịch vụ mới
-					</Button>
+					Tạo dịch vụ mới
+				</CustomButton>
 			</div>
 			<div className={styles.header__search}>
 				<Container>

@@ -1,4 +1,3 @@
-import CenteredSpinner from 'components/CenteredSpinner'
 import {auth, firestore} from 'firebase'
 import {useRouter} from 'next/router'
 import React from 'react'
@@ -12,33 +11,24 @@ const ServiceDetailContainer = (props: {children: any}) => {
 	const router = useRouter()
 	const {domainId, serviceId} = router.query as {domainId: string, serviceId: string}
 
-	const [domain, loadingDomain] = useDocumentData<DomainDocument>(
+	const [domain] = useDocumentData<DomainDocument>(
 		firestore().collection('domains').doc(domainId)
 	)
 
 	return (
-		<>
-			{
-				loadingDomain && <CenteredSpinner />
-			}
-			{
-				domain && (
-					<div className={styles.ServiceManager}>
-						<ServiceDetailHeader />
-						<div className={styles.ServiceManager_main}>
-							<ServiceDetailMenu
-								isOwner={
-									auth().currentUser.email === domain.owner
-								}
-							/>
-							{
-								props.children
-							}
-						</div>
-					</div>
-				)
-			}
-		</>
+		<div className={styles.ServiceManager}>
+			<ServiceDetailHeader />
+			<div className={styles.ServiceManager_main}>
+				<ServiceDetailMenu
+					isOwner={
+						auth().currentUser.email === domain?.owner
+					}
+				/>
+				{
+					props.children
+				}
+			</div>
+		</div>
 	)
 }
 

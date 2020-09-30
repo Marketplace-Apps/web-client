@@ -40,38 +40,40 @@ const ServiceActionFormSettingsPage = () => {
 			title="Cài đặt form"
 		>
 			{
-				loadingServiceActions || loadingDomain || loadingService && <CenteredSpinner />
-			}
-			{
-				(!domain && !loadingDomain) || (!service && !loadingService) && <Error statusCode={400} title="Không tồn tại dịch vụ này" />
-			}
-			{
-				domain && service && (
+				(!domain && !loadingDomain) || (!service && !loadingService) ? <Error statusCode={400} title="Không tồn tại dịch vụ này" /> : (
 					<ServiceDetailContainer>
-						<h2 className={styles.ServiceManager__title}> Tích hợp dịch vụ</h2>
-						<Row>
-							{
-								actions.filter(action => !!action.icon && !!action.name).map(action => (
-									<ActionPreview
-										icon={action.icon}
-										name={action.name}
-										id={action.id}
-									/>
-								))
-							}
-							<Col xs={6} md={3} className="mb-4 text-center">
-								<Image
-									className="mt-2 p-3"
-									src="/images/addplus.png"
-									fluid
-									onClick={onCreateNewAction}
-									style={{
-										cursor: "pointer"
-									}}
-								/>
-							</Col>
-						</Row>
-
+						{
+							loadingServiceActions || loadingDomain || loadingService && <CenteredSpinner />
+						}
+						{
+							domain && service && actions && (
+								<>
+									<h2 className={styles.ServiceManager__title}> Tích hợp dịch vụ</h2>
+									<Row>
+										{
+											actions.filter(action => !!action.icon && !!action.name).map(action => (
+												<ActionPreview
+													icon={action.icon}
+													name={action.name}
+													id={action.id}
+												/>
+											))
+										}
+										<Col xs={6} md={3} className="mb-4 text-center">
+											<Image
+												className="mt-2 p-3"
+												src="/images/addplus.png"
+												fluid
+												onClick={onCreateNewAction}
+												style={{
+													cursor: "pointer"
+												}}
+											/>
+										</Col>
+									</Row>
+								</>
+							)
+						}
 					</ServiceDetailContainer>
 				)
 			}
