@@ -32,6 +32,7 @@ const CodeEditor = ({
 				options={{
 					renderWhitespace: "all"
 				}}
+				theme="dark"
 			/>
 		</>
 	)

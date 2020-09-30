@@ -12,6 +12,7 @@ import {Alert, Col, Form, InputGroup, Row} from 'react-bootstrap'
 import {FormProvider, useFieldArray, useForm} from 'react-hook-form'
 import {toast} from 'react-toastify'
 import {ServiceActionConfigDocument, ServiceActionDocument} from 'types/firebase'
+import ActionTypeSelection from '../ActionTypeSelection'
 import AdvancedOptions from '../AdvancedOptions'
 import styles from './index.module.scss'
 
@@ -42,6 +43,8 @@ const ActionDetailPageBody = ({
 		name: "form"
 	})
 
+	const watchFields = methods.watch("form", fields)
+
 	const onSubmit = methods.handleSubmit(async data => {
 		setIsUpdating(true)
 		try
@@ -53,7 +56,8 @@ const ActionDetailPageBody = ({
 					price_function: priceFunction,
 					id: actionId,
 					name: data.name,
-					icon: data.icon
+					icon: data.icon,
+					action_type: data.action_type
 				},
 				{
 					merge: true
@@ -247,6 +251,13 @@ const ActionDetailPageBody = ({
 								<CodeEditor
 									onChange={code => setPriceFunction(code)}
 									defaultValue={priceFunction}
+								/>
+								<ActionTypeSelection
+									fields={watchFields.map(item => ({
+										name: item.name,
+										label: item.label
+									}))}
+									actionType={action.action_type}
 								/>
 								<div className="text-center mt-5">
 									<CustomButton

@@ -55,6 +55,10 @@ export type ServiceActionDocument = {
 	form: any
 	price_function: string
 	advanced_options: any
+	action_type: {
+		type: string
+		by?: string
+	}
 }
 
 export type ServiceActionConfigDocument = {
