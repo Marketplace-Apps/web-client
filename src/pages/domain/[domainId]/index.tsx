@@ -43,7 +43,8 @@ const HomePage = () => {
 		const serviceId = firestore().collection('domains').doc(domainId).collection('services').doc().id
 		await firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).set({
 			visible: true,
-			published: false
+			published: false,
+			id: serviceId
 		})
 		router.push(
 			'/domain/[domainId]/service/[serviceId]',
