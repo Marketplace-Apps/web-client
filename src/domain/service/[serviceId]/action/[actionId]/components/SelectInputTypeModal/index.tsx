@@ -27,10 +27,6 @@ const INPUT_TYPES: Array<{
 			name: "select"
 		},
 		{
-			icon: "/images/iconBlock4.png",
-			name: "video input"
-		},
-		{
 			icon: "/images/iconBlock5.png",
 			name: "number"
 		},

@@ -8,7 +8,7 @@ import ServiceDetailContainer from 'domain/service/[serviceId]/components/Servic
 import {firestore} from 'firebase/app'
 import {useRouter} from 'next/router'
 import React, {useState} from 'react'
-import {Alert, Col, Form, Row} from 'react-bootstrap'
+import {Alert, Col, Form, InputGroup, Row} from 'react-bootstrap'
 import {FormProvider, useFieldArray, useForm} from 'react-hook-form'
 import {toast} from 'react-toastify'
 import {ServiceActionConfigDocument, ServiceActionDocument} from 'types/firebase'
@@ -50,7 +50,10 @@ const ActionDetailPageBody = ({
 				{
 					form: data.form,
 					advanced_options: data.advanced_options,
-					price_function: priceFunction
+					price_function: priceFunction,
+					id: actionId,
+					name: data.name,
+					icon: data.icon
 				},
 				{
 					merge: true
@@ -58,7 +61,7 @@ const ActionDetailPageBody = ({
 			)
 			await firestore().collection('services').doc(`${serviceId}_config`).collection('actions').doc(`${actionId}_config`).set({
 				endpoint: data.endpoint,
-				method: data.method
+				method: data.method,
 			})
 			toast.success("Cập nhật action thành công", {
 				position: toast.POSITION.TOP_RIGHT,
@@ -112,22 +115,22 @@ const ActionDetailPageBody = ({
 								<Form.Group as={Row}>
 									<Col sm="12">
 										<Form.Control
-											isInvalid={!!methods.errors.method}
+											isInvalid={!!methods.errors.name}
 											type="text"
-											placeholder="Tên method"
-											defaultValue={actionConfig?.method}
-											name="method"
+											placeholder="Tên action"
+											defaultValue={action?.name}
+											name="name"
 											ref={methods.register({
 												required: {
 													value: true,
-													message: "Vui lòng nhập method"
+													message: "Vui lòng nhập tên action"
 												}
 											})}
 										/>
 										{
-											methods.errors.method && (
+											methods.errors.name && (
 												<Alert className="mt-1" variant="warning">
-													{methods.errors.method.message}
+													{methods.errors.name.message}
 												</Alert>
 											)
 										}
@@ -136,27 +139,69 @@ const ActionDetailPageBody = ({
 								<Form.Group as={Row}>
 									<Col sm="12">
 										<Form.Control
-											isInvalid={!!methods.errors.endpoint}
+											isInvalid={!!methods.errors.icon}
 											type="text"
-											placeholder="Url"
-											defaultValue={actionConfig?.endpoint}
-											name="endpoint"
+											placeholder="Tên action"
+											defaultValue={action?.icon}
+											name="icon"
 											ref={methods.register({
 												required: {
 													value: true,
-													message: "Vui lòng nhập endpoint"
+													message: "Vui lòng nhập đường dẫn icon"
 												}
 											})}
 										/>
 										{
-											methods.errors.endpoint && (
+											methods.errors.icon && (
 												<Alert className="mt-1" variant="warning">
-													{methods.errors.endpoint.message}
+													{methods.errors.icon.message}
 												</Alert>
 											)
 										}
 									</Col>
 								</Form.Group>
+								<InputGroup className="mb-3">
+									<InputGroup.Prepend>
+										<Form.Control
+											as="select"
+											custom
+											name="method"
+											ref={methods.register({
+												required: {
+													value: true,
+													message: "Vui lòng nhập method"
+												}
+											})}
+											defaultValue={actionConfig?.method ?? "POST"}
+										>
+											{
+												[
+													"POST",
+													"GET"
+												].map(method => (
+													<option
+														value={method}
+													>
+														{method}
+													</option>
+												))
+											}
+										</Form.Control>
+									</InputGroup.Prepend>
+									<Form.Control
+										isInvalid={!!methods.errors.endpoint}
+										type="text"
+										placeholder="Url"
+										defaultValue={actionConfig?.endpoint}
+										name="endpoint"
+										ref={methods.register({
+											required: {
+												value: true,
+												message: "Vui lòng nhập endpoint"
+											}
+										})}
+									/>
+								</InputGroup>
 								{
 									!!fields.length && fields.map((item, index) => (
 										<>

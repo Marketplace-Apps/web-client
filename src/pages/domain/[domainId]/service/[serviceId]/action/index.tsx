@@ -15,7 +15,7 @@ const ServiceActionFormSettingsPage = () => {
 	const router = useRouter()
 	const {domainId, serviceId} = router.query as {domainId: string, serviceId: string}
 
-	const [actions, loadingServiceActions] = useCollectionData<ServiceActionDocument>(
+	const [actions, loadingServiceActions, error] = useCollectionData<ServiceActionDocument>(
 		firestore().collection('services').doc(`${serviceId}_config`).collection('actions')
 	)
 
@@ -51,7 +51,7 @@ const ServiceActionFormSettingsPage = () => {
 						<h2 className={styles.ServiceManager__title}> Tích hợp dịch vụ</h2>
 						<Row>
 							{
-								actions.map(action => (
+								actions.filter(action => !!action.icon && !!action.name).map(action => (
 									<ActionPreview
 										icon={action.icon}
 										name={action.name}
