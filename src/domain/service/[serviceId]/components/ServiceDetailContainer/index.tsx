@@ -1,18 +1,45 @@
+import CenteredSpinner from 'components/CenteredSpinner'
+import {auth, firestore} from 'firebase'
+import {useRouter} from 'next/router'
 import React from 'react'
+import {useDocumentData} from 'react-firebase-hooks/firestore'
+import {DomainDocument} from 'types/firebase'
 import ServiceDetailHeader from '../ServiceDetailHeader'
 import ServiceDetailMenu from '../ServiceDetailMenu'
 import styles from './index.module.scss'
 
-const ServiceDetailContainer = (props: {children: any}) => (
-	<div className={styles.ServiceManager}>
-		<ServiceDetailHeader />
-		<div className={styles.ServiceManager_main}>
-			<ServiceDetailMenu />
+const ServiceDetailContainer = (props: {children: any}) => {
+	const router = useRouter()
+	const {domainId, serviceId} = router.query as {domainId: string, serviceId: string}
+
+	const [domain, loadingDomain] = useDocumentData<DomainDocument>(
+		firestore().collection('domains').doc(domainId)
+	)
+
+	return (
+		<>
 			{
-				props.children
+				loadingDomain && <CenteredSpinner />
 			}
-		</div>
-	</div>
-)
+			{
+				domain && (
+					<div className={styles.ServiceManager}>
+						<ServiceDetailHeader />
+						<div className={styles.ServiceManager_main}>
+							<ServiceDetailMenu
+								isOwner={
+									auth().currentUser.email === domain.owner
+								}
+							/>
+							{
+								props.children
+							}
+						</div>
+					</div>
+				)
+			}
+		</>
+	)
+}
 
 export default ServiceDetailContainer

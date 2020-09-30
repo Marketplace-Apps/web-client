@@ -9,14 +9,14 @@ import {ServiceActionConfigDocument, ServiceActionDocument} from 'types/firebase
 const ActionDetailPage = () => {
 
 	const router = useRouter()
-	const {domainId, serviceId, actionId} = router.query as {domainId: string, serviceId: string, actionId: string}
+	const {serviceId, actionId} = router.query as {domainId: string, serviceId: string, actionId: string}
 
-	const [action] = useDocumentData<ServiceActionDocument>(
-		firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).collection('actions').doc(actionId)
+	const [action, loadingAction] = useDocumentData<ServiceActionDocument>(
+		firestore().collection('services').doc(`${serviceId}_config`).collection('actions').doc(actionId)
 	)
 
-	const [actionConfig] = useDocumentData<ServiceActionConfigDocument>(
-		firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).collection('actions').doc(`${actionId}_config`)
+	const [actionConfig, loadingActionConfig] = useDocumentData<ServiceActionConfigDocument>(
+		firestore().collection('services').doc(`${serviceId}_config`).collection('actions').doc(`${actionId}_config`)
 	)
 
 	return (
@@ -24,7 +24,7 @@ const ActionDetailPage = () => {
 			title="Cài đặt form"
 		>
 			{
-				action && actionConfig && (
+				!loadingAction && !loadingActionConfig && (
 					<ActionDetailPageBody
 						action={action}
 						actionConfig={actionConfig}

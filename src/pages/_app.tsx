@@ -21,6 +21,9 @@ const FIREBASE_CONFIG = {
 }
 
 if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG)
+firebase.firestore().settings({
+	ignoreUndefinedProperties: true,
+})
 
 const NO_PROTECTED_ROUTES = [
 	'/auth/sign-in',

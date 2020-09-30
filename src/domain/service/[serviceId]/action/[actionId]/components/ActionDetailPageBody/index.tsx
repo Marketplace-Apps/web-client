@@ -1,4 +1,4 @@
-import CenteredSpinner from 'components/CenteredSpinner'
+import CustomButton from 'components/CustomButton'
 import ActionAlert from 'domain/service/[serviceId]/action/[actionId]/components/ActionAlert'
 import AddElementButton from 'domain/service/[serviceId]/action/[actionId]/components/AddElementButton'
 import CodeEditor from 'domain/service/[serviceId]/action/[actionId]/components/CodeEditor'
@@ -8,7 +8,7 @@ import ServiceDetailContainer from 'domain/service/[serviceId]/components/Servic
 import {firestore} from 'firebase/app'
 import {useRouter} from 'next/router'
 import React, {useState} from 'react'
-import {Alert, Button, Col, Form, Row} from 'react-bootstrap'
+import {Alert, Col, Form, Row} from 'react-bootstrap'
 import {FormProvider, useFieldArray, useForm} from 'react-hook-form'
 import {toast} from 'react-toastify'
 import {ServiceActionConfigDocument, ServiceActionDocument} from 'types/firebase'
@@ -27,13 +27,13 @@ const ActionDetailPageBody = ({
 	const router = useRouter()
 	const {domainId, serviceId, actionId} = router.query as {domainId: string, serviceId: string, actionId: string}
 
-	const [priceFunction, setPriceFunction] = useState<string | null>(null)
+	const [priceFunction, setPriceFunction] = useState<string | null>(action?.price_function)
 	const [isUpdating, setIsUpdating] = useState<boolean>(false)
 
 	const methods = useForm({
 		defaultValues: {
-			form: action.form,
-			advanced_options: action.advanced_options
+			form: action?.form,
+			advanced_options: action?.advanced_options
 		}
 	})
 
@@ -46,12 +46,17 @@ const ActionDetailPageBody = ({
 		setIsUpdating(true)
 		try
 		{
-			await firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).collection('actions').doc(actionId).update({
-				form: data.form,
-				advanced_options: data.advanced_options,
-				price_function: priceFunction
-			})
-			await firestore().collection('domains').doc(domainId).collection('services').doc(serviceId).collection('actions').doc(`${actionId}_config`).update({
+			await firestore().collection('services').doc(`${serviceId}_config`).collection('actions').doc(actionId).set(
+				{
+					form: data.form,
+					advanced_options: data.advanced_options,
+					price_function: priceFunction
+				},
+				{
+					merge: true
+				}
+			)
+			await firestore().collection('services').doc(`${serviceId}_config`).collection('actions').doc(`${actionId}_config`).set({
 				endpoint: data.endpoint,
 				method: data.method
 			})
@@ -196,10 +201,12 @@ const ActionDetailPageBody = ({
 								<AdvancedOptions />
 								<CodeEditor
 									onChange={code => setPriceFunction(code)}
-									defaultValue={action?.price_function}
+									defaultValue={priceFunction}
 								/>
 								<div className="text-center mt-5">
-									<Button
+									<CustomButton
+										isLoading={isUpdating}
+										loadingText="Đang lưu"
 										style={{
 											padding: '10px 35px',
 											backgroundColor: '#71A7F9',
@@ -208,13 +215,9 @@ const ActionDetailPageBody = ({
 										}}
 										variant="outline-primary"
 										type="submit"
-										disabled={isUpdating}
 									>
-										Save
-										{
-											isUpdating && <CenteredSpinner />
-										}
-									</Button>
+										Lưu
+									</CustomButton>
 								</div>
 							</Form>
 						</FormProvider>

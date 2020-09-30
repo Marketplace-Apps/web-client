@@ -25,16 +25,20 @@ const SETTINGS = [
 	},
 ]
 
-const ServiceDetailMenu = () => (
-	<Row>
-		{
-			SETTINGS.map(setting => (
-				<ServiceDetailMenuItem
-					{...setting}
-				/>
-			))
-		}
-	</Row>
-)
+const ServiceDetailMenu = (props: {isOwner: boolean}) => {
+	const menuItems = props.isOwner ? SETTINGS : SETTINGS.filter(setting => setting.route !== "/auth-settings" && setting.route !== "/action")
+
+	return (
+		<Row>
+			{
+				menuItems.map(item => (
+					<ServiceDetailMenuItem
+						{...item}
+					/>
+				))
+			}
+		</Row>
+	)
+}
 
 export default ServiceDetailMenu

@@ -7,6 +7,16 @@ export type DomainServiceDocument = {
 	min_price: number
 }
 
+export type ServiceConfigDocument = {
+	id: string
+	user_id: string
+	auth: {
+		method: string,
+		header_name: string
+		header_value: string
+	}
+}
+
 export type DomainParentServiceRefDocument = {
 
 }
