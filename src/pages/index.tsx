@@ -9,6 +9,7 @@ import {DomainDocument} from 'types/firebase'
 
 const SelectDomainPage = () => {
 	const router = useRouter()
+	const domainId = localStorage.getItem('domain')
 
 	const [domains, loading, error] = useCollectionData<DomainDocument>(
 		firestore().collection('domains').where("owner", "==", auth().currentUser.email)
@@ -19,12 +20,23 @@ const SelectDomainPage = () => {
 
 	useEffect(() => {
 		const fn = async () => {
-			if (!domains) return
-			if (domains.length === 1) router.push(
+			if (!domainId)
+			{
+				if (!domains) return
+				if (domains.length === 1)
+				{
+					localStorage.setItem("domain", domains[0].id)
+					localStorage.setItem("owner", (domains[0].owner === auth().currentUser.email).toString())
+					router.push(
+						'/domain/[domainId]',
+						`/domain/${domains[0].id}`
+					)
+				}
+				else setIsDisplayDomainSelection(true)
+			} else router.push(
 				'/domain/[domainId]',
-				`/domain/${domains[0].id}`
+				`/domain/${domainId}`
 			)
-			else setIsDisplayDomainSelection(true)
 		}
 		fn()
 	}, [domains])

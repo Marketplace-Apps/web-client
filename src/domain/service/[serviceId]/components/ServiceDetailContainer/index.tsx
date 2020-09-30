@@ -10,6 +10,7 @@ import styles from './index.module.scss'
 const ServiceDetailContainer = (props: {children: any}) => {
 	const router = useRouter()
 	const {domainId, serviceId} = router.query as {domainId: string, serviceId: string}
+	const isOnwer = JSON.parse(localStorage.getItem('owner'))
 
 	const [domain] = useDocumentData<DomainDocument>(
 		firestore().collection('domains').doc(domainId)
@@ -21,7 +22,7 @@ const ServiceDetailContainer = (props: {children: any}) => {
 			<div className={styles.ServiceManager_main}>
 				<ServiceDetailMenu
 					isOwner={
-						auth().currentUser.email === domain?.owner
+						isOnwer || auth().currentUser.email === domain?.owner
 					}
 				/>
 				{
