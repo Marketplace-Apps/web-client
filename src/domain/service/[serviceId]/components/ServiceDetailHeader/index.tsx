@@ -20,24 +20,28 @@ const ServiceDetailHeader = () => {
 
 	return (
 		<div className={styles.header_service}>
-			<div className={styles.header_service__title}>
-				<Image
-					className={styles.header_service__img}
-					src={domainService?.icon ?? "https://via.placeholder.com/50"}
-					thumbnail
-					width="50px"
-				/>
-				{domainService?.name ?? "Tên dịch vụ"}
-			</div>
+
 			{
 				domainService && (
-					<Form.Check
-						defaultChecked={domainService.visible}
-						type="switch"
-						id="custom-switch"
-						label=""
-						onClick={() => toogle(domainService.visible)}
-					/>
+					<>
+						<div className={styles.header_service__title}>
+							<Image
+								className={styles.header_service__img}
+								src={domainService?.icon}
+								thumbnail
+								width="50px"
+							/>
+							{domainService?.name}
+						</div>
+						<Form.Check
+							defaultChecked={domainService.visible}
+							type="switch"
+							id="custom-switch"
+							label=""
+							onClick={() => toogle(domainService.visible)}
+						/>
+					</>
+
 				)
 			}
 		</div>

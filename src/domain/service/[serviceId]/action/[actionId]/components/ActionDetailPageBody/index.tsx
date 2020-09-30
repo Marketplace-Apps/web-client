@@ -145,7 +145,7 @@ const ActionDetailPageBody = ({
 										<Form.Control
 											isInvalid={!!methods.errors.icon}
 											type="text"
-											placeholder="Tên action"
+											placeholder="Icon"
 											defaultValue={action?.icon}
 											name="icon"
 											ref={methods.register({
@@ -257,7 +257,7 @@ const ActionDetailPageBody = ({
 										name: item.name,
 										label: item.label
 									}))}
-									actionType={action.action_type}
+									actionType={action?.action_type}
 								/>
 								<div className="text-center mt-5">
 									<CustomButton

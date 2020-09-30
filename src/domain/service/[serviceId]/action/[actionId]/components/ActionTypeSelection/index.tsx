@@ -16,7 +16,7 @@ const ActionTypeSelection = ({
 }: IActionTypeSelectionProps) => {
 
 	const {register, errors} = useFormContext()
-	const [isDisplayNameSelection, setIsDisplayNameSelection] = useState<boolean>(actionType.type !== "one_time_order")
+	const [isDisplayNameSelection, setIsDisplayNameSelection] = useState<boolean>(actionType?.type !== "one_time_order" && !!actionType?.type)
 
 	return (
 		<div
@@ -29,7 +29,7 @@ const ActionTypeSelection = ({
 				value="one_time_order"
 				ref={register}
 				onClick={() => setIsDisplayNameSelection(false)}
-				defaultChecked={actionType.type === "one_time_order"}
+				defaultChecked={actionType?.type === "one_time_order"}
 			/>
 			<Form.Check
 				type="radio"
@@ -38,7 +38,7 @@ const ActionTypeSelection = ({
 				value="bulk_order"
 				ref={register}
 				onClick={() => setIsDisplayNameSelection(true)}
-				defaultChecked={actionType.type === "bulk_order"}
+				defaultChecked={actionType?.type === "bulk_order"}
 			/>
 			<Form.Check
 				type="radio"
@@ -47,7 +47,7 @@ const ActionTypeSelection = ({
 				value="time_limited_order"
 				ref={register}
 				onClick={() => setIsDisplayNameSelection(true)}
-				defaultChecked={actionType.type === "time_limited_order"}
+				defaultChecked={actionType?.type === "time_limited_order"}
 			/>
 			{
 				isDisplayNameSelection && (
@@ -63,7 +63,7 @@ const ActionTypeSelection = ({
 									message: "Vui lòng chọn trường phụ thuộc"
 								}
 							})}
-							defaultValue={actionType.by || fields[0]?.name || null}
+							defaultValue={actionType?.by || fields[0]?.name || null}
 						>
 							{
 								fields.map(item => (
