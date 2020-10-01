@@ -56,6 +56,7 @@ const MENU = [
 ]
 const LeftSidebarMenu = () => {
 	const router = useRouter()
+	const {domainId} = router.query as {domainId: string}
 
 	const onLogout = () => {
 		auth().signOut()
@@ -73,7 +74,10 @@ const LeftSidebarMenu = () => {
 						pathname
 					}) => (
 							<LeftSidebarMenuItem
-								onClick={() => router.push(pathname)}
+								onClick={() => router.push(
+									`/domain/[domainId]${pathname}`,
+									`/domain/${domainId}${pathname}`
+								)}
 								color={color}
 								Icon={Icon}
 								name={name}

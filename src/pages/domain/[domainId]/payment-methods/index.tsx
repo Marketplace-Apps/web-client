@@ -1,35 +1,29 @@
 import CreateUpdatePaymentMethodModal from 'domain/payment-methods/components/CreateUpdatePaymentMethodModal'
 import ListPaymentMethodsItem from 'domain/payment-methods/components/ListPaymentMethodsItem'
+import {firestore} from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
+import {useRouter} from 'next/router'
 import React, {useState} from 'react'
 import {Col, Image, Row} from 'react-bootstrap'
+import {useCollectionData} from 'react-firebase-hooks/firestore'
+import {PaymentMethodDocument} from 'types/firebase'
 import styles from './index.module.scss'
 
-const PAYMENT_METHODS = [
-	{
-		name: 'Dương Văn Ba',
-		numberCard: ' 0301.0003.81458',
-		address: 'Chi nhánh Hà Thành',
-		src: '/images/vietcombank.png',
-	},
-	{
-		name: 'Dương Văn Ba',
-		numberCard: ' 0301.0003.81458',
-		address: 'Chi nhánh Hội Sở',
-		src: '/images/techcombank.png',
-	},
-	{
-		name: 'Dương Văn Ba',
-		numberCard: '  0978.346.354',
-		address: '',
-		src: '/images/momo.png',
-	},
-]
 const PaymentMethodsPage = () => {
+
+	const router = useRouter()
+	const {domainId} = router.query as {domainId: string}
+
 	const [isShowCreateUpdatePaymentMethodModal, setIsShowCreateUpdatePaymentMethodModal] = useState<boolean>(false)
 
 	const onShowCreateUpdatePaymentMethodModal = () => setIsShowCreateUpdatePaymentMethodModal(true)
 	const onHideCreateUpdatePaymentMethodModal = () => setIsShowCreateUpdatePaymentMethodModal(false)
+
+	const [paymentMethods] = useCollectionData<PaymentMethodDocument>(
+		firestore().collection('domains').doc(domainId).collection('payment_methods')
+	)
+
+	const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodDocument | null>(null)
 
 	return (
 		<MainLayout
@@ -38,28 +32,47 @@ const PaymentMethodsPage = () => {
 			<CreateUpdatePaymentMethodModal
 				show={isShowCreateUpdatePaymentMethodModal}
 				onHide={onHideCreateUpdatePaymentMethodModal}
+				data={selectedPaymentMethod}
+				domainId={domainId}
 			/>
 			<div className={styles.PaymentSettings}>
 				<div className={styles.PaymentSettings__bank}>
 					<div className={styles.pageAddCash}>
-						{/* Bank     */}
+						{
+							!paymentMethods?.length && (
+								<p
+									className="text-center"
+								>
+									Chưa có phương thức thanh toán nào
+								</p>
+							)
+						}
 						<Row>
-							{PAYMENT_METHODS.map(item => (
+							{paymentMethods?.map(item => (
 								<ListPaymentMethodsItem
-									ownerName={item.name}
-									cardNumber={item.numberCard}
-									department={item.address}
-									bankLogoUrl={item.src}
+									data={{
+										ownerName: item.owner_name,
+										bankNumber: item.bank_number,
+										bankLogoUrl: item.logo_url,
+									}}
+									onSelect={() => {
+										setSelectedPaymentMethod(item)
+										onShowCreateUpdatePaymentMethodModal()
+									}}
 								/>
 							))}
 
 							<Col xs={12} lg={12} xl={6}>
 								<div className="text-center" style={{marginTop: '1rem'}}>
 									<Image
-										onClick={onShowCreateUpdatePaymentMethodModal}
+										onClick={() => {
+											setSelectedPaymentMethod(null)
+											onShowCreateUpdatePaymentMethodModal()
+										}}
 										className="mt-2 p-3"
 										src="/images/addplus.png"
 										fluid
+										style={{cursor: "pointer"}}
 									/>
 								</div>
 							</Col>

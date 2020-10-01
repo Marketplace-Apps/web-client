@@ -23,6 +23,11 @@ const SETTINGS = [
 		title: 'Cài đặt action',
 		route: '/action',
 	},
+	{
+		Icon: '/images/cai-dat-gia.png',
+		title: 'Cài đặt giá ',
+		route: '/price',
+	},
 ]
 
 const ServiceDetailMenu = (props: {isOwner: boolean}) => {

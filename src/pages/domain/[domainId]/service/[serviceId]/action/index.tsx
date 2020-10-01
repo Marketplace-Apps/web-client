@@ -27,8 +27,12 @@ const ServiceActionFormSettingsPage = () => {
 		firestore().collection('domains').doc(domainId).collection('services').doc(serviceId)
 	)
 
-	const onCreateNewAction = () => {
+	const onCreateNewAction = async (isOrderAction: boolean) => {
 		const actionId = firestore().collection('services').doc(`${serviceId}_config`).collection('actions').doc().id
+		await firestore().collection('services').doc(`${serviceId}_config`).collection('actions').doc(actionId).set({
+			id: actionId,
+			is_order_action: isOrderAction
+		})
 		router.push(
 			'/domain/[domainId]/service/[serviceId]/action/[actionId]',
 			`/domain/${domainId}/service/${serviceId}/action/${actionId}`
@@ -64,13 +68,14 @@ const ServiceActionFormSettingsPage = () => {
 												className="mt-2 p-3"
 												src="/images/addplus.png"
 												fluid
-												onClick={onCreateNewAction}
+												onClick={() => onCreateNewAction(false)}
 												style={{
 													cursor: "pointer"
 												}}
 											/>
 										</Col>
 									</Row>
+									<h2 className={styles.ServiceManager__title}> Tích hợp đơn hàng</h2>
 								</>
 							)
 						}
