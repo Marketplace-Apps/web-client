@@ -59,7 +59,7 @@ const LeftSidebarMenu = () => {
 					)
 				}
 				{
-					user && (
+					user && !user.isAnonymous && (
 						<LeftSidebarMenuItem
 							onClick={onLogout}
 							color="#6507fc"
