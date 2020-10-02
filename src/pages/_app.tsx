@@ -3,10 +3,8 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import {AppProps} from 'next/app'
-import {useRouter} from 'next/router'
 import React from 'react'
 import 'react-toastify/dist/ReactToastify.css'
-import ProtectedRoute from '../components/ProtectedRoute'
 import './global.scss'
 
 const FIREBASE_CONFIG = {
@@ -21,23 +19,10 @@ const FIREBASE_CONFIG = {
 }
 
 if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG)
-
-const NO_PROTECTED_ROUTES = [
-	'/auth/sign-in',
-	'/auth/sign-up',
-	'/auth/reset-password'
-]
+firebase.firestore().settings({
+	ignoreUndefinedProperties: true,
+})
 
 export default function App ({Component, pageProps}: AppProps) {
-	const router = useRouter()
-
-	return (
-		<>
-			{NO_PROTECTED_ROUTES.includes(router.pathname) ? (
-				<Component {...pageProps} />
-			) : (
-					<ProtectedRoute Component={Component} pageProps={pageProps} />
-				)}
-		</>
-	)
+	return <Component {...pageProps} />
 }

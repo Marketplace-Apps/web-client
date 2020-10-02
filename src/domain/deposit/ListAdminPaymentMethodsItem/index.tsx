@@ -1,30 +1,22 @@
 import React from 'react'
 import {Col, Image, Row} from 'react-bootstrap'
+import {PaymentMethodDocument} from 'types/firebase'
 import styles from './index.module.scss'
 
-type ListAdminPaymentMethodsItemProps = {
-	bankLogoUrl: string
-	ownerName: string
-	cardNumber: string
-	department: string
-}
-
 const ListAdminPaymentMethodsItem = ({
-	bankLogoUrl,
-	cardNumber,
-	department,
-	ownerName
-}: ListAdminPaymentMethodsItemProps) => (
+	logo_url,
+	bank_number,
+	owner_name,
+}: PaymentMethodDocument) => (
 		<div className={styles.pageAddCash__Bank}>
 			<Row>
 				<Col xs={6}>
-					<Image src={bankLogoUrl} />
+					<Image src={logo_url} thumbnail width="150px" />
 				</Col>
 				<Col xs={6}>
-					<div className={styles.pageAddCash__info}>{ownerName}</div>
+					<div className={styles.pageAddCash__info}>{owner_name}</div>
 
-					<div className={styles.pageAddCash__info}>{cardNumber}</div>
-					<div className={styles.pageAddCash__info}>{department}</div>
+					<div className={styles.pageAddCash__info}>{bank_number}</div>
 				</Col>
 			</Row>
 		</div>

@@ -29,7 +29,7 @@ const SignInPage = () => {
 	const [user] = useAuthState(auth())
 
 	useEffect(() => {
-		if (user) router.replace('/select-domain')
+		if (user) router.replace('/')
 	}, [user])
 
 	const {register, handleSubmit, reset, errors, clearErrors} = useForm<
@@ -52,7 +52,7 @@ const SignInPage = () => {
 		try
 		{
 			await auth().signInWithEmailAndPassword(email, password)
-			router.push('/select-domain')
+			router.push('/')
 			reset()
 			clearErrors()
 		} catch (error)

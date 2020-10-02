@@ -26,6 +26,7 @@ const EditableContent = ({
 							type={isEditing ? "text" : "hidden"}
 							name={props.name}
 							defaultValue={value}
+							value={props.value}
 							onBlur={e => {
 								setCurrentValue(e.target.value)
 								setEditing(false)

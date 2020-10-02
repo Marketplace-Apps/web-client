@@ -1,0 +1,14 @@
+//  actiopn   
+.action {
+	background-color: #fff;
+	z-index         : 999;
+	height          : 100%;
+	width           : 100%;
+	top             : 0;
+	left            : 0;
+	right           : 0;
+
+	&__des {
+		padding: 1.5rem;
+	}
+}

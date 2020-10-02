@@ -1,0 +1,64 @@
+.pageUser {
+	&__banner {
+		padding   : 3rem 2rem 4rem 2rem;
+		background: linear-gradient(90deg, #9d0ff4 -1.45%, #2d8eff 100%);
+	}
+
+	&__user {
+		display         : flex;
+		padding         : 1.5rem 2.5rem;
+		background-color: #fff;
+		border-radius   : 10px;
+	}
+
+	&__desWrap {
+		display: flex;
+
+		align-items: center;
+	}
+
+	&__des {
+		margin-left: 2rem;
+	}
+
+	&__name {
+		margin-bottom: 1rem;
+		font-weight  : bold;
+		font-size    : 1.2rem;
+		line-height  : 1.3rem;
+		color        : #000000;
+	}
+
+	&__price {
+		font-weight: bold;
+		font-size  : 1.1rem;
+		line-height: 1.2rem;
+		color      : #0088b3;
+	}
+
+	&__content {
+		padding: 2rem 1.5rem;
+	}
+
+	&__box {
+		padding      : 0.5rem;
+		height       : 10rem;
+		background   : #ffffff;
+		box-shadow   : 0px 2px 10px rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+	}
+
+	&__text {
+		margin-top: 0.5rem;
+
+
+	}
+}
+
+.link:hover {
+	text-decoration: none
+}
+
+// ---------------------
+
+//responsive

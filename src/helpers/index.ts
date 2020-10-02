@@ -20,3 +20,8 @@ export const classifyDataByTag = <T extends {tag: string}> (
 		data: store.get(tag),
 	}))
 }
+
+export const omit = <T extends {}> (source: T, keys: string[]) => Object.keys(source)
+	.filter(k => !keys.includes(k))
+	.reduce((acc, key) => ((acc[key] = source[key]), acc), {})
+

@@ -7,6 +7,16 @@ export type DomainServiceDocument = {
 	min_price: number
 }
 
+export type ServiceConfigDocument = {
+	id: string
+	user_id: string
+	auth: {
+		method: string,
+		header_name: string
+		header_value: string
+	}
+}
+
 export type DomainParentServiceRefDocument = {
 
 }
@@ -31,7 +41,8 @@ export type DomainDocument = {
 	id: string
 	domain_name: string
 	site_name: string
-	icon: string
+	background_color: string
+	logo_url: string
 	currency: string
 	owner: string
 	created_at: number
@@ -45,9 +56,34 @@ export type ServiceActionDocument = {
 	form: any
 	price_function: string
 	advanced_options: any
+	action_type: {
+		type: string
+		by?: string
+	}
+	is_order_action: boolean
 }
 
 export type ServiceActionConfigDocument = {
 	endpoint: string
 	method: string
+}
+
+export type PaymentMethodDocument = {
+	id: string
+	user_id: string
+	type: string
+	owner_name: string
+	bank_number: string
+	logo_url: string
+	active: boolean
+	credential?: string
+}
+
+export type UserDocument = {
+	id: string
+	avatar_url: string
+	balance: number
+	email: string
+	name: string
+	total_deposit: number
 }
