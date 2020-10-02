@@ -1,14 +1,14 @@
 import Link from 'next/link'
 import React from 'react'
 import {Col, Image} from 'react-bootstrap'
-import {DomainServiceDocument} from '../../../../types/firebase'
+import {DomainServiceDocument} from 'types/firebase'
 import styles from '../index.module.scss'
 
 const ServicePreview = ({icon, name, id, domainId}: DomainServiceDocument & {domainId: string}) => (
 	<Col xs={4} xl={3}>
 		<Link
-			href="/domain/[domainId]/service/[serviceId]"
-			as={`/domain/${domainId}/service/${id}`}
+			href="/service/[serviceId]"
+			as={`/service/${id}`}
 		>
 			<div className={styles.service__item}>
 				<Image fluid className={styles.service__img} src={icon} />

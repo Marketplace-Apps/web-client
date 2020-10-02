@@ -1,78 +1,84 @@
 import CenteredSpinner from 'components/CenteredSpinner'
-import {auth, firestore} from 'firebase'
+import GroupedByTypeListServicesContainer from 'domain/home/components/GroupedByTypeListServicesContainer'
+import GroupedByTypeListServicesHeader from 'domain/home/components/GroupedByTypeListServicesHeader'
+import ServicePreview from 'domain/home/components/ServicePreview'
+import {firestore} from 'firebase/app'
+import {classifyDataByTag} from 'helpers'
+import MainLayout from 'layouts/MainLayout'
 import Error from 'next/error'
-import {useRouter} from 'next/router'
-import React, {useEffect, useState} from 'react'
-import {Form} from 'react-bootstrap'
+import React from 'react'
+import {Container, Form, FormControl, Row} from 'react-bootstrap'
 import {useCollectionData} from 'react-firebase-hooks/firestore'
-import {DomainDocument} from 'types/firebase'
+import {BsSearch} from 'react-icons/bs'
+import {DomainServiceDocument} from 'types/firebase'
+import styles from './index.module.scss'
 
-const SelectDomainPage = () => {
-	const router = useRouter()
-	const domainId = localStorage.getItem('domain')
+const HomePage = (props: {
+	domainId: string | null
+}) => {
 
-	const [domains, loading, error] = useCollectionData<DomainDocument>(
-		firestore().collection('domains').where("owner", "==", auth().currentUser.email)
+	const [domainServices, loadingDomainServices] = useCollectionData<DomainServiceDocument>(
+		firestore().collection('domains').doc(props.domainId ?? "domain-id").collection('services').where("published", "==", true)
 	)
 
-	const [isDisplayDomainSelection, setIsDisplayDomainSelection] = useState<boolean>(false)
-
-
-	useEffect(() => {
-		const fn = async () => {
-			if (!domainId)
-			{
-				if (!domains) return
-				if (domains.length === 1)
-				{
-					localStorage.setItem("domain", domains[0].id)
-					localStorage.setItem("owner", (domains[0].owner === auth().currentUser.email).toString())
-					router.push(
-						'/domain/[domainId]',
-						`/domain/${domains[0].id}`
-					)
-				}
-				else setIsDisplayDomainSelection(true)
-			} else router.push(
-				'/domain/[domainId]',
-				`/domain/${domainId}`
-			)
-		}
-		fn()
-	}, [domains])
+	const classifiedByTagServices = classifyDataByTag(domainServices ?? [])
 
 	return (
-		<>
-			{
-				loading || !isDisplayDomainSelection && <CenteredSpinner />
-			}
-			{
-				domains && isDisplayDomainSelection && (
-					<Form>
-						<Form.Group>
-							<Form.Label>Custom select</Form.Label>
-							<Form.Control as="select" custom>
+		<MainLayout title="Trang chủ">
+			<div className={styles.header__search}>
+				<Container>
+					<Form inline className={styles.header__form}>
+						<FormControl
+							type="text"
+							placeholder="Search"
+							className={styles.header__inputSearch}
+						/>
+						<BsSearch
+							className={styles.header__btnSearch}
+							style={{fontSize: '2rem', color: 'green'}}
+						/>
+					</Form>
+				</Container>
+			</div>
+			<GroupedByTypeListServicesContainer>
+
+				{
+					loadingDomainServices && <CenteredSpinner />
+				}
+				{
+					!domainServices && !loadingDomainServices && <Error statusCode={400} title="Không có dữ liệu về tên miền này" />
+				}
+				{
+					domainServices && classifiedByTagServices?.map(group => (
+						<>
+							<GroupedByTypeListServicesHeader
+								iconUrl="/images/services/fb2.png"
+								name={group.tag}
+							/>
+							<Row>
 								{
-									domains.map(domain => (
-										<option
-											value={domain.id}
-										>
-											{
-												domain.domain_name
-											}
-										</option>
+									group.data.map(serviceAction => (
+										<ServicePreview
+											{...serviceAction}
+											domainId="iodyH2vjNKFsNJ7hLaTq"
+										/>
 									))
 								}
-							</Form.Control>
-						</Form.Group>
-					</Form>
-				)
-			}
-			{
-				!domains && !loading && !error && <Error statusCode={400} title="Bạn chưa có domain nào" />
-			}
-		</>
+							</Row>
+						</>
+					))
+				}
+			</GroupedByTypeListServicesContainer>
+		</MainLayout>
 	)
 }
 
-export default SelectDomainPage
+HomePage.getInitialProps = async (ctx: any) => {
+	const host = ctx.req ? ctx.req.headers.host.split(":")[0] : location.hostname
+	const domain = await firestore().collection('domains').where("domain_name", "==", host).get()
+	return {
+		domainId: domain.docs.length ? domain.docs[0].id : null
+	}
+}
+
+export default HomePage
