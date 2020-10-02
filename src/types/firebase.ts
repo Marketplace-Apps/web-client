@@ -60,6 +60,7 @@ export type ServiceActionDocument = {
 		type: string
 		by?: string
 	}
+	is_order_action: boolean
 }
 
 export type ServiceActionConfigDocument = {

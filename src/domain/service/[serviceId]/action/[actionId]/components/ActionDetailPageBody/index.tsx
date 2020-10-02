@@ -258,6 +258,7 @@ const ActionDetailPageBody = ({
 										label: item.label
 									}))}
 									actionType={action?.action_type}
+									isOrderAction ={action?.is_order_action}
 								/>
 								<div className="text-center mt-5">
 									<CustomButton

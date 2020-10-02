@@ -55,7 +55,7 @@ const ServiceActionFormSettingsPage = () => {
 									<h2 className={styles.ServiceManager__title}> Tích hợp dịch vụ</h2>
 									<Row>
 										{
-											actions.filter(action => !!action.icon && !!action.name).map(action => (
+											actions.filter(action => !!action.icon && !!action.name && !action.is_order_action).map(action => (
 												<ActionPreview
 													icon={action.icon}
 													name={action.name}
@@ -76,6 +76,28 @@ const ServiceActionFormSettingsPage = () => {
 										</Col>
 									</Row>
 									<h2 className={styles.ServiceManager__title}> Tích hợp đơn hàng</h2>
+									<Row>
+										{
+											actions.filter(action => !!action.icon && !!action.name && action.is_order_action).map(action => (
+												<ActionPreview
+													icon={action.icon}
+													name={action.name}
+													id={action.id}
+												/>
+											))
+										}
+										<Col xs={6} md={3} className="mb-4 text-center">
+											<Image
+												className="mt-2 p-3"
+												src="/images/addplus.png"
+												fluid
+												onClick={() => onCreateNewAction(true)}
+												style={{
+													cursor: "pointer"
+												}}
+											/>
+										</Col>
+									</Row>
 								</>
 							)
 						}
