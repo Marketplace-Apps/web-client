@@ -38,7 +38,9 @@ const ServiceDetailPage = (props: {
 							icon={service.icon}
 							name={service.name}
 						/>
-						<ServiceTabs />
+						<ServiceTabs
+							minPrice={service.min_price}
+						/>
 					</>
 				)
 			}

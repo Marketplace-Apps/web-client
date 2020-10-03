@@ -47,11 +47,15 @@ const ServiceTabsContainer = (props: {
 		</div>
 	)
 
-const ServiceTabs = () => {
+const ServiceTabs = (props: {
+	minPrice: number
+}) => {
 	return (
 		<ServiceTabsContainer>
 			<ServiceTabPane>
-				<ServiceActionsTabPane />
+				<ServiceActionsTabPane
+					minPrice={props.minPrice}
+				/>
 			</ServiceTabPane>
 		</ServiceTabsContainer>
 	)
