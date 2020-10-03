@@ -24,6 +24,7 @@
     "react-toastify": "^6.0.8",
     "sass": "^1.26.11",
     "uuid": "^8.3.0",
+    "velocityjs": "^2.0.1",
     "yup": "^0.29.3"
   },
   "devDependencies": {

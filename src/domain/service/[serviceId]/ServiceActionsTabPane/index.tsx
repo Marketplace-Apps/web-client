@@ -8,7 +8,9 @@ import {ServiceActionDocument} from 'types/firebase'
 import ActionDetailModal from '../ActionDetailModal'
 import styles from './index.module.scss'
 
-const ServiceActionsTabPane = () => {
+const ServiceActionsTabPane = (props: {
+	minPrice: number
+}) => {
 	const router = useRouter()
 	const {serviceId} = router.query as {serviceId: string}
 
@@ -32,6 +34,7 @@ const ServiceActionsTabPane = () => {
 							onHideActionDetailModal()
 						}}
 						data={selectedAction}
+						serviceMinPrice={props.minPrice}
 					/>
 				)
 			}
@@ -52,8 +55,8 @@ const ServiceActionsTabPane = () => {
 						style={{fontSize: '1.2rem'}}
 						className={styles.HeaderServices_content__img + ' mr-1'}
 					/>
-      Action
-    </Dropdown.Toggle>
+      		Action
+    		</Dropdown.Toggle>
 				<Dropdown.Menu>
 					{
 						actions?.map(action => (
