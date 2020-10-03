@@ -3,7 +3,7 @@ import {useRouter} from 'next/router'
 import React from 'react'
 import {ListGroup} from 'react-bootstrap'
 import {useAuthState} from 'react-firebase-hooks/auth'
-import {FaUser} from 'react-icons/fa'
+import {FaHistory, FaUser} from 'react-icons/fa'
 import {FcServices} from 'react-icons/fc'
 import {HiLogout} from 'react-icons/hi'
 import {RiMoneyDollarBoxLine} from 'react-icons/ri'
@@ -23,6 +23,12 @@ const MENU = [
 		color: '#089b06',
 	},
 	{
+    name: 'Lịch sử',
+    Icon: FaHistory,
+    pathname: '/transaction',
+    color: '#1e89ed',
+  },
+	{
 		name: 'Cá Nhân',
 		Icon: FaUser,
 		pathname: '/me',
@@ -36,7 +42,6 @@ const LeftSidebarMenu = () => {
 
 	const onLogout = () => {
 		auth().signOut()
-		router.push('/auth/sign-in')
 	}
 
 	return (
