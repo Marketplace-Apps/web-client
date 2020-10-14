@@ -1,9 +1,12 @@
 import CustomButton from 'components/CustomButton'
 import ModalHeader from 'components/ModalHeader'
+import { auth } from 'firebase/app'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Col, Form, Modal } from 'react-bootstrap'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ServiceActionDocument } from 'types/firebase'
+import useFetch, { CachePolicies } from 'use-http'
 import { compileJavascriptCode } from '../../../../helpers'
 import AdvancedOptions from '../AdvancedOptions'
 import AlertBox from '../AlertBox'
@@ -23,14 +26,33 @@ const ActionDetailModal = ({
 	data,
 	serviceMinPrice,
 }: IActionDetailModalProps) => {
+	const router = useRouter()
+	const { serviceId } = router.query as { serviceId: string }
+
 	const methods = useForm()
 	const watchAllFields = methods.watch()
 
 	const form = data.form
+	const actionId = data.id
 	const advancedOptions = data.advanced_options
 	const priceFunction = data.price_function
 
 	const [totalBill, setTotalBill] = useState<any>(0)
+
+	const { post, response, loading, error } = useFetch<boolean>(
+		'http://192.168.1.2:8080/orders',
+		{
+			interceptors: {
+				request: async ({ options, url, path, route }) => {
+					const idToken = await auth().currentUser.getIdToken()
+					// @ts-ignore
+					options.headers.authorization = idToken
+					return options
+				},
+			},
+			cachePolicy: CachePolicies.NO_CACHE,
+		},
+	)
 
 	useEffect(() => {
 		setTotalBill(
@@ -46,7 +68,23 @@ const ActionDetailModal = ({
 	}, [watchAllFields])
 
 	const onSubmit = methods.handleSubmit(async data => {
-		console.log(data)
+		try {
+			const bodyData = {
+				data,
+				service_id: serviceId,
+				action_id: actionId,
+				domain_id: localStorage.getItem('domain_id'),
+			}
+			await post(bodyData)
+			if (response.ok) {
+				onHide()
+			} else {
+				const result = await response.json()
+				console.log({ error: result.message })
+			}
+		} catch (error) {
+			console.log({ error })
+		}
 	})
 
 	return (

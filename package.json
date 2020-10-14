@@ -23,6 +23,7 @@
 		"react-icons": "^3.11.0",
 		"react-toastify": "^6.0.8",
 		"sass": "^1.26.11",
+		"use-http": "^1.0.15",
 		"uuid": "^8.3.0",
 		"velocityjs": "^2.0.1",
 		"vm-browserify": "^1.1.2",
