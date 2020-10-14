@@ -11,15 +11,13 @@ export type ServiceConfigDocument = {
 	id: string
 	user_id: string
 	auth: {
-		method: string,
+		method: string
 		header_name: string
 		header_value: string
 	}
 }
 
-export type DomainParentServiceRefDocument = {
-
-}
+export type DomainParentServiceRefDocument = {}
 
 export type ServiceOrderDocument = {
 	id: string
@@ -61,6 +59,7 @@ export type ServiceActionDocument = {
 		by?: string
 	}
 	is_order_action: boolean
+	config?: object
 }
 
 export type ServiceActionConfigDocument = {

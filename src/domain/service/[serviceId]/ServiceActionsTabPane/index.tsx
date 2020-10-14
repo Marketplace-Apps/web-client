@@ -23,6 +23,8 @@ const ServiceActionsTabPane = (props: {
 	const onHideActionDetailModal = () => setIsShowActionDetailModal(false)
 	const [selectedAction, setSelectedAction] = useState<ServiceActionDocument | null>(null)
 
+	console.log({actions})
+
 	return (
 		<>
 			{
