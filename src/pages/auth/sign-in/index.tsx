@@ -1,11 +1,11 @@
-import {yupResolver} from '@hookform/resolvers'
-import {auth} from 'firebase/app'
-import {useRouter} from 'next/router'
-import React, {useEffect, useState} from 'react'
-import {Alert, Button, Col, Form, Image, Row, Spinner} from 'react-bootstrap'
-import {useAuthState} from 'react-firebase-hooks/auth'
-import {useForm} from 'react-hook-form'
-import {toast} from 'react-toastify'
+import { yupResolver } from '@hookform/resolvers'
+import { auth } from 'firebase/app'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
+import { Alert, Button, Col, Form, Image, Row, Spinner } from 'react-bootstrap'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import styles from './index.module.scss'
 
@@ -23,7 +23,6 @@ const schema = yup.object().shape({
 })
 
 const SignInPage = () => {
-
 	const router = useRouter()
 
 	const [user] = useAuthState(auth())
@@ -32,31 +31,22 @@ const SignInPage = () => {
 		if (user) router.replace('/')
 	}, [user])
 
-	const {register, handleSubmit, reset, errors, clearErrors} = useForm<
+	const { register, handleSubmit, reset, errors, clearErrors } = useForm<
 		ISignInData
 	>({
 		resolver: yupResolver(schema),
 	})
 
-	useEffect(() => {
-		toast.error("error", {
-			position: toast.POSITION.TOP_RIGHT,
-			autoClose: 4000,
-		})
-	}, [])
-
 	const [isSigningIn, setIsSigningIn] = useState<boolean>(false)
 
-	const onSubmit = handleSubmit(async ({email, password}) => {
+	const onSubmit = handleSubmit(async ({ email, password }) => {
 		setIsSigningIn(true)
-		try
-		{
+		try {
 			await auth().signInWithEmailAndPassword(email, password)
 			router.push('/')
 			reset()
 			clearErrors()
-		} catch (error)
-		{
+		} catch (error) {
 			toast.error(error.message, {
 				position: toast.POSITION.TOP_RIGHT,
 				autoClose: 4000,
@@ -66,12 +56,10 @@ const SignInPage = () => {
 	})
 
 	const signInWithGoogleProvider = async () => {
-		try
-		{
+		try {
 			const GoogleProvider = new auth.GoogleAuthProvider()
 			await auth().signInWithPopup(GoogleProvider)
-		} catch (error)
-		{
+		} catch (error) {
 			toast.error(error.message, {
 				position: toast.POSITION.TOP_RIGHT,
 				autoClose: 4000,
@@ -90,21 +78,14 @@ const SignInPage = () => {
 				}}
 			>
 				<Col md={6} lg={8} className={styles.bgS + ' d-none d-md-block'}></Col>
-				<Col
-					xs={12}
-					md={6}
-					lg={4}
-					className={styles.signin_main + '  p-5'}
-				>
-					<div style={{position: 'relative', marginTop: '15%'}}>
+				<Col xs={12} md={6} lg={4} className={styles.signin_main + '  p-5'}>
+					<div style={{ position: 'relative', marginTop: '15%' }}>
 						<div className={styles.title + ' text-center'}>
 							<h1 className="mb-5">Đăng nhập</h1>
 							<h2 className="mb-3 text-center">
 								Hệ thống bán VIP top Việt Nam
 							</h2>
-							<Form
-								onSubmit={onSubmit}
-							>
+							<Form onSubmit={onSubmit}>
 								<Form.Control
 									className="mb-4"
 									type="text"
@@ -112,13 +93,11 @@ const SignInPage = () => {
 									name="email"
 									ref={register}
 								/>
-								{
-									errors.email && (
-										<Alert className="mt-1" variant="warning">
-											{errors.email.message}
-										</Alert>
-									)
-								}
+								{errors.email && (
+									<Alert className="mt-1" variant="warning">
+										{errors.email.message}
+									</Alert>
+								)}
 								<Form.Control
 									className="mb-4"
 									type="password"
@@ -126,26 +105,22 @@ const SignInPage = () => {
 									name="password"
 									ref={register}
 								/>
-								{
-									errors.password && (
-										<Alert className="mt-1" variant="warning">
-											{errors.password.message}
-										</Alert>
-									)
-								}
+								{errors.password && (
+									<Alert className="mt-1" variant="warning">
+										{errors.password.message}
+									</Alert>
+								)}
 								<Button
-									style={{fontSize: '1.4rem'}}
+									style={{ fontSize: '1.4rem' }}
 									variant="primary"
 									type="submit"
 									disabled={isSigningIn}
 								>
-									<div
-										style={{display: "flex", alignItems: "center"}}
-									>
+									<div style={{ display: 'flex', alignItems: 'center' }}>
 										<span>Đăng nhập</span>
-										{
-											isSigningIn && <Spinner animation="border" variant="light" size="sm" />
-										}
+										{isSigningIn && (
+											<Spinner animation="border" variant="light" size="sm" />
+										)}
 									</div>
 								</Button>
 							</Form>

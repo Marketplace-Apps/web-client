@@ -40,7 +40,7 @@ const ActionDetailModal = ({
 	const [totalBill, setTotalBill] = useState<any>(0)
 
 	const { post, response, loading, error } = useFetch<boolean>(
-		'http://192.168.1.2:8080/orders',
+		'http://localhost:8080/orders',
 		{
 			interceptors: {
 				request: async ({ options, url, path, route }) => {

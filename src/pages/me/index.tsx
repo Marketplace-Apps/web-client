@@ -2,7 +2,7 @@ import CustomButton from 'components/CustomButton'
 import MenuItem from 'domain/me/MenuItem'
 import { auth, firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Image, Row } from 'react-bootstrap'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
@@ -42,57 +42,53 @@ const MePage = (props: { domainId: string }) => {
 		setIsSigningInWithGoogleProvider,
 	] = useState<boolean>(false)
 
-	useEffect(() => {
-		const unsubscribe = auth().onAuthStateChanged(async user => {
-			if (!user) return
-			let uid = null,
-				email = null,
-				photoURL = null,
-				displayName = null
-			if (user.isAnonymous) {
-				uid = user.uid
-			} else {
-				const { providerData } = user
-				uid = providerData[0].uid
-				displayName = providerData[0].displayName
-				photoURL = providerData[0].photoURL
-				email = providerData[0].email
-			}
-			const userRef = await firestore()
-				.collection('domains')
-				.doc(props.domainId)
-				.collection('users')
-				.doc(uid)
-				.get()
-			if (!userRef.data()) {
-				await firestore()
-					.collection('domains')
-					.doc(props.domainId)
-					.collection('users')
-					.doc(uid)
-					.set({
-						id: uid,
-						balance: 0,
-						email,
-						avatar_url: photoURL,
-						name: displayName,
-						total_deposit: 0,
-					})
-			} else {
-				await firestore()
-					.collection('domains')
-					.doc(props.domainId)
-					.collection('users')
-					.doc(uid)
-					.update({
-						email,
-						avatar_url: photoURL,
-						name: displayName,
-					})
-			}
-		})
-		return () => unsubscribe()
-	}, [])
+	const createNewUser = async (
+		uid: string,
+		isAnonymous: boolean,
+		user?: {
+			email?: string
+			photoUrl?: string
+			displayName?: string
+		},
+	) =>
+		await firestore()
+			.collection('domains')
+			.doc(props.domainId)
+			.collection('users')
+			.doc(uid)
+			.set({
+				id: uid,
+				balance: 0,
+				email: user?.email || '',
+				avatar_url: user?.photoUrl || '',
+				name: user?.displayName || '',
+				total_deposit: 0,
+				is_anonymous: isAnonymous,
+			})
+
+	const updateUser = async (
+		uid: string,
+		user: {
+			email: string
+			balance: number
+			totalDeposit: number
+			photoUrl: string
+			displayName: string
+		},
+	) =>
+		await firestore()
+			.collection('domains')
+			.doc(props.domainId)
+			.collection('users')
+			.doc(uid)
+			.update({
+				balance: user.balance,
+				email: user.email,
+				avatar_url: user.photoUrl,
+				name: user.displayName,
+				total_deposit: user.totalDeposit,
+				is_anonymous: false,
+			})
 
 	const signInWithGoogleProvider = async () => {
 		setIsSigningInWithGoogleProvider(true)
@@ -103,6 +99,18 @@ const MePage = (props: { domainId: string }) => {
 				position: toast.POSITION.TOP_RIGHT,
 				autoClose: 4000,
 			})
+			const userRef = await firestore()
+				.collection('domains')
+				.doc(props.domainId)
+				.collection('users')
+				.doc(auth().currentUser.uid)
+				.get()
+			if (!userRef.data())
+				await createNewUser(auth().currentUser.uid, false, {
+					displayName: auth().currentUser.displayName,
+					email: auth().currentUser.email,
+					photoUrl: auth().currentUser.photoURL,
+				})
 		} catch (error) {
 			toast.error(error.message, {
 				position: toast.POSITION.TOP_RIGHT,
@@ -122,6 +130,21 @@ const MePage = (props: { domainId: string }) => {
 				position: toast.POSITION.TOP_RIGHT,
 				autoClose: 4000,
 			})
+			const userRef = await firestore()
+				.collection('domains')
+				.doc(props.domainId)
+				.collection('users')
+				.doc(anonymousUser.uid)
+				.get()
+			const { providerData } = auth().currentUser
+			const { displayName, email, photoURL } = providerData[0]
+			await updateUser(anonymousUser.uid, {
+				balance: userRef.data().balance,
+				displayName,
+				email,
+				photoUrl: photoURL,
+				totalDeposit: userRef.data().totalDeposit,
+			})
 		} catch (error) {
 			toast.error(error.message, {
 				position: toast.POSITION.TOP_RIGHT,
@@ -139,6 +162,13 @@ const MePage = (props: { domainId: string }) => {
 				position: toast.POSITION.TOP_RIGHT,
 				autoClose: 4000,
 			})
+			const userRef = await firestore()
+				.collection('domains')
+				.doc(props.domainId)
+				.collection('users')
+				.doc(auth().currentUser.uid)
+				.get()
+			if (!userRef.data()) await createNewUser(auth().currentUser.uid, true)
 		} catch (error) {
 			toast.error(error.message, {
 				position: toast.POSITION.TOP_RIGHT,

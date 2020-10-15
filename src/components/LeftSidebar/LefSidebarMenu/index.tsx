@@ -1,12 +1,12 @@
-import {auth} from 'firebase/app'
-import {useRouter} from 'next/router'
+import { auth } from 'firebase/app'
+import { useRouter } from 'next/router'
 import React from 'react'
-import {ListGroup} from 'react-bootstrap'
-import {useAuthState} from 'react-firebase-hooks/auth'
-import {FaHistory, FaUser} from 'react-icons/fa'
-import {FcServices} from 'react-icons/fc'
-import {HiLogout} from 'react-icons/hi'
-import {RiMoneyDollarBoxLine} from 'react-icons/ri'
+import { ListGroup } from 'react-bootstrap'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { FaHistory, FaUser } from 'react-icons/fa'
+import { FcServices } from 'react-icons/fc'
+import { HiLogout } from 'react-icons/hi'
+import { RiMoneyDollarBoxLine } from 'react-icons/ri'
 import LeftSidebarMenuItem from '../LeftSidebarMenuItem'
 
 const MENU = [
@@ -23,11 +23,11 @@ const MENU = [
 		color: '#089b06',
 	},
 	{
-    name: 'Lịch sử',
-    Icon: FaHistory,
-    pathname: '/transaction',
-    color: '#1e89ed',
-  },
+		name: 'Lịch sử',
+		Icon: FaHistory,
+		pathname: '/transaction',
+		color: '#1e89ed',
+	},
 	{
 		name: 'Cá Nhân',
 		Icon: FaUser,
@@ -47,32 +47,22 @@ const LeftSidebarMenu = () => {
 	return (
 		<div className="sidebar_services">
 			<ListGroup>
-				{
-					MENU.map(({
-						color,
-						Icon,
-						name,
-						pathname
-					}) => (
-							<LeftSidebarMenuItem
-								onClick={() => router.push(pathname)}
-								color={color}
-								Icon={Icon}
-								name={name}
-							/>
-						)
-					)
-				}
-				{
-					user && !user.isAnonymous && (
-						<LeftSidebarMenuItem
-							onClick={onLogout}
-							color="#6507fc"
-							Icon={HiLogout}
-							name="Đăng xuất"
-						/>
-					)
-				}
+				{MENU.map(({ color, Icon, name, pathname }) => (
+					<LeftSidebarMenuItem
+						onClick={() => router.push(pathname)}
+						color={color}
+						Icon={Icon}
+						name={name}
+					/>
+				))}
+				{user && (
+					<LeftSidebarMenuItem
+						onClick={onLogout}
+						color="#6507fc"
+						Icon={HiLogout}
+						name="Đăng xuất"
+					/>
+				)}
 			</ListGroup>
 		</div>
 	)
