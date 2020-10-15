@@ -86,3 +86,14 @@ export type UserDocument = {
 	name: string
 	total_deposit: number
 }
+
+export type OrderDocument = {
+	id: string
+	amount: number
+	remain_amount: number
+	target: string
+	type: string
+	created_at: number
+	end_time: number
+	status: string
+}

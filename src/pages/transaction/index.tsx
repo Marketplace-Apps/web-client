@@ -1,54 +1,95 @@
 import ListTransactionsItem from 'domain/transaction/ListTransactionsItem'
+import { firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
 import React from 'react'
-import {Col, Row} from 'react-bootstrap'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import CenteredSpinner from '../../components/CenteredSpinner'
+import { classifyDataByField } from '../../helpers'
+import { OrderDocument } from '../../types/firebase'
 
-const HistoryPage = () => {
+const TransactionPage = (props: { domainId: string | null }) => {
+	const [orders, loadingOrders] = useCollectionData<OrderDocument>(
+		firestore()
+			.collection('domains')
+			.doc(props.domainId ?? 'domain-id')
+			.collection('orders'),
+	)
+
+	const classifyOrdersByDay = classifyDataByField<
+		number,
+		OrderDocument & { key: number }
+	>(orders?.map(order => ({ ...order, key: order.created_at })) || [])
+
 	return (
 		<MainLayout>
-			<div className="pageHistory" style={{padding: '1rem 0'}}>
+			<div className="pageHistory" style={{ padding: '1rem 0' }}>
 				<div className="pageHistory__selectDate">
-					<Row
+					<div
 						style={{
 							padding: '0rem 1.5rem 1rem 1.5rem',
 							marginRight: '0 !important',
+							display: 'flex',
+							justifyContent: 'space-between',
 						}}
 					>
-						<Col xs={4}>
-							<div className="pageHistory__inputDate">Chọn ngày</div>
-						</Col>
-						<Col xs={8}>
-							<input type="date" />
-						</Col>
-					</Row>
+						<div className="pageHistory__inputDate">Chọn ngày</div>
+						<input type="date" />
+					</div>
 				</div>
 				<div className="pageHistory__optionsDate">
-					<div className="Day">
+					{!classifyOrdersByDay && <CenteredSpinner />}
+					{classifyOrdersByDay && !classifyOrdersByDay.length && (
 						<div
 							style={{
-								padding: '1rem 1.5rem',
-								color: '#000000',
-								fontWeight: 'bold',
-								fontSize: '0.9rem',
-								borderTop: '1px solid #e3e3e3',
-								borderBottom: '1px solid #e3e3e3',
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
 							}}
-							className="pageHistory__day"
 						>
-							22/12/2020
-            </div>
-						<div className="pageHistory__option">
-							<div className="pageHistory_services">
-								{new Array(5).fill(null).map((_) => (
-									<ListTransactionsItem />
-								))}
-							</div>
+							<p>Chưa có giao dịch</p>
 						</div>
-					</div>
+					)}
+					{classifyOrdersByDay &&
+						!!classifyOrdersByDay.length &&
+						classifyOrdersByDay.map(({ data, key }) => (
+							<div className="Day">
+								<div
+									style={{
+										padding: '1rem 1.5rem',
+										color: '#000000',
+										fontWeight: 'bold',
+										fontSize: '0.9rem',
+										borderTop: '1px solid #e3e3e3',
+										borderBottom: '1px solid #e3e3e3',
+									}}
+									className="pageHistory__day"
+								>
+									{new Date(key).toLocaleDateString('vi')}
+								</div>
+								<div className="pageHistory__option">
+									<div className="pageHistory_services">
+										{data.map(order => (
+											<ListTransactionsItem {...order} />
+										))}
+									</div>
+								</div>
+							</div>
+						))}
 				</div>
 			</div>
 		</MainLayout>
 	)
 }
 
-export default HistoryPage
+TransactionPage.getInitialProps = async (ctx: any) => {
+	const host = ctx.req ? ctx.req.headers.host.split(':')[0] : location.hostname
+	const domain = await firestore()
+		.collection('domains')
+		.where('domain_name', '==', host)
+		.get()
+	return {
+		domainId: domain.docs.length ? domain.docs[0].id : null,
+	}
+}
+
+export default TransactionPage

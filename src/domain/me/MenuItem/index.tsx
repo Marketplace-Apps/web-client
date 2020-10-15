@@ -1,31 +1,26 @@
 import Link from 'next/link'
 import React from 'react'
-import {Col, Image} from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
+import { IconType } from 'react-icons/lib'
 import styles from './index.module.scss'
 
 interface IMenuItemProps {
-	thumbnail: string
+	Icon: IconType
 	route: string
 	title: string
 }
 
-const MenuItem = ({
-	route,
-	thumbnail,
-	title
-}: IMenuItemProps) => {
+const MenuItem = ({ route, Icon, title }: IMenuItemProps) => {
 	return (
 		<Col className="mb-3">
 			<Link href={route}>
 				<div className={styles.pageUser__box + ' text-center'}>
 					<div className={styles.pageUser__img}>
-						<Image
+						<Icon
 							style={{
 								width: '85.9px',
 								height: '89px',
-								borderRadius: '50%',
 							}}
-							src={thumbnail}
 						/>
 					</div>
 					<div className={styles.pageUser__text}>{title}</div>

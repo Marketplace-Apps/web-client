@@ -1,13 +1,9 @@
 import React from 'react'
-import {Image} from 'react-bootstrap'
+import { Image } from 'react-bootstrap'
+import { OrderDocument } from '../../../types/firebase'
 import styles from './index.module.scss'
 
-interface IListTransactionsItemProps {
-	created_at: number
-
-}
-
-const ListTransactionsItem = () => {
+const ListTransactionsItem = ({}: OrderDocument) => {
 	return (
 		<div className={styles.pageHistory_serviceWrap}>
 			<div className={styles.pageHistory_service}>
@@ -17,13 +13,11 @@ const ListTransactionsItem = () => {
 					</div>
 					<div className={styles.pageHistory_service__text}>
 						<div className="mb-1">Mua dịch vụ tăng like</div>
-						<div style={{color: '#666666'}}> 16:24</div>
+						<div style={{ color: '#666666' }}> 16:24</div>
 					</div>
 				</div>
 				<div className={styles.pageHistory_service__sta}>
-					<div className={styles.pageHistory_service__price}>
-						950000
-					</div>
+					<div className={styles.pageHistory_service__price}>950000</div>
 					<div className={styles.pageHistory_service__state}>Thành Công</div>
 				</div>
 			</div>

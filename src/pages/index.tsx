@@ -3,7 +3,7 @@ import GroupedByTypeListServicesContainer from 'domain/home/components/GroupedBy
 import GroupedByTypeListServicesHeader from 'domain/home/components/GroupedByTypeListServicesHeader'
 import ServicePreview from 'domain/home/components/ServicePreview'
 import { firestore } from 'firebase/app'
-import { classifyDataByTag } from 'helpers'
+import { classifyDataByField } from 'helpers'
 import MainLayout from 'layouts/MainLayout'
 import Error from 'next/error'
 import React, { useEffect } from 'react'
@@ -24,7 +24,10 @@ const HomePage = (props: { domainId: string | null }) => {
 			.where('published', '==', true),
 	)
 
-	const classifiedByTagServices = classifyDataByTag(domainServices ?? [])
+	const classifiedByTagServices = classifyDataByField<
+		string,
+		DomainServiceDocument & { key: string }
+	>(domainServices?.map(el => ({ ...el, key: el.tag })) ?? [])
 
 	useEffect(() => {
 		if (props.domainId) localStorage.setItem('domain_id', props.domainId)
@@ -57,7 +60,7 @@ const HomePage = (props: { domainId: string | null }) => {
 						<>
 							<GroupedByTypeListServicesHeader
 								iconUrl="/images/services/fb2.png"
-								name={group.tag}
+								name={`Dịch vụ ${group.key}`}
 							/>
 							<Row>
 								{group.data.map(serviceAction => (

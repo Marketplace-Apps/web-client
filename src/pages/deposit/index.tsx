@@ -1,10 +1,10 @@
 import ListAdminPaymentMethodsItem from 'domain/deposit/ListAdminPaymentMethodsItem'
-import {firestore} from 'firebase/app'
+import { firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
 import React from 'react'
-import {Button, Image} from 'react-bootstrap'
-import {useCollectionData} from 'react-firebase-hooks/firestore'
-import {PaymentMethodDocument} from '../../types/firebase'
+import { Button, Image } from 'react-bootstrap'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { PaymentMethodDocument } from '../../types/firebase'
 
 const PAYMENT_METHODS = [
 	{
@@ -15,7 +15,7 @@ const PAYMENT_METHODS = [
 	},
 ]
 
-const Title = (props: {title: string}) => (
+const Title = (props: { title: string }) => (
 	<h2
 		style={{
 			fontWeight: 'bold',
@@ -30,23 +30,25 @@ const Title = (props: {title: string}) => (
 	</h2>
 )
 
-const DepositPage = (props: {
-	domainId: string
-}) => {
-
-	const [paymentMethods, loadingPaymentMethods, error] = useCollectionData<PaymentMethodDocument>(
-		firestore().collection('domains').doc(props.domainId ?? "domain-id").collection('payment_methods')
+const DepositPage = (props: { domainId: string }) => {
+	const [paymentMethods, loadingPaymentMethods, error] = useCollectionData<
+		PaymentMethodDocument
+	>(
+		firestore()
+			.collection('domains')
+			.doc(props.domainId ?? 'domain-id')
+			.collection('payment_methods'),
 	)
 
 	return (
 		<MainLayout>
-			<div className="pageAddCash" style={{padding: '1rem 1.5rem'}}>
+			<div className="pageAddCash" style={{ padding: '1rem 1.5rem' }}>
 				<Title title="Vui lòng chọn một trong các phương thức thanh toán dưới đây" />
 				<div className="pageAddCash__VNPayQr text-center">
-					<Image src="/images/vnpayqr.png" />
+					<Image src="/images/vnpayqr.png" width="100%" />
 					<div
 						className="pageAddCash__input"
-						style={{marginTop: '1rem', marginBottom: '1rem'}}
+						style={{ marginTop: '1rem', marginBottom: '1rem' }}
 					>
 						<input
 							style={{
@@ -71,9 +73,7 @@ const DepositPage = (props: {
           bạn trên hệ thống"
 				/>
 				{paymentMethods?.map(paymentMethod => (
-					<ListAdminPaymentMethodsItem
-						{...paymentMethod}
-					/>
+					<ListAdminPaymentMethodsItem {...paymentMethod} />
 				))}
 			</div>
 		</MainLayout>
@@ -81,10 +81,13 @@ const DepositPage = (props: {
 }
 
 DepositPage.getInitialProps = async (ctx: any) => {
-	const host = ctx.req ? ctx.req.headers.host.split(":")[0] : location.hostname
-	const domain = await firestore().collection('domains').where("domain_name", "==", host).get()
+	const host = ctx.req ? ctx.req.headers.host.split(':')[0] : location.hostname
+	const domain = await firestore()
+		.collection('domains')
+		.where('domain_name', '==', host)
+		.get()
 	return {
-		domainId: domain.docs.length ? domain.docs[0].id : null
+		domainId: domain.docs.length ? domain.docs[0].id : null,
 	}
 }
 

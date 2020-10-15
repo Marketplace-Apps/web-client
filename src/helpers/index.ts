@@ -1,26 +1,25 @@
 import vm from 'vm-browserify'
 
-export const classifyDataByTag = <T extends { tag: string }>(
-	source: T[],
+export const classifyDataByField = <TKey, TElement extends { key: TKey }>(
+	source: TElement[],
 ): Array<{
-	tag: string
-	data: T[]
+	key: TKey
+	data: Array<TElement>
 }> => {
-	const store = new Map<string, T[]>()
+	const store = new Map<TKey, TElement[]>()
 	for (const data of source) {
-		if (store.has(data.tag)) store.set(data.tag, [...store.get(data.tag), data])
+		if (store.has(data.key)) store.set(data.key, [...store.get(data.key), data])
 		else {
-			store.set(data.tag, [data])
+			store.set(data.key, [data])
 		}
 	}
-	const tags = [...store.keys()]
-	return tags.map(tag => ({
-		tag,
-		data: store.get(tag),
+	return [...store.keys()].map(key => ({
+		key,
+		data: store.get(key),
 	}))
 }
 
-export const omit = <T extends {}>(source: T, keys: string[]) =>
+export const omit = <T>(source: T, keys: string[]) =>
 	Object.keys(source)
 		.filter(k => !keys.includes(k))
 		.reduce((acc, key) => ((acc[key] = source[key]), acc), {})

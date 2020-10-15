@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import React from 'react'
-import {FaHistory} from 'react-icons/fa'
-import {FcHome, FcManager, FcNews} from 'react-icons/fc'
-import {GiMoneyStack} from 'react-icons/gi'
+import { FaHistory } from 'react-icons/fa'
+import { FcHome, FcManager, FcNews } from 'react-icons/fc'
+import { GiMoneyStack } from 'react-icons/gi'
 import styles from './style.module.scss'
 
 const PageList = [
@@ -23,13 +23,13 @@ const PageList = [
 	{
 		name: 'Lịch sử',
 		icon: FaHistory,
-		pathname: '/history',
+		pathname: '/transaction',
 		color: '#1e89ed',
 	},
 	{
 		name: 'Cá nhân',
 		icon: FcManager,
-		pathname: '/user',
+		pathname: '/me',
 		color: '#089b06',
 	},
 ]
@@ -44,29 +44,27 @@ const MobileBottomMenu = () => {
 					{PageList.map(item => {
 						return (
 							<Link href={item.pathname}>
-								<a>
-									<div className={styles.buttonMobile__item}>
-										<item.icon
-											style={{
-												color: item.color,
-											}}
-											className={
-												styles.icon +
-												' ' +
-												(item.pathname === '/' && styles.buttonMobile__btnHome)
-											}
-										/>
-										<div
-											className={
-												styles.buttonMobile__name +
-												' ' +
-												(router.pathname === item.pathname && styles.active)
-											}
-										>
-											{item.name}
-										</div>
+								<div className={styles.buttonMobile__item}>
+									<item.icon
+										style={{
+											color: item.color,
+										}}
+										className={
+											styles.icon +
+											' ' +
+											(item.pathname === '/' && styles.buttonMobile__btnHome)
+										}
+									/>
+									<div
+										className={
+											styles.buttonMobile__name +
+											' ' +
+											(router.pathname === item.pathname && styles.active)
+										}
+									>
+										{item.name}
 									</div>
-								</a>
+								</div>
 							</Link>
 						)
 					})}

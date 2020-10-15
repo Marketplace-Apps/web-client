@@ -7,17 +7,18 @@ import { Image, Row } from 'react-bootstrap'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import { BsPersonFill } from 'react-icons/bs'
+import { FcContacts, FcRules } from 'react-icons/fc'
 import { toast } from 'react-toastify'
 import { UserDocument } from '../../types/firebase'
 
 const MENU_ITEMS = [
 	{
-		thumbnail: '/images/rules.png',
+		Icon: FcRules,
 		route: '/rules',
 		title: 'Nội quy hệ thống',
 	},
 	{
-		thumbnail: '/images/contact.jpg',
+		Icon: FcContacts,
 		route: '/contact',
 		title: 'Liên hệ admin',
 	},
@@ -272,7 +273,12 @@ const MePage = (props: { domainId: string }) => {
 					</div>
 				</div>
 				<div style={{ padding: '2rem 1.5rem' }} className="pageUser__content">
-					<Row>
+					<Row
+						style={{
+							margin: 0,
+						}}
+						noGutters
+					>
 						{MENU_ITEMS.map(item => (
 							<MenuItem {...item} />
 						))}
