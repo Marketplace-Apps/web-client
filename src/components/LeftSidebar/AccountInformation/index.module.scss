@@ -1,10 +1,11 @@
 .sidebarLeft {
 	&_infor {
-		padding      : 2rem 0;
-		margin-bottom: 1.5rem;
+		padding: 2rem 0;
+		margin-bottom: 1rem;
 
-		&__imgAvatar {
-			border-radius: 50%;
+		&__avatar {
+			margin-right: 5px;
+			width: 30%;
 		}
 
 		&__desc {
@@ -13,16 +14,15 @@
 
 		&__name {
 			.userName {
-				font-size  : 2rem;
-				color      : #4b4949;
+				font-size: 1.5rem;
+				color: #4b4949;
 				font-weight: bold;
 			}
 		}
 
 		&__money {
-			font-size  : 24px;
-			line-height: 28px;
-			color      : #2175b3;
+			font-size: 1.5rem;
+			color: #2175b3;
 		}
 	}
 }

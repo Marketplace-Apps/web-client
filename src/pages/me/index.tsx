@@ -1,15 +1,15 @@
 import CustomButton from 'components/CustomButton'
 import MenuItem from 'domain/me/MenuItem'
-import { auth, firestore } from 'firebase/app'
+import {auth, firestore} from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
-import React, { useState } from 'react'
-import { Image, Row } from 'react-bootstrap'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useDocumentData } from 'react-firebase-hooks/firestore'
-import { BsPersonFill } from 'react-icons/bs'
-import { FcContacts, FcRules } from 'react-icons/fc'
-import { toast } from 'react-toastify'
-import { UserDocument } from '../../types/firebase'
+import React, {useState} from 'react'
+import {Image, Row} from 'react-bootstrap'
+import {useAuthState} from 'react-firebase-hooks/auth'
+import {useDocumentData} from 'react-firebase-hooks/firestore'
+import {BsPersonFill} from 'react-icons/bs'
+import {FcContacts, FcRules} from 'react-icons/fc'
+import {toast} from 'react-toastify'
+import {UserDocument} from '../../types/firebase'
 
 const MENU_ITEMS = [
 	{
@@ -165,7 +165,7 @@ const MePage = (props: { domainId: string }) => {
 	}
 
 	return (
-		<MainLayout title="Cá nhân">
+		<MainLayout title="Cá nhân" domainId={props.domainId}>
 			<div className="pageUser">
 				<div
 					style={{
@@ -209,6 +209,7 @@ const MePage = (props: { domainId: string }) => {
 									}}
 								>
 									<p>Khách vãng lai</p>
+									<p>ID: {user.uid}</p>
 									<p>
 										{userDocument?.balance
 											? userDocument?.balance.toLocaleString('vi')

@@ -88,7 +88,7 @@ const ActionDetailModal = ({
 	})
 
 	return (
-		<Modal show={show} onHide={onHide}>
+		<Modal show={show} onHide={onHide} size="lg" keyboard={false}>
 			<div className={styles.action}>
 				<ModalHeader onClose={onHide} title={data.name} />
 				<FormProvider {...methods}>

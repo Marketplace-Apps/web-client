@@ -110,7 +110,7 @@ const MultipleValuesInput = ({
 										},
 									}}
 									render={props => (
-										<Col xs={6} sm={4} md={3}>
+										<Col xs={6} sm={4} md={3} className="mb-2">
 											<Button
 												variant={
 													watchAllFields[fieldName] == value

@@ -12,9 +12,10 @@ import styles from './index.module.scss'
 type Props = {
 	children?: ReactNode
 	title?: string
+	domainId: string
 }
 
-const MainLayout = ({ children, title = 'Market Apps' }: Props) => (
+const MainLayout = ({ children, title = 'Market Apps', domainId }: Props) => (
 	<div>
 		<Head>
 			<title>{title}</title>
@@ -27,7 +28,7 @@ const MainLayout = ({ children, title = 'Market Apps' }: Props) => (
 				<div>
 					<Row className={styles.FixMobile}>
 						<Col lg={4} xl={3} className="sidebar-wrap d-none d-lg-block">
-							<LeftSidebar />
+							<LeftSidebar domainId={domainId} />
 						</Col>
 						<Col xs={12} sm={12} lg={8} xl={6} className={styles.FixMobile}>
 							<div className={styles.page_main}>
@@ -39,7 +40,7 @@ const MainLayout = ({ children, title = 'Market Apps' }: Props) => (
 							</div>
 						</Col>
 						<Col xl={3} className="d-none d-xl-block">
-							<RightSidebar />
+							<RightSidebar domainId={domainId} />
 						</Col>
 					</Row>
 				</div>

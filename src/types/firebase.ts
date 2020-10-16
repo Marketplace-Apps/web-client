@@ -99,6 +99,7 @@ export type OrderDocument = {
 	fullname: string
 	description: string
 	user_id: string
+	total: number
 }
 
 export type PaymentHistoryDocument = {
@@ -113,4 +114,15 @@ export type PaymentHistoryDocument = {
 	from_user_id?: string
 	to?: string
 	to_user_id?: string
+}
+
+export type NotificationDocument = {
+	id: string
+	icon: string
+	title: string
+	description: string
+	images: string[]
+	videos: string[]
+	created_at: number
+	bubble: boolean
 }

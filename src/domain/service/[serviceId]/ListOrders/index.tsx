@@ -1,9 +1,18 @@
 import { auth, firestore } from 'firebase/app'
 import React, { useEffect, useState } from 'react'
 import { Row } from 'react-bootstrap'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
+import {
+	useCollectionData,
+	useDocumentData,
+} from 'react-firebase-hooks/firestore'
+import {
+	DomainDocument,
+	DomainServiceDocument,
+	OrderDocument,
+	ServiceActionDocument,
+} from 'types/firebase'
 import { classifyDataByDay, isScrollToBottom } from '../../../../helpers'
-import { OrderDocument } from '../../../../types/firebase'
+import DetailOrderModal from '../DetailOrderModal'
 import ListGroupedByDayOrdersItem from '../ListGroupedByDayOrdersItem'
 import ListOrderItem from '../ListOrderItem'
 import RelativeTimeFromNow from '../RelativeTimeFromNow'
@@ -11,19 +20,34 @@ import styles from './index.module.scss'
 
 type ListOrdersProps = {
 	domainId: string
-	serviceId: string
+	serviceData: DomainServiceDocument
+	onSelectAction: (action: ServiceActionDocument) => void
 }
 
-const ListOrders = ({ domainId, serviceId }: ListOrdersProps) => {
+const ListOrders = ({
+	domainId,
+	serviceData,
+	onSelectAction,
+}: ListOrdersProps) => {
 	const ordersQuery = firestore()
 		.collection('domains')
 		.doc(domainId)
 		.collection('services')
-		.doc(serviceId)
+		.doc(serviceData.id)
 		.collection('orders')
 		.where('user_id', '==', auth().currentUser.uid)
 		.orderBy('created_at', 'desc')
 		.limit(10)
+
+	const [domain] = useDocumentData<DomainDocument>(
+		firestore().collection('domains').doc(domainId),
+	)
+
+	const [orderActions] = useCollectionData<ServiceActionDocument>(
+		firestore()
+			.collection(`services/${serviceData.id}_config/actions`)
+			.where('is_order_action', '==', true),
+	)
 
 	const [inititalOrders, loading, error] = useCollectionData<OrderDocument>(
 		ordersQuery,
@@ -36,9 +60,16 @@ const ListOrders = ({ domainId, serviceId }: ListOrdersProps) => {
 	const [isShowDetailOrderModal, setIsShowDetailOrderModal] = useState<boolean>(
 		false,
 	)
+	const [selectedOrder, setSelectedOrder] = useState<OrderDocument | null>(null)
 
-	const onCloseDetailOrderModal = () => setIsShowDetailOrderModal(false)
-	const onShowDetailOrderModal = () => setIsShowDetailOrderModal(true)
+	const onCloseDetailOrderModal = () => {
+		setIsShowDetailOrderModal(false)
+		setSelectedOrder(null)
+	}
+	const onShowDetailOrderModal = (order: OrderDocument) => {
+		setIsShowDetailOrderModal(true)
+		setSelectedOrder(order)
+	}
 
 	const handleLoadMore = () => {
 		if (isScrollToBottom() && hasMore && !!orders.length) {
@@ -64,12 +95,19 @@ const ListOrders = ({ domainId, serviceId }: ListOrdersProps) => {
 
 	return (
 		<>
-			{/* <DetailOrderModal
-				isShow={isShowDetailOrderModal}
-				onClose={onCloseDetailOrderModal}
-			/> */}
+			{!!selectedOrder && (
+				<DetailOrderModal
+					isShow={isShowDetailOrderModal}
+					onClose={onCloseDetailOrderModal}
+					data={selectedOrder}
+					serviceData={serviceData}
+					domainData={domain}
+					orderActions={orderActions}
+					onSelectAction={onSelectAction}
+				/>
+			)}
 			<div className={styles.pageOrder_content}>
-				{classifiedOrdersByDay && !classifiedOrdersByDay.length && (
+				{orders && !orders.length && (
 					<p className="text-center">Chưa có đơn hàng nào</p>
 				)}
 				{classifiedOrdersByDay && !!classifiedOrdersByDay.length && (
@@ -82,13 +120,12 @@ const ListOrders = ({ domainId, serviceId }: ListOrdersProps) => {
 										margin: 0,
 									}}
 								>
-									{data.map(({ id, created_at, description }) => (
+									{data.map(order => (
 										<ListOrderItem
-											onShowDetailOrderModal={onShowDetailOrderModal}
-											customerFullname="Lê Thanh Huyền"
-											created_time={created_at}
-											id={id}
-											content={description}
+											onShowDetailOrderModal={() =>
+												onShowDetailOrderModal(order)
+											}
+											{...order}
 										/>
 									))}
 								</Row>

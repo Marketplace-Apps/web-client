@@ -1,11 +1,11 @@
 import ListTransactionsItem from 'domain/transaction/ListTransactionsItem'
-import { auth, firestore } from 'firebase/app'
+import {auth, firestore} from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
-import React, { useEffect, useState } from 'react'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
+import React, {useEffect, useState} from 'react'
+import {useCollectionData} from 'react-firebase-hooks/firestore'
 import CenteredSpinner from '../../components/CenteredSpinner'
-import { classifyDataByDay, isScrollToBottom } from '../../helpers'
-import { PaymentHistoryDocument } from '../../types/firebase'
+import {classifyDataByDay, isScrollToBottom} from '../../helpers'
+import {PaymentHistoryDocument} from '../../types/firebase'
 
 const TransactionPage = (props: { domainId: string | null }) => {
 	const paymentHistoriesQuery = firestore()
@@ -56,7 +56,7 @@ const TransactionPage = (props: { domainId: string | null }) => {
 	}, [hasMore, paymentHistories])
 
 	return (
-		<MainLayout>
+		<MainLayout title="Lịch sử giao dịch" domainId={props.domainId}>
 			<div className="pageHistory" style={{ padding: '1rem 0' }}>
 				<div className="pageHistory__selectDate">
 					<div

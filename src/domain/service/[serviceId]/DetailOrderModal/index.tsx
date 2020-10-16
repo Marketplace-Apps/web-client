@@ -1,152 +1,192 @@
 import ModalHeader from 'components/ModalHeader'
+import { auth } from 'firebase/app'
+import dayjs from 'libs/dayjs'
 import React from 'react'
-import {Image, Modal} from 'react-bootstrap'
+import { Col, Image, Modal, Row } from 'react-bootstrap'
+import {
+	FaChartLine,
+	FaClock,
+	FaDollarSign,
+	FaHourglassHalf,
+	FaRegHeart,
+} from 'react-icons/fa'
+import { RiBillFill } from 'react-icons/ri'
+import {
+	DomainDocument,
+	DomainServiceDocument,
+	OrderDocument,
+	ServiceActionDocument,
+} from 'types/firebase'
 import styles from './index.module.scss'
 
 type DetailOrderModalProps = {
 	isShow: boolean
 	onClose: () => void
+	data: OrderDocument
+	serviceData: DomainServiceDocument
+	domainData: DomainDocument
+	orderActions: ServiceActionDocument[]
+	onSelectAction: (action: ServiceActionDocument) => void
+}
+
+const STATUS = {
+	done: 'Đã hoàn thành',
+	processing: 'Đang xử lý ',
+	expired: 'Hết hạn',
+	pause: 'Tạm dừng',
+	error: 'Xảy ra lỗi',
+}
+
+const TYPE = {
+	'time-limit': 'Theo số lần sử dụng',
+	'one-time': 'Đơn hàng lẻ',
+	'time-by-time': 'Theo số lần sử dụng',
 }
 
 const DetailOrderModal = ({
 	isShow,
-	onClose
+	onClose,
+	data: {
+		fullname,
+		created_at,
+		status,
+		amount,
+		type,
+		id,
+		remain_amount,
+		end_time,
+		total,
+	},
+	serviceData,
+	domainData,
+	orderActions,
+	onSelectAction,
 }: DetailOrderModalProps) => {
 	return (
-		<>
-			<Modal
-				size="lg"
-				show={isShow}
-				onHide={onClose}
-				keyboard={false}
+		<Modal size="lg" show={isShow} onHide={onClose} keyboard={false}>
+			<div
+				className={styles.singleOrder}
+				style={{
+					marginBottom: 0,
+				}}
 			>
-				<div className={styles.singleOrder}>
-					<ModalHeader
-						onClose={onClose}
-						title="Đơn hàng #45643"
+				<ModalHeader onClose={onClose} title={`Đơn hàng #${id}`} />
+				<h1 className={styles.singleOrder__title + ' text-center mt-3'}>
+					<Image
+						className={styles.singleOrder__icontitle}
+						src={serviceData.icon}
+						width="50px"
 					/>
-					<h1 className={styles.singleOrder__title + ' text-center mt-3'}>
-						<Image
-							className={styles.singleOrder__icontitle}
-							src="/images/iconLike.png"
-							fluid
-						/>
-						Dịch vụ tăng like facebook
-					</h1>
-					<div className={styles.singleOrder__des}>
-						<div className={styles.singleOrder__users}>
-							<div className={styles.singleOrder__user + '  text-center'}>
-								<Image
-									className={styles.singleOrder__userIcon}
-									src="/images/singleorder1.png"
-									fluid
-								/>
-								<div className={styles.singleOrder__userName}>
-									Nguyễn Huyền Anh
-								</div>
-							</div>
-							<div className={styles.singleOrder__user + '  text-center'}>
-								<Image
-									className={styles.singleOrder__userIcon}
-									src="/images/singleorder2.png"
-									fluid
-								/>
-								<div className={styles.singleOrder__userName}>
-									ongmatmedia.com
-								</div>
-							</div>
+					{serviceData.name}
+				</h1>
+				<div className={styles.singleOrder__des}>
+					<div className={styles.singleOrder__users}>
+						<div className={styles.singleOrder__user + '  text-center'}>
+							<Image
+								className={styles.singleOrder__userIcon}
+								src={
+									auth().currentUser.isAnonymous
+										? '/images/singleorder1.png'
+										: auth().currentUser.providerData[0].photoURL
+								}
+								fluid
+							/>
+							<div className={styles.singleOrder__userName}>{fullname}</div>
 						</div>
-						<div className={styles.singleOrder__infor}>
-							<div className={styles.singleOrder__inforLine}>
-								<Image
-									className={styles.singleOrder__inforIcon}
-									src="/images/iconInfor1.png"
-									fluid
-								/>
-
-								<div
-									style={{fontSize: '1.1rem ', fontWeight: 'bold'}}
-									className={styles.singleOrder__text}
-								>
-									25/4/2020 (6 ngày trước)
-								</div>
-							</div>
-							<div className={styles.singleOrder__inforLine}>
-								<Image
-									className={styles.singleOrder__inforIcon}
-									src="/images/iconInfor2.png"
-									fluid
-								/>
-								<div
-									style={{
-										fontSize: '1.1rem ',
-										fontWeight: 'bold',
-										color: '#EAA800',
-									}}
-									className={styles.singleOrder__text}
-								>
-									Tạm dừng
-								</div>
-							</div>
-							<div className={styles.singleOrder__inforLine}>
-								<Image
-									className={styles.singleOrder__inforIcon}
-									src="/images/iconInfor3.png"
-									fluid
-								/>
-								<div
-									style={{
-										fontSize: '1.1rem ',
-										fontWeight: 'bold',
-									}}
-									className={styles.singleOrder__text}
-								>
-									1000
-								</div>
-							</div>
-							<div className={styles.singleOrder__inforLine}>
-								<Image
-									className={styles.singleOrder__inforIcon}
-									src="/images/iconInfor4.png"
-									fluid
-								/>
-								<div className={styles.singleOrder__text}>10đ x 1000 = 10k</div>
-							</div>
-							<div className={styles.singleOrder__inforLine}>
-								<Image
-									className={styles.singleOrder__inforIcon}
-									src="/images/iconInfor5.png"
-									fluid
-								/>
-								<div className={styles.singleOrder__text}>
-									Đơn hàng lẻ / theo số lần sử dụng / theo thời gian
-								</div>
-							</div>
-							<div className={styles.singleOrder__inforLine}>
-								<Image
-									className={styles.singleOrder__inforIcon}
-									src="/images/iconInfor6.png"
-									fluid
-								/>
-								<div className={styles.singleOrder__text}>
-									Còn 7 lần sử dụng / 7 ngày sử dụng Giá trị thanh lý 20k
-								</div>
-							</div>
-							<div className={styles.singleOrder__inforLine}>
-								<Image
-									className={styles.singleOrder__inforIcon}
-									src="/images/iconInfor7.png"
-									fluid
-								/>
-								<div className={styles.singleOrder__text}>
-									Giá trị thanh lý 20k
-								</div>
+						<div className={styles.singleOrder__user + '  text-center'}>
+							<Image
+								className={styles.singleOrder__userIcon}
+								src={domainData?.logo_url}
+								width="70px"
+							/>
+							<div className={styles.singleOrder__userName}>
+								{domainData?.domain_name}
 							</div>
 						</div>
 					</div>
+					<div className={styles.singleOrder__infor}>
+						<div className={styles.singleOrder__inforLine}>
+							<FaClock className={styles.singleOrder__inforIcon} />
+
+							<div
+								style={{ fontSize: '1.1rem ', fontWeight: 'bold' }}
+								className={styles.singleOrder__text}
+							>
+								{`${new Date(created_at).toLocaleDateString('vi')} (${dayjs(
+									new Date(created_at),
+								)
+									.locale('vi')
+									.fromNow()})`}
+							</div>
+						</div>
+						<div className={styles.singleOrder__inforLine}>
+							<FaRegHeart
+								className={styles.singleOrder__inforIcon}
+								color="red"
+							/>
+							<div
+								style={{
+									fontSize: '1.1rem ',
+									fontWeight: 'bold',
+									color: '#EAA800',
+								}}
+								className={styles.singleOrder__text}
+							>
+								{STATUS[status]}
+							</div>
+						</div>
+						<div className={styles.singleOrder__inforLine}>
+							<FaChartLine className={styles.singleOrder__inforIcon} />
+							<div
+								style={{
+									fontSize: '1.1rem ',
+									fontWeight: 'bold',
+								}}
+								className={styles.singleOrder__text}
+							>
+								{amount.toLocaleString('vi')}
+							</div>
+						</div>
+						<div className={styles.singleOrder__inforLine}>
+							<FaDollarSign className={styles.singleOrder__inforIcon} />
+							<div className={styles.singleOrder__text}>
+								{total.toLocaleString()}
+							</div>
+						</div>
+						<div className={styles.singleOrder__inforLine}>
+							<RiBillFill className={styles.singleOrder__inforIcon} />
+							<div className={styles.singleOrder__text}>{TYPE[type]}</div>
+						</div>
+						<div className={styles.singleOrder__inforLine}>
+							<FaHourglassHalf className={styles.singleOrder__inforIcon} />
+							<div className={styles.singleOrder__text}>
+								Còn {remain_amount} lần sử dụng /{' '}
+								{Math.ceil((end_time - created_at) / 1000 / 86400)} ngày sử dụng
+							</div>
+						</div>
+					</div>
+					<Row>
+						{orderActions?.map(orderAction => (
+							<Col xs={6} sm={4} md={3}>
+								<div
+									style={{
+										display: 'flex',
+										flexDirection: 'column',
+										justifyContent: 'center',
+										alignItems: 'center',
+										cursor: 'pointer',
+									}}
+									onClick={() => onSelectAction(orderAction)}
+								>
+									<Image src={orderAction?.icon} width="50px" />
+									<p className="font-weight-bold">{orderAction.name}</p>
+								</div>
+							</Col>
+						))}
+					</Row>
 				</div>
-			</Modal>
-		</>
+			</div>
+		</Modal>
 	)
 }
 

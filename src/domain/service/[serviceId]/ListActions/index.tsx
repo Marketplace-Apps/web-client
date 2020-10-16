@@ -1,10 +1,9 @@
 import { firestore } from 'firebase'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Image } from 'react-bootstrap'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { ServiceActionDocument } from '../../../../types/firebase'
-import ActionDetailModal from '../ActionDetailModal'
+import { ServiceActionDocument } from 'types/firebase'
 import styles from './index.module.scss'
 
 const ListActionsContainer = (props: { children: any }) => (
@@ -13,20 +12,12 @@ const ListActionsContainer = (props: { children: any }) => (
 	</div>
 )
 
-const ListActions = (props: { minPrice: number }) => {
+const ListActions = (props: {
+	minPrice: number
+	onSelectAction: (action: ServiceActionDocument) => void
+}) => {
 	const router = useRouter()
 	const { serviceId } = router.query as { serviceId: string }
-
-	const [isShowActionDetailModal, setIsShowActionDetailModal] = useState<
-		boolean
-	>(false)
-	const onShowActionDetailModal = () => setIsShowActionDetailModal(true)
-	const onHideActionDetailModal = () => setIsShowActionDetailModal(false)
-
-	const [
-		selectedAction,
-		setSelectedAction,
-	] = useState<ServiceActionDocument | null>(null)
 
 	const [actions] = useCollectionData<ServiceActionDocument>(
 		firestore()
@@ -38,24 +29,10 @@ const ListActions = (props: { minPrice: number }) => {
 
 	return (
 		<ListActionsContainer>
-			{selectedAction && (
-				<ActionDetailModal
-					show={isShowActionDetailModal}
-					onHide={() => {
-						setSelectedAction(null)
-						onHideActionDetailModal()
-					}}
-					data={selectedAction}
-					serviceMinPrice={props.minPrice}
-				/>
-			)}
 			{actions?.map(action => (
 				<Button
 					className={styles.HeaderServices__button}
-					onClick={() => {
-						setSelectedAction(action)
-						onShowActionDetailModal()
-					}}
+					onClick={() => props.onSelectAction(action)}
 					variant="outline-secondary"
 				>
 					<Image thumbnail src={action.icon} width="25px" />

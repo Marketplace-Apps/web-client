@@ -34,7 +34,7 @@ const HomePage = (props: { domainId: string | null }) => {
 	}, [props.domainId])
 
 	return (
-		<MainLayout title="Trang chủ">
+		<MainLayout title="Trang chủ" domainId={props.domainId}>
 			<div className={styles.header__search}>
 				<Container>
 					<Form inline className={styles.header__form}>

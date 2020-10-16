@@ -1,18 +1,16 @@
-import {auth} from 'firebase/app'
+import { auth } from 'firebase/app'
 import React from 'react'
-import {useAuthState} from 'react-firebase-hooks/auth'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import AccountInformation from './AccountInformation'
 import styles from './index.module.scss'
 import LeftSidebarMenu from './LefSidebarMenu'
 
-const LeftSidebar = () => {
+const LeftSidebar = (props: { domainId: string }) => {
 	const [user] = useAuthState(auth())
 
 	return (
 		<div className={styles.sidebarLeft}>
-			{
-				user && <AccountInformation />
-			}
+			{user && <AccountInformation domainId={props.domainId} />}
 			<LeftSidebarMenu />
 		</div>
 	)
