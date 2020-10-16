@@ -50,6 +50,8 @@ const MePage = (props: { domainId: string }) => {
 			email?: string
 			photoUrl?: string
 			displayName?: string
+			balance?: number
+			totalDeposit?: number
 		},
 	) =>
 		await firestore()
@@ -59,36 +61,12 @@ const MePage = (props: { domainId: string }) => {
 			.doc(uid)
 			.set({
 				id: uid,
-				balance: 0,
+				balance: user?.balance || 0,
 				email: user?.email || '',
 				avatar_url: user?.photoUrl || '',
 				name: user?.displayName || '',
-				total_deposit: 0,
+				total_deposit: user?.totalDeposit || 0,
 				is_anonymous: isAnonymous,
-			})
-
-	const updateUser = async (
-		uid: string,
-		user: {
-			email: string
-			balance: number
-			totalDeposit: number
-			photoUrl: string
-			displayName: string
-		},
-	) =>
-		await firestore()
-			.collection('domains')
-			.doc(props.domainId)
-			.collection('users')
-			.doc(uid)
-			.update({
-				balance: user.balance,
-				email: user.email,
-				avatar_url: user.photoUrl,
-				name: user.displayName,
-				total_deposit: user.totalDeposit,
-				is_anonymous: false,
 			})
 
 	const signInWithGoogleProvider = async () => {
@@ -138,13 +116,20 @@ const MePage = (props: { domainId: string }) => {
 				.doc(anonymousUser.uid)
 				.get()
 			const { providerData } = auth().currentUser
-			const { displayName, email, photoURL } = providerData[0]
-			await updateUser(anonymousUser.uid, {
-				balance: userRef.data().balance,
+			const { displayName, email, photoURL, uid } = providerData[0]
+			const oldUser = userRef.data()
+			await firestore()
+				.collection('domains')
+				.doc(props.domainId)
+				.collection('users')
+				.doc(anonymousUser.uid)
+				.delete()
+			await createNewUser(uid, false, {
+				balance: oldUser.balance,
 				displayName,
 				email,
 				photoUrl: photoURL,
-				totalDeposit: userRef.data().totalDeposit,
+				totalDeposit: oldUser.totalDeposit,
 			})
 		} catch (error) {
 			toast.error(error.message, {
@@ -228,7 +213,6 @@ const MePage = (props: { domainId: string }) => {
 										{userDocument?.balance
 											? userDocument?.balance.toLocaleString('vi')
 											: 0}{' '}
-										đ
 									</p>
 								</div>
 							</div>

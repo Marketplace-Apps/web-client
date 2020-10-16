@@ -15,6 +15,28 @@
 	&__ButtonItem {
 		margin-bottom: 1.5rem;
 	}
+
+	&__buttonGroup {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		padding: 10px;
+	}
+
+	&__button {
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+
+	&__button:hover {
+		background-color: white;
+		border-color: blue;
+	}
+
+	&__button:focus {
+		background-color: white;
+		border-color: blue;
+	}
 }
 
 // ---------------------

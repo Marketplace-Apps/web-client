@@ -2,7 +2,6 @@ import ListAdminPaymentMethodsItem from 'domain/deposit/ListAdminPaymentMethodsI
 import { firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
 import React from 'react'
-import { Button, Image } from 'react-bootstrap'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { PaymentMethodDocument } from '../../types/firebase'
 
@@ -31,9 +30,7 @@ const Title = (props: { title: string }) => (
 )
 
 const DepositPage = (props: { domainId: string }) => {
-	const [paymentMethods, loadingPaymentMethods, error] = useCollectionData<
-		PaymentMethodDocument
-	>(
+	const [paymentMethods] = useCollectionData<PaymentMethodDocument>(
 		firestore()
 			.collection('domains')
 			.doc(props.domainId ?? 'domain-id')
@@ -44,34 +41,6 @@ const DepositPage = (props: { domainId: string }) => {
 		<MainLayout>
 			<div className="pageAddCash" style={{ padding: '1rem 1.5rem' }}>
 				<Title title="Vui lòng chọn một trong các phương thức thanh toán dưới đây" />
-				<div className="pageAddCash__VNPayQr text-center">
-					<Image src="/images/vnpayqr.png" width="100%" />
-					<div
-						className="pageAddCash__input"
-						style={{ marginTop: '1rem', marginBottom: '1rem' }}
-					>
-						<input
-							style={{
-								width: '80%',
-								backgroundColor: '#f2f2f2',
-								border: '1px solid #f2f2f2',
-								padding: '5px 10px',
-								borderRadius: '5px',
-							}}
-							placeholder="Nhập số tiền..."
-							type="text"
-						/>
-					</div>
-
-					<div className="text-center mt-3 mb-4">
-						<Button variant="info">Thanh toán qua VNPay</Button>{' '}
-					</div>
-				</div>
-
-				<Title
-					title=" Hoặc chuyển tiền vào các tài khoản dưới đây với nội dung là email của
-          bạn trên hệ thống"
-				/>
 				{paymentMethods?.map(paymentMethod => (
 					<ListAdminPaymentMethodsItem {...paymentMethod} />
 				))}

@@ -75,7 +75,7 @@ export type PaymentMethodDocument = {
 	bank_number: string
 	logo_url: string
 	active: boolean
-	credential?: string
+	note: string
 }
 
 export type UserDocument = {
@@ -96,4 +96,21 @@ export type OrderDocument = {
 	created_at: number
 	end_time: number
 	status: string
+	fullname: string
+	description: string
+	user_id: string
+}
+
+export type PaymentHistoryDocument = {
+	id: string
+	icon: string
+	amount: number
+	service_name: string
+	total: number
+	created_at: number
+	message: string
+	from?: string
+	from_user_id?: string
+	to?: string
+	to_user_id?: string
 }

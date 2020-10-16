@@ -1,24 +1,59 @@
 import ListTransactionsItem from 'domain/transaction/ListTransactionsItem'
-import { firestore } from 'firebase/app'
+import { auth, firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import CenteredSpinner from '../../components/CenteredSpinner'
-import { classifyDataByField } from '../../helpers'
-import { OrderDocument } from '../../types/firebase'
+import { classifyDataByDay, isScrollToBottom } from '../../helpers'
+import { PaymentHistoryDocument } from '../../types/firebase'
 
 const TransactionPage = (props: { domainId: string | null }) => {
-	const [orders, loadingOrders] = useCollectionData<OrderDocument>(
-		firestore()
-			.collection('domains')
-			.doc(props.domainId ?? 'domain-id')
-			.collection('orders'),
-	)
+	const paymentHistoriesQuery = firestore()
+		.collection('domains')
+		.doc(props.domainId ?? 'domain-id')
+		.collection('users')
+		.doc(auth().currentUser?.uid || 'uid')
+		.collection('payment_histories')
+		.orderBy('created_at', 'desc')
+		.limit(10)
 
-	const classifyOrdersByDay = classifyDataByField<
-		number,
-		OrderDocument & { key: number }
-	>(orders?.map(order => ({ ...order, key: order.created_at })) || [])
+	const [inititalpaymentHistorie] = useCollectionData<PaymentHistoryDocument>(
+		paymentHistoriesQuery,
+	)
+	const [hasMore, setHasMore] = useState<boolean>(true)
+
+	const [paymentHistories, setPaymentHistories] = useState<
+		PaymentHistoryDocument[]
+	>([])
+
+	const classifyPaymentHistoriesByDay = classifyDataByDay<
+		PaymentHistoryDocument
+	>(paymentHistories || [])
+
+	const handleLoadMore = () => {
+		if (isScrollToBottom() && hasMore && !!paymentHistories.length) {
+			const fn = paymentHistoriesQuery.limit(paymentHistories.length + 10)
+			fn.onSnapshot(snap => {
+				setPaymentHistories([
+					...snap.docs.map(doc => doc.data()),
+				] as PaymentHistoryDocument[])
+				setHasMore(
+					snap.docs.map(doc => doc.data()).length >=
+						paymentHistories.length + 10,
+				)
+			})
+		}
+	}
+
+	useEffect(() => {
+		if (!inititalpaymentHistorie) return
+		setPaymentHistories(inititalpaymentHistorie)
+	}, [inititalpaymentHistorie])
+
+	useEffect(() => {
+		window.addEventListener('scroll', handleLoadMore)
+		return () => window.removeEventListener('scroll', handleLoadMore)
+	}, [hasMore, paymentHistories])
 
 	return (
 		<MainLayout>
@@ -37,21 +72,22 @@ const TransactionPage = (props: { domainId: string | null }) => {
 					</div>
 				</div>
 				<div className="pageHistory__optionsDate">
-					{!classifyOrdersByDay && <CenteredSpinner />}
-					{classifyOrdersByDay && !classifyOrdersByDay.length && (
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								alignItems: 'center',
-							}}
-						>
-							<p>Chưa có giao dịch</p>
-						</div>
-					)}
-					{classifyOrdersByDay &&
-						!!classifyOrdersByDay.length &&
-						classifyOrdersByDay.map(({ data, key }) => (
+					{!classifyPaymentHistoriesByDay && <CenteredSpinner />}
+					{classifyPaymentHistoriesByDay &&
+						!classifyPaymentHistoriesByDay.length && (
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<p>Chưa có giao dịch</p>
+							</div>
+						)}
+					{classifyPaymentHistoriesByDay &&
+						!!classifyPaymentHistoriesByDay.length &&
+						classifyPaymentHistoriesByDay.map(({ data, day }) => (
 							<div className="Day">
 								<div
 									style={{
@@ -64,12 +100,12 @@ const TransactionPage = (props: { domainId: string | null }) => {
 									}}
 									className="pageHistory__day"
 								>
-									{new Date(key).toLocaleDateString('vi')}
+									{day}
 								</div>
 								<div className="pageHistory__option">
 									<div className="pageHistory_services">
-										{data.map(order => (
-											<ListTransactionsItem {...order} />
+										{data.map(paymentHistory => (
+											<ListTransactionsItem {...paymentHistory} />
 										))}
 									</div>
 								</div>
