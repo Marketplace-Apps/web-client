@@ -98,7 +98,7 @@ const MultipleValuesInput = ({
 				{type === 'button_select' && (
 					<Form.Group>
 						<Row noGutters>
-							{options.map(({ label, value }) => (
+							{options.map(({ label: optionLabel, value }) => (
 								<Controller
 									name={fieldName}
 									control={control}
@@ -119,7 +119,7 @@ const MultipleValuesInput = ({
 												}
 												onClick={() => props.onChange(value)}
 											>
-												{label}
+												{optionLabel}
 											</Button>
 										</Col>
 									)}
@@ -148,7 +148,7 @@ const MultipleValuesInput = ({
 								justifyContent: 'space-around',
 							}}
 						>
-							{options.map(({ label, value }) => (
+							{options.map(({ label: optionLabel, value }) => (
 								<Controller
 									name={fieldName}
 									control={control}
@@ -161,7 +161,7 @@ const MultipleValuesInput = ({
 									}}
 									render={props => (
 										<Image
-											src={label}
+											src={optionLabel}
 											onClick={() => props.onChange(value)}
 											className={styles.icon}
 											roundedCircle
