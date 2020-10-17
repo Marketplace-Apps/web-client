@@ -33,12 +33,12 @@ const DepositPage = (props: { domainId: string }) => {
 	const [paymentMethods] = useCollectionData<PaymentMethodDocument>(
 		firestore()
 			.collection('domains')
-			.doc(props.domainId ?? 'domain-id')
+			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 			.collection('payment_methods'),
 	)
 
 	return (
-		<MainLayout domainId={props.domainId} title="Phương thức thanh toán">
+		<MainLayout domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'} title="Phương thức thanh toán">
 			<div className="pageAddCash" style={{ padding: '1rem 1.5rem' }}>
 				<Title title="Vui lòng chọn một trong các phương thức thanh toán dưới đây" />
 				{paymentMethods?.map(paymentMethod => (

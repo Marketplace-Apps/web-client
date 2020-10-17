@@ -30,7 +30,7 @@ const MePage = (props: { domainId: string }) => {
 	const [userDocument] = useDocumentData<UserDocument>(
 		firestore()
 			.collection('domains')
-			.doc(props.domainId || 's')
+			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 			.collection('users')
 			.doc(auth().currentUser?.uid || 'uid'),
 	)
@@ -56,7 +56,7 @@ const MePage = (props: { domainId: string }) => {
 	) =>
 		await firestore()
 			.collection('domains')
-			.doc(props.domainId)
+			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 			.collection('users')
 			.doc(uid)
 			.set({
@@ -80,7 +80,7 @@ const MePage = (props: { domainId: string }) => {
 			})
 			const userRef = await firestore()
 				.collection('domains')
-				.doc(props.domainId)
+				.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 				.collection('users')
 				.doc(auth().currentUser.uid)
 				.get()
@@ -111,7 +111,7 @@ const MePage = (props: { domainId: string }) => {
 			})
 			const userRef = await firestore()
 				.collection('domains')
-				.doc(props.domainId)
+				.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 				.collection('users')
 				.doc(anonymousUser.uid)
 				.get()
@@ -120,7 +120,7 @@ const MePage = (props: { domainId: string }) => {
 			const oldUser = userRef.data()
 			await firestore()
 				.collection('domains')
-				.doc(props.domainId)
+				.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 				.collection('users')
 				.doc(anonymousUser.uid)
 				.delete()
@@ -150,7 +150,7 @@ const MePage = (props: { domainId: string }) => {
 			})
 			const userRef = await firestore()
 				.collection('domains')
-				.doc(props.domainId)
+				.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 				.collection('users')
 				.doc(auth().currentUser.uid)
 				.get()
@@ -165,7 +165,7 @@ const MePage = (props: { domainId: string }) => {
 	}
 
 	return (
-		<MainLayout title="Cá nhân" domainId={props.domainId}>
+		<MainLayout title="Cá nhân" domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}>
 			<div className="pageUser">
 				<div
 					style={{

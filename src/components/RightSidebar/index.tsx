@@ -12,7 +12,7 @@ const RightSidebar = (props: { domainId: string }) => {
 	const [notifications] = useCollectionData<NotificationDocument>(
 		firestore()
 			.collection('domains')
-			.doc(props.domainId || 'domainId')
+			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 			.collection('notifications')
 			.orderBy('created_at', 'desc')
 			.limit(5),

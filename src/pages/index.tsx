@@ -9,9 +9,11 @@ import { NotificationDocument } from 'types/firebase'
 import { isScrollToBottom } from '../helpers'
 
 const HomePage = (props ) => {
+ 
+
 	const notificationsQuery = firestore()
 		.collection('domains')
-		.doc(props.domainId || 'domainId')
+		.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 		.collection('notifications')
 		.orderBy('created_at', 'desc')
 		.limit(10)
@@ -24,8 +26,8 @@ const HomePage = (props ) => {
 	const [notifications, setNotifications] = useState<NotificationDocument[]>([])
 
 	useEffect(() => {
-		if (props.domainId) localStorage.setItem('domain_id', props.domainId)
-	}, [props.domainId])
+		if (props.domainId || typeof window != 'undefined' && window.location.hostname || 'null') localStorage.setItem('domain_id',props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
+	}, [props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'])
 
 	const handleLoadMore = () => {
 		if (isScrollToBottom() && hasMore && !!notifications.length) {
@@ -52,7 +54,7 @@ const HomePage = (props ) => {
 	}, [hasMore, notifications])
 
 	return (
-		<MainLayout title="Trang chủ" domainId={props.domainId}>
+		<MainLayout title="Trang chủ" domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}>
 			<div className="p-5">
 				{notifications?.map(
 					({ title, description, images, videos, created_at }) => (

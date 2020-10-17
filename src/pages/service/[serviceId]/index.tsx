@@ -19,7 +19,7 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 	>(
 		firestore()
 			.collection('domains')
-			.doc(props.domainId ?? 'domain-id')
+			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 			.collection('services')
 			.doc(serviceId),
 	)
@@ -36,7 +36,7 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 	] = useState<ServiceActionDocument | null>(null)
 
 	return (
-		<MainLayout title="Chi tiết dịch vụ" domainId={props.domainId}>
+		<MainLayout title="Chi tiết dịch vụ" domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}>
 			{loadingService && (
 				<div style={{ minHeight: '100vh' }}>
 					<CenteredSpinner />
@@ -68,7 +68,7 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 						}}
 					/>
 					<ListOrders
-						domainId={props.domainId}
+						domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}
 						serviceData={service}
 						onSelectAction={action => {
 							setSelectedAction(action)
