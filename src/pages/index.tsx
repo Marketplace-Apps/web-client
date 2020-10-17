@@ -1,17 +1,18 @@
 import MainLayout from 'layouts/MainLayout'
 import dayjs from 'libs/dayjs'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Image, Row } from 'react-bootstrap'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { useCollectionData } from '../hooks'
 import { NotificationDocument } from '../types/firebase'
 
+
 const HomePage = (props: { domainId: string | null }) => {
 	const { data: notifications, error, loading } = useCollectionData<
 		NotificationDocument
 	>(`domains/UDdjAr3BDopZbE2osn82/notifications`)
+ 
 
-	console.log({ notifications, error })
 
 	return (
 		<MainLayout

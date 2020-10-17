@@ -3,7 +3,7 @@
 	"version": "0.2.0",
 	"scripts": {
 		"dev": "NODE_OPTIONS=--max_old_space_size=4096 next",
-		"start": "next start",
+		"start": "next",
 		"build": "next build && next export",
 		"pretty": "prettier --write \"**/*.{ts,tsx}\"",
 		"type-check": "tsc"
