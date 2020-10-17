@@ -1,55 +1,17 @@
-import { firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
 import dayjs from 'libs/dayjs'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Col, Image, Row } from 'react-bootstrap'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BsFillPersonFill } from 'react-icons/bs'
-import { NotificationDocument } from 'types/firebase'
-import { isScrollToBottom } from '../helpers'
+import { useCollectionData } from '../hooks'
+import { NotificationDocument } from '../types/firebase'
 
 const HomePage = (props: { domainId: string | null }) => {
-	const notificationsQuery = firestore()
-		.collection('domains')
-		.doc(props.domainId || 'domainId')
-		.collection('notifications')
-		.orderBy('created_at', 'desc')
-		.limit(10)
+	const { data: notifications, error, loading } = useCollectionData<
+		NotificationDocument
+	>(`domains/UDdjAr3BDopZbE2osn82/notifications`)
 
-	const [inititalNotifications] = useCollectionData<NotificationDocument>(
-		notificationsQuery,
-	)
-	const [hasMore, setHasMore] = useState<boolean>(true)
-
-	const [notifications, setNotifications] = useState<NotificationDocument[]>([])
-
-	useEffect(() => {
-		if (props.domainId) localStorage.setItem('domain_id', props.domainId)
-	}, [props.domainId])
-
-	const handleLoadMore = () => {
-		if (isScrollToBottom() && hasMore && !!notifications.length) {
-			const fn = notificationsQuery.limit(notifications.length + 10)
-			fn.onSnapshot(snap => {
-				setNotifications([
-					...snap.docs.map(doc => doc.data()),
-				] as NotificationDocument[])
-				setHasMore(
-					snap.docs.map(doc => doc.data()).length >= notifications.length + 10,
-				)
-			})
-		}
-	}
-
-	useEffect(() => {
-		if (!inititalNotifications) return
-		setNotifications(inititalNotifications)
-	}, [inititalNotifications])
-
-	useEffect(() => {
-		window.addEventListener('scroll', handleLoadMore)
-		return () => window.removeEventListener('scroll', handleLoadMore)
-	}, [hasMore, notifications])
+	console.log({ notifications, error })
 
 	return (
 		<MainLayout title="Trang chủ" domainId={props.domainId}>
@@ -95,17 +57,6 @@ const HomePage = (props: { domainId: string | null }) => {
 			</div>
 		</MainLayout>
 	)
-}
-
-HomePage.getInitialProps = async (ctx: any) => {
-	const host = ctx.req ? ctx.req.headers.host.split(':')[0] : location.hostname
-	const domain = await firestore()
-		.collection('domains')
-		.where('domain_name', '==', host)
-		.get()
-	return {
-		domainId: domain.docs.length ? domain.docs[0].id : null,
-	}
 }
 
 export default HomePage

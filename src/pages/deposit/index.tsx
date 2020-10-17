@@ -5,15 +5,6 @@ import React from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { PaymentMethodDocument } from '../../types/firebase'
 
-const PAYMENT_METHODS = [
-	{
-		ownerName: 'Dương Văn Ba',
-		cardNumber: ' 0301.0003.81458',
-		department: 'Chi nhánh Hà Thành',
-		bankLogoUrl: '/images/vietcombank.png',
-	},
-]
-
 const Title = (props: { title: string }) => (
 	<h2
 		style={{
