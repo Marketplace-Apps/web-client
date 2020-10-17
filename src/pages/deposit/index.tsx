@@ -48,16 +48,6 @@ const DepositPage = (props: { domainId: string }) => {
 		</MainLayout>
 	)
 }
-
-DepositPage.getInitialProps = async (ctx: any) => {
-	const host = ctx.req ? ctx.req.headers.host.split(':')[0] : location.hostname
-	const domain = await firestore()
-		.collection('domains')
-		.where('domain_name', '==', host)
-		.get()
-	return {
-		domainId: domain.docs.length ? domain.docs[0].id : null,
-	}
-}
+ 
 
 export default DepositPage
