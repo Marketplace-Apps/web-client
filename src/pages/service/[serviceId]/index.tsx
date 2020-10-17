@@ -19,7 +19,7 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 	>(
 		firestore()
 			.collection('domains')
-			.doc(props.domainId ?? 'domain-id')
+			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 			.collection('services')
 			.doc(serviceId),
 	)
@@ -36,7 +36,7 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 	] = useState<ServiceActionDocument | null>(null)
 
 	return (
-		<MainLayout title="Chi tiết dịch vụ" domainId={props.domainId}>
+		<MainLayout title="Chi tiết dịch vụ" domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}>
 			{loadingService && (
 				<div style={{ minHeight: '100vh' }}>
 					<CenteredSpinner />
@@ -68,7 +68,7 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 						}}
 					/>
 					<ListOrders
-						domainId={props.domainId}
+						domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}
 						serviceData={service}
 						onSelectAction={action => {
 							setSelectedAction(action)
@@ -80,16 +80,6 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 		</MainLayout>
 	)
 }
-
-ServiceDetailPage.getInitialProps = async (ctx: any) => {
-	const host = ctx.req ? ctx.req.headers.host.split(':')[0] : location.hostname
-	const domain = await firestore()
-		.collection('domains')
-		.where('domain_name', '==', host)
-		.get()
-	return {
-		domainId: domain.docs.length ? domain.docs[0].id : null,
-	}
-}
+ 
 
 export default ServiceDetailPage

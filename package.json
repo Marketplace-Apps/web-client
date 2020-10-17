@@ -4,7 +4,7 @@
 	"scripts": {
 		"dev": "NODE_OPTIONS=--max_old_space_size=4096 next",
 		"start": "next start",
-		"build": "next build",
+		"build": "next build && next export",
 		"pretty": "prettier --write \"**/*.{ts,tsx}\"",
 		"type-check": "tsc"
 	},

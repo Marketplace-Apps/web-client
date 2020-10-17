@@ -24,12 +24,12 @@ const DepositPage = (props: { domainId: string }) => {
 	const [paymentMethods] = useCollectionData<PaymentMethodDocument>(
 		firestore()
 			.collection('domains')
-			.doc(props.domainId ?? 'domain-id')
+			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 			.collection('payment_methods'),
 	)
 
 	return (
-		<MainLayout domainId={props.domainId} title="Phương thức thanh toán">
+		<MainLayout domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'} title="Phương thức thanh toán">
 			<div className="pageAddCash" style={{ padding: '1rem 1.5rem' }}>
 				<Title title="Vui lòng chọn một trong các phương thức thanh toán dưới đây" />
 				{paymentMethods?.map(paymentMethod => (
@@ -39,16 +39,6 @@ const DepositPage = (props: { domainId: string }) => {
 		</MainLayout>
 	)
 }
-
-DepositPage.getInitialProps = async (ctx: any) => {
-	const host = ctx.req ? ctx.req.headers.host.split(':')[0] : location.hostname
-	const domain = await firestore()
-		.collection('domains')
-		.where('domain_name', '==', host)
-		.get()
-	return {
-		domainId: domain.docs.length ? domain.docs[0].id : null,
-	}
-}
+ 
 
 export default DepositPage

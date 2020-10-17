@@ -9,7 +9,7 @@ const AccountInformation = (props: { domainId: string }) => {
 	const [user] = useDocumentData<UserDocument>(
 		firestore()
 			.collection('domains')
-			.doc(props.domainId || 'domainId')
+			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 			.collection('users')
 			.doc(auth().currentUser.uid),
 	)

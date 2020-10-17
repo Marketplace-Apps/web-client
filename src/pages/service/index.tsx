@@ -19,7 +19,7 @@ const ServicePage = (props: { domainId: string | null }) => {
 	>(
 		firestore()
 			.collection('domains')
-			.doc(props.domainId ?? 'domain-id')
+			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
 			.collection('services')
 			.where('published', '==', true),
 	)
@@ -30,11 +30,11 @@ const ServicePage = (props: { domainId: string | null }) => {
 	>(domainServices?.map(el => ({ ...el, key: el.tag })) ?? [])
 
 	useEffect(() => {
-		if (props.domainId) localStorage.setItem('domain_id', props.domainId)
-	}, [props.domainId])
+		if (props.domainId || typeof window != 'undefined' && window.location.hostname || 'null') localStorage.setItem('domain_id', props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
+	}, [props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'])
 
 	return (
-		<MainLayout title="Danh sách dịch vụ" domainId={props.domainId}>
+		<MainLayout title="Danh sách dịch vụ" domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}>
 			<div className={styles.header__search}>
 				<Container>
 					<Form inline className={styles.header__form}>
@@ -73,16 +73,5 @@ const ServicePage = (props: { domainId: string | null }) => {
 		</MainLayout>
 	)
 }
-
-ServicePage.getInitialProps = async (ctx: any) => {
-	const host = ctx.req ? ctx.req.headers.host.split(':')[0] : location.hostname
-	const domain = await firestore()
-		.collection('domains')
-		.where('domain_name', '==', host)
-		.get()
-	return {
-		domainId: domain.docs.length ? domain.docs[0].id : null,
-	}
-}
-
+ 
 export default ServicePage

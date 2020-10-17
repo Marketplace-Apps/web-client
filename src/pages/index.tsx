@@ -14,7 +14,14 @@ const HomePage = (props: { domainId: string | null }) => {
 	console.log({ notifications, error })
 
 	return (
-		<MainLayout title="Trang chủ" domainId={props.domainId}>
+		<MainLayout
+			title="Trang chủ"
+			domainId={
+				props.domainId ||
+				(typeof window != 'undefined' && window.location.hostname) ||
+				'null'
+			}
+		>
 			<div className="p-5">
 				{notifications?.map(
 					({ title, description, images, videos, created_at }) => (
