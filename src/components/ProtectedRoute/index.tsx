@@ -1,5 +1,4 @@
 import firebase from 'firebase/app'
-import MainLayout from 'layouts/MainLayout'
 import { NextComponentType, NextPageContext } from 'next'
 import { useRouter } from 'next/dist/client/router'
 import Error from 'next/error'
@@ -8,20 +7,18 @@ import { Spinner } from 'react-bootstrap'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 const WaitingComponent = (props: { displayText: string }) => (
-	<MainLayout>
-		<div
-			style={{
-				display: 'flex',
-				justifyContent: 'center',
-				alignItems: 'center',
-				height: '100vh',
-				flexDirection: 'column',
-			}}
-		>
-			<Spinner animation="border" variant="primary" />
-			<p style={{ marginTop: 5 }}>{props.displayText}</p>
-		</div>
-	</MainLayout>
+	<div
+		style={{
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: '100vh',
+			flexDirection: 'column',
+		}}
+	>
+		<Spinner animation="border" variant="primary" />
+		<p style={{ marginTop: 5 }}>{props.displayText}</p>
+	</div>
 )
 
 const ProtectedRoute = (props: {

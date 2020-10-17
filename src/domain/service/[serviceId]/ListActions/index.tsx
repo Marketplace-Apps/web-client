@@ -1,9 +1,9 @@
-import { firestore } from 'firebase'
-import { useRouter } from 'next/router'
+import {firestore} from 'firebase'
+import {useRouter} from 'next/router'
 import React from 'react'
-import { Button, Image } from 'react-bootstrap'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { ServiceActionDocument } from 'types/firebase'
+import {Button, Image} from 'react-bootstrap'
+import {useCollectionData} from 'react-firebase-hooks/firestore'
+import {ServiceActionDocument} from 'types/firebase'
 import styles from './index.module.scss'
 
 const ListActionsContainer = (props: { children: any }) => (

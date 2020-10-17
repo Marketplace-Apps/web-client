@@ -1,75 +1,98 @@
-import CenteredSpinner from 'components/CenteredSpinner'
-import GroupedByTypeListServicesContainer from 'domain/home/components/GroupedByTypeListServicesContainer'
-import GroupedByTypeListServicesHeader from 'domain/home/components/GroupedByTypeListServicesHeader'
-import ServicePreview from 'domain/home/components/ServicePreview'
 import { firestore } from 'firebase/app'
-import { classifyDataByField } from 'helpers'
 import MainLayout from 'layouts/MainLayout'
-import Error from 'next/error'
-import React, { useEffect } from 'react'
-import { Container, Form, FormControl, Row } from 'react-bootstrap'
+import dayjs from 'libs/dayjs'
+import React, { useEffect, useState } from 'react'
+import { Col, Image, Row } from 'react-bootstrap'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { BsSearch } from 'react-icons/bs'
-import { DomainServiceDocument } from 'types/firebase'
-import styles from './index.module.scss'
+import { BsFillPersonFill } from 'react-icons/bs'
+import { NotificationDocument } from 'types/firebase'
+import { isScrollToBottom } from '../helpers'
 
 const HomePage = (props: { domainId: string | null }) => {
-	const [domainServices, loadingDomainServices] = useCollectionData<
-		DomainServiceDocument
-	>(
-		firestore()
-			.collection('domains')
-			.doc(props.domainId ?? 'domain-id')
-			.collection('services')
-			.where('published', '==', true),
-	)
+	const notificationsQuery = firestore()
+		.collection('domains')
+		.doc(props.domainId || 'domainId')
+		.collection('notifications')
+		.orderBy('created_at', 'desc')
+		.limit(10)
 
-	const classifiedByTagServices = classifyDataByField<
-		string,
-		DomainServiceDocument & { key: string }
-	>(domainServices?.map(el => ({ ...el, key: el.tag })) ?? [])
+	const [inititalNotifications] = useCollectionData<NotificationDocument>(
+		notificationsQuery,
+	)
+	const [hasMore, setHasMore] = useState<boolean>(true)
+
+	const [notifications, setNotifications] = useState<NotificationDocument[]>([])
 
 	useEffect(() => {
 		if (props.domainId) localStorage.setItem('domain_id', props.domainId)
 	}, [props.domainId])
 
+	const handleLoadMore = () => {
+		if (isScrollToBottom() && hasMore && !!notifications.length) {
+			const fn = notificationsQuery.limit(notifications.length + 10)
+			fn.onSnapshot(snap => {
+				setNotifications([
+					...snap.docs.map(doc => doc.data()),
+				] as NotificationDocument[])
+				setHasMore(
+					snap.docs.map(doc => doc.data()).length >= notifications.length + 10,
+				)
+			})
+		}
+	}
+
+	useEffect(() => {
+		if (!inititalNotifications) return
+		setNotifications(inititalNotifications)
+	}, [inititalNotifications])
+
+	useEffect(() => {
+		window.addEventListener('scroll', handleLoadMore)
+		return () => window.removeEventListener('scroll', handleLoadMore)
+	}, [hasMore, notifications])
+
 	return (
 		<MainLayout title="Trang chủ" domainId={props.domainId}>
-			<div className={styles.header__search}>
-				<Container>
-					<Form inline className={styles.header__form}>
-						<FormControl
-							type="text"
-							placeholder="Search"
-							className={styles.header__inputSearch}
-						/>
-						<BsSearch
-							className={styles.header__btnSearch}
-							style={{ fontSize: '2rem', color: 'green' }}
-						/>
-					</Form>
-				</Container>
-			</div>
-			<GroupedByTypeListServicesContainer>
-				{loadingDomainServices && <CenteredSpinner />}
-				{!domainServices && !loadingDomainServices && (
-					<Error statusCode={400} title="Không có dữ liệu về tên miền này" />
+			<div className="p-5">
+				{notifications?.map(
+					({ title, description, images, videos, created_at }) => (
+						<div
+							style={{
+								backgroundColor: '#F7F7F7',
+								padding: '20px',
+							}}
+							className="mb-3"
+						>
+							<div className="d-flex align-items-center">
+								<BsFillPersonFill size="40px" />
+								<div className="d-flex flex-column ml-2">
+									<p className="font-weight-bold">Admin</p>
+									<p
+										style={{
+											fontSize: '15px',
+										}}
+									>
+										{dayjs(new Date(created_at)).locale('vi').fromNow()}
+									</p>
+								</div>
+							</div>
+							<div className="p-4">
+								<p className="font-weight-bold mb-2">{title}</p>
+								<p>{description}</p>
+								{images && images.length && (
+									<Row>
+										{images.map(image => (
+											<Col xs={6} sm={4}>
+												<Image src={image} />
+											</Col>
+										))}
+									</Row>
+								)}
+							</div>
+						</div>
+					),
 				)}
-				{domainServices &&
-					classifiedByTagServices?.map(group => (
-						<>
-							<GroupedByTypeListServicesHeader
-								iconUrl="/images/services/fb2.png"
-								name={`Dịch vụ ${group.key}`}
-							/>
-							<Row>
-								{group.data.map(serviceAction => (
-									<ServicePreview {...serviceAction} />
-								))}
-							</Row>
-						</>
-					))}
-			</GroupedByTypeListServicesContainer>
+			</div>
 		</MainLayout>
 	)
 }

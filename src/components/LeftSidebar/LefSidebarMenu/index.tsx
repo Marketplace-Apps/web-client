@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { ListGroup } from 'react-bootstrap'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { FaHistory, FaUser } from 'react-icons/fa'
+import { FaHistory, FaHome, FaUser } from 'react-icons/fa'
 import { FcServices } from 'react-icons/fc'
 import { HiLogout } from 'react-icons/hi'
 import { RiMoneyDollarBoxLine } from 'react-icons/ri'
@@ -11,9 +11,15 @@ import LeftSidebarMenuItem from '../LeftSidebarMenuItem'
 
 const MENU = [
 	{
+		name: 'Trang chủ ',
+		Icon: FaHome,
+		pathname: '/',
+		color: 'blue',
+	},
+	{
 		name: 'Mua dịch vụ',
 		Icon: FcServices,
-		pathname: '/',
+		pathname: '/service',
 		color: 'red',
 	},
 	{

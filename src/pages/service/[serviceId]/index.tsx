@@ -59,7 +59,6 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 							serviceMinPrice={service.min_price}
 						/>
 					)}
-					I
 					<ServiceHeader icon={service.icon} name={service.name} />
 					<ListActions
 						minPrice={service.min_price}
