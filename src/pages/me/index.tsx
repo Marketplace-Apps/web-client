@@ -30,7 +30,7 @@ const MePage = (props: { domainId: string }) => {
 	const [userDocument] = useDocumentData<UserDocument>(
 		firestore()
 			.collection('domains')
-			.doc(props.domainId)
+			.doc(props.domainId || 's')
 			.collection('users')
 			.doc(auth().currentUser?.uid || 'uid'),
 	)
