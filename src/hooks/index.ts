@@ -1,6 +1,9 @@
+
 import { firestore } from 'firebase/app'
-import { useEffect, useRef, useState } from 'react'
+import { Children, Component, useEffect, useRef, useState } from 'react'
+import { GiConsoleController } from 'react-icons/gi'
 import ListTransactionsItem from '../domain/transaction/ListTransactionsItem'
+
 
 class Queue {
 
@@ -55,55 +58,59 @@ export const useCollectionData = <T extends {}, K extends keyof T = keyof T>(
 			value: string | number | boolean
 		]
 	> = [],
-	limit: number = 10,
 	pagingBy: K = 'created_at' as any,
+	limit: number = 10,
 	direction: 'desc' | 'asc' = 'desc'
 ) => {
 
-
-	const list = useRef<Array<{ item: T, id: string }>>([])
+	const list = useRef<Array<firestore.QueryDocumentSnapshot<T>>>([])
 	const [loading, setLoading] = useState<boolean>(true)
 	const [error, setError] = useState<string | null>(null)
 	const [hasMore, setHasMore] = useState<boolean>(false)
 	const [listeners] = useState(new ListenerManager())
 	const [queue] = useState(new Queue())
-	const [endDoc, setEndDoc] = useState<T>(null)
-	const [index, setIndex] = useState(0)
+	const [_, __] = useState(0)
 
-	async function sync(snapshot: firebase.firestore.QuerySnapshot<T>) {
-		const docs = snapshot.docChanges()
+	function sort(a, b) {
+		if (typeof a[pagingBy] == 'number') return (a[pagingBy] - b[pagingBy]) as number
+		if (typeof a[pagingBy] == 'string') return (a[pagingBy] as string).localeCompare(b[pagingBy])
+	}
+
+	async function sync(docs: firestore.DocumentChange<T>[]) {
+
 		const exists_ids = new Set(list.current.map(d => d.id))
 		const removed = new Set(docs.filter(x => x.type == 'removed').map(x => x.doc.id))
-		const added = docs.filter(x => !exists_ids.has(x.doc.id))
+		const added = docs.filter(d => !exists_ids.has(d.doc.id)).map(d => d.doc)
 		const modified = new Map(docs
 			.filter(d => d.type != 'removed' && exists_ids.has(d.doc.id))
-			.map(d => [d.doc.id, d.doc.data()])
+			.map(d => [d.doc.id, d.doc])
 		)
 
-		console.log(`Sync data realtime `, { removed, added, modified })
+		console.log({ removed, added, modified })
+
 
 		const newData = [
 			...list.current
 				.filter(item => !removed.has(item.id))
-				.map(d => modified.has(d.id) ? { id: d.id, item: modified.get(d.id) } : d),
-			...added.map(item => ({ id: item.doc.id, item: item.doc.data() }))
-		]
+				.map(d => modified.has(d.id) ? modified.get(d.id) : d),
+			...added
+		].sort((a, b) => sort(a.data(), b.data()) * (direction == 'asc' ? 1 : -1))
+
 		list.current = newData
-		setEndDoc(newData[newData.length - 1].item)
-		setIndex(Math.random())
+		__(Math.random())
 
 	}
 
-	function queryBuilder(startAfter, queryLimit = limit) {
+	function queryBuilder(startAfter: firestore.QueryDocumentSnapshot<T>, limit: number = 1) {
 
 		const collection = firestore().collection(ref)
-		let query = collection.limit(queryLimit)
+		let query = collection.limit(limit)
 		for (const [fieldPath, opStr, value] of where) {
 			query = query.where(fieldPath as string, opStr, value)
 		}
-
+		query = query.orderBy(pagingBy as any, direction)
 		if (startAfter) {
-			query = query.orderBy(pagingBy as any, direction)
+			console.log({ startAfter })
 			query = query.startAfter(startAfter)
 		}
 		return query
@@ -111,34 +118,29 @@ export const useCollectionData = <T extends {}, K extends keyof T = keyof T>(
 
 
 	async function fetchMore() {
-		!loading && setLoading(true)
+		setLoading(true)
+		setError(null)
+		setHasMore(false)
 
+		const startAfter = list.current && list.current[list.current.length - 1]
 		const lastDoc = await new Promise<firestore.QueryDocumentSnapshot<T>>(s => {
-			const query = queryBuilder(endDoc)
+			const query = queryBuilder(startAfter, limit)
 			listeners.push(query.onSnapshot(
 				(snapshot: firestore.QuerySnapshot<T>) => {
-					const docs = snapshot.docs
-					s(docs[docs.length - 1])
-					queue.push(() => sync(snapshot as any))
+					const docs = snapshot.docChanges()
+					s(docs[docs.length - 1].doc)
+					queue.push(() => sync(docs))
 				},
 				setError as any
 			))
 		})
-
-		const queryNextDocument = await queryBuilder(lastDoc, 1).get()
-		setHasMore(!queryNextDocument.empty)
-		loading && setLoading(false)
-		lastDoc.data() && setEndDoc(lastDoc.data())
+		const nextDocuments = await queryBuilder(lastDoc, 1).get()
+		setHasMore(!nextDocuments.empty)
+		setLoading(false)
 	}
 
 	useEffect(() => {
-		 
-		endDoc && setEndDoc(null)
-		error && setError(null)
-		hasMore && setHasMore(false)
-
 		fetchMore()
-
 		return () => {
 			listeners.clear()
 			queue.clear()
@@ -146,10 +148,12 @@ export const useCollectionData = <T extends {}, K extends keyof T = keyof T>(
 	}, [ref, JSON.stringify(where), limit, pagingBy, direction])
 
 	return {
-		data: list.current.map(x => x.item),
+		data: list.current.map(d => d.data()),
 		loading,
 		error,
 		fetchMore,
 		hasMore,
 	}
 }
+
+ 

@@ -8,11 +8,11 @@ import { NotificationDocument } from '../types/firebase'
 
 
 const HomePage = (props: { domainId: string | null }) => {
-	const { data: notifications, error, loading } = useCollectionData<
+	const { data: notifications, error, loading, fetchMore, hasMore } = useCollectionData<
 		NotificationDocument
 	>(`domains/UDdjAr3BDopZbE2osn82/notifications`)
- 
 
+	console.log({ notifications, error, loading, hasMore })
 
 	return (
 		<MainLayout
@@ -24,6 +24,8 @@ const HomePage = (props: { domainId: string | null }) => {
 			}
 		>
 			<div className="p-5">
+
+
 				{notifications?.map(
 					({ title, description, images, videos, created_at }) => (
 						<div
@@ -62,6 +64,16 @@ const HomePage = (props: { domainId: string | null }) => {
 						</div>
 					),
 				)}
+
+
+			</div>
+			<div style={{marginBottom:200}}>
+				{
+					!loading && hasMore && <button onClick={fetchMore}>Load more</button>
+				}
+				{
+					loading && <img src='https://cdn.dribbble.com/users/487964/screenshots/1464859/loading.gif' width={200} />
+				}
 			</div>
 		</MainLayout>
 	)
