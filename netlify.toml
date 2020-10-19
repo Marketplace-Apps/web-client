@@ -1,0 +1,14 @@
+## netlify.toml
+
+[build]
+  publish = "out"
+  command = "npm run build"
+
+[[plugins]]
+	package = "netlify-plugin-next-dynamic"
+
+[[plugins]]
+	package = "netlify-plugin-cache-nextjs"
+
+[[plugins]]
+	package = "netlify-plugin-image-optim"

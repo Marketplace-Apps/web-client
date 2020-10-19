@@ -1,12 +1,12 @@
 import MainLayout from 'layouts/MainLayout'
 import dayjs from 'libs/dayjs'
-import React, { useEffect } from 'react'
-import { Col, Image, Row } from 'react-bootstrap'
-import { BsFillPersonFill } from 'react-icons/bs'
+import React, {useEffect} from 'react'
+import {Col, Image, Row} from 'react-bootstrap'
+import {BsFillPersonFill} from 'react-icons/bs'
 import CenteredSpinner from '../components/CenteredSpinner'
-import { isScrollToBottom } from '../helpers'
-import { useCollectionData, useDomain } from '../hooks'
-import { NotificationDocument } from '../types/firebase'
+import {isScrollToBottom} from '../helpers'
+import {useCollectionData, useDomain} from '../hooks'
+import {NotificationDocument} from '../types/firebase'
 
 const HomePage = () => {
 	const domain = useDomain()
