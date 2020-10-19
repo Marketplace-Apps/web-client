@@ -7,18 +7,16 @@ const AdvancedOptions = (props: {
 		label: string
 		form: any
 	}>
+	serviceConfig: object
 }) => {
-	const {data} = props
+	const { data, serviceConfig } = props
 	return (
 		<>
-			{
-				data.map(advancedOption => (
-					<AdvancedOption {...advancedOption} />
-				))
-			}
+			{data.map(advancedOption => (
+				<AdvancedOption data={advancedOption} serviceConfig={serviceConfig} />
+			))}
 		</>
 	)
-
 }
 
 export default AdvancedOptions

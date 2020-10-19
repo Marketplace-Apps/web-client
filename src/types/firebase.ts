@@ -5,21 +5,21 @@ export type DomainServiceDocument = {
 	visible: boolean
 	tag: string
 	min_price: number
+	published: boolean
+	import_price_is_flexible: boolean
 }
 
 export type ServiceConfigDocument = {
 	id: string
 	user_id: string
 	auth: {
-		method: string,
+		method: string
 		header_name: string
 		header_value: string
 	}
 }
 
-export type DomainParentServiceRefDocument = {
-
-}
+export type DomainParentServiceRefDocument = {}
 
 export type ServiceOrderDocument = {
 	id: string
@@ -61,6 +61,7 @@ export type ServiceActionDocument = {
 		by?: string
 	}
 	is_order_action: boolean
+	config?: object
 }
 
 export type ServiceActionConfigDocument = {
@@ -76,7 +77,7 @@ export type PaymentMethodDocument = {
 	bank_number: string
 	logo_url: string
 	active: boolean
-	credential?: string
+	note: string
 }
 
 export type UserDocument = {
@@ -86,4 +87,44 @@ export type UserDocument = {
 	email: string
 	name: string
 	total_deposit: number
+}
+
+export type OrderDocument = {
+	id: string
+	amount: number
+	remain_amount: number
+	target: string
+	type: string
+	created_at: number
+	end_time: number
+	status: string
+	fullname: string
+	description: string
+	user_id: string
+	total: number
+}
+
+export type PaymentHistoryDocument = {
+	id: string
+	icon: string
+	amount: number
+	service_name: string
+	total: number
+	created_at: number
+	message: string
+	from?: string
+	from_user_id?: string
+	to?: string
+	to_user_id?: string
+}
+
+export type NotificationDocument = {
+	id: string
+	icon: string
+	title: string
+	description: string
+	images: string[]
+	videos: string[]
+	created_at: number
+	bubble: boolean
 }

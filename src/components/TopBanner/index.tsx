@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import {Image} from 'react-bootstrap'
+import { Image } from 'react-bootstrap'
 
 const TopBanner = () => (
 	<>
@@ -9,7 +9,7 @@ const TopBanner = () => (
 				<Link href="/">
 					<a>
 						<Image
-							style={{maxWidth: '80px', borderRadius: '50%'}}
+							style={{ maxWidth: '80px', borderRadius: '50%' }}
 							fluid
 							className="banner-top__logo"
 							src="https://ongmatmedia.com/img/logo.png"
@@ -25,13 +25,18 @@ const TopBanner = () => (
 				height: 220px;
 				padding-bottom: 2rem;
 				width: 100%;
-				background-color: #1fc8db;
+				background: -webkit-linear-gradient(
+					to right,
+					#f64f59,
+					#c471ed,
+					#12c2e9
+				); /* Chrome 10-25, Safari 5.1-6 */
 				background: linear-gradient(
-					141deg,
-					#9fb8ad 0%,
-					#1fc8db 51%,
-					#2cb5e8 75%
-				);
+					to right,
+					#f64f59,
+					#c471ed,
+					#12c2e9
+				); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 				color: white;
 				opacity: 0.95;
 			}

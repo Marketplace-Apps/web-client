@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
-import {Image, Nav, Navbar} from 'react-bootstrap'
+import { Image, Nav, Navbar } from 'react-bootstrap'
+import { FaBell } from 'react-icons/fa'
 import styles from './index.module.scss'
 
 const Header = () => (
@@ -23,21 +24,12 @@ const Header = () => (
 
 				<Nav className="mr-auto">
 					<Link href="/">
-						<a style={{color: '#fff', fontWeight: 'bold'}}>
-							Ong Mật Media
-						</a>
+						<a style={{ color: '#fff', fontWeight: 'bold' }}>Ong Mật Media</a>
 					</Link>
 				</Nav>
 				<div className="header__notify">
 					<Link href="/notification">
-						<a>
-							<Image
-								style={{
-									borderRadius: '100%',
-								}}
-								src="/images/iconNotify.png"
-							/>
-						</a>
+						<FaBell size="30px" color="blue" />
 					</Link>
 				</div>
 			</Navbar>

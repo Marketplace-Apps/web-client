@@ -1,31 +1,29 @@
 import React from 'react'
-import {Form} from 'react-bootstrap'
-import {useForm} from 'react-hook-form'
-import CustomInput from '../CustomInput'
+import { Form } from 'react-bootstrap'
+import { useForm } from 'react-hook-form'
+import AlertBox from '../AlertBox'
+import GenericInput from '../GenericInput'
 import styles from './index.module.scss'
 
 const AdvancedOption = (props: {
-	id: string
-	label: string
-	form: any
+	data: { id: string; label: string; form: any }
+	serviceConfig: object
 }) => {
-
 	const {
-		id, label, form
+		data: { id, label, form },
+		serviceConfig,
 	} = props
 
-	const {register, watch} = useForm<{
+	const { register, watch } = useForm<{
 		status: boolean
 	}>()
 
 	const statusOption = watch('status', false)
 
 	return (
-		<div
-			className={styles.action_selectAdvanced}
-		>
+		<div className={styles.action_selectAdvanced}>
 			<div className={styles.action_selectAdvanced__header}>
-				<Form.Group style={{margin: 0}}>
+				<Form.Group style={{ margin: 0 }}>
 					<Form.Check
 						type="checkbox"
 						label={label}
@@ -35,20 +33,29 @@ const AdvancedOption = (props: {
 					/>
 				</Form.Group>
 			</div>
-			{
-				statusOption && (
-					<div className={styles.action_selectAdvanced__des}>
-						{
-							form && form.map((config: any) => (
-								<CustomInput
-									config={config}
-									prefixName={id}
-								/>
-							))
-						}
-					</div>
-				)
-			}
+			{statusOption && (
+				<div className={styles.action_selectAdvanced__des}>
+					{form &&
+						form.map((item: any) => (
+							<>
+								{item.type === 'alert' && (
+									<AlertBox
+										content={item.content}
+										level={item.level}
+										visible={item.visible}
+										config={item.config}
+									/>
+								)}
+								{item.type !== 'alert' && (
+									<GenericInput
+										inputConfig={item}
+										serviceConfig={serviceConfig}
+									/>
+								)}
+							</>
+						))}
+				</div>
+			)}
 		</div>
 	)
 }

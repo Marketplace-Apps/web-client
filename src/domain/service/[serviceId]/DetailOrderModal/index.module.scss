@@ -1,0 +1,90 @@
+//  actiopn
+.singleOrder {
+	// position: fixed;
+	background-color: #fff;
+	z-index: 999;
+	height: 100%;
+	width: 100%;
+	// top: 0;
+	// left: 0;
+	// right: 0;
+	margin-bottom: 2rem;
+
+	&__header {
+		background: #0785cc;
+		border-radius: 10px 10px 0px 0px;
+		display: flex;
+		justify-content: space-between;
+		padding: 5px 1rem;
+	}
+
+	&__headerText {
+		color: #fff;
+		font-weight: bold;
+	}
+
+	&__des {
+		padding: 0 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	&__users {
+		display: flex;
+		justify-content: space-around;
+	}
+
+	&__icontitle {
+		margin-right: 1rem;
+	}
+
+	&__title {
+		font-size: 1.3rem;
+		line-height: 1.7rem;
+		color: #6b6b6b;
+		font-weight: bold;
+	}
+
+	&__userIcon {
+		max-width: 77px;
+		max-height: 77px;
+		border-radius: 50%;
+		margin-bottom: 1rem;
+	}
+
+	&__userName {
+		font-weight: bold;
+		font-size: 1rem;
+		line-height: 1.2rem;
+
+		color: #0785cc;
+	}
+
+	// infor
+	&__infor {
+		margin-top: 2.5rem;
+	}
+
+	&__inforLine {
+		display: flex;
+		margin-bottom: 0.7rem;
+		align-items: center;
+	}
+
+	&__inforIcon {
+		margin-right: 0.6rem;
+		width: 24px;
+		height: 24px;
+	}
+
+	&__text {
+		color: #6b6b6b;
+		font-size: 14px;
+		line-height: 16px;
+	}
+
+	&__touchs {
+		display: flex;
+		justify-content: space-around;
+		margin-top: 2rem;
+	}
+}

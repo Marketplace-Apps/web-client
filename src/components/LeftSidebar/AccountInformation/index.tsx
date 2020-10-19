@@ -1,25 +1,52 @@
+import { auth } from 'firebase/app'
 import React from 'react'
-import {Col, Image, Row} from 'react-bootstrap'
+import { Image } from 'react-bootstrap'
+import { useDocumentData, useDomain } from '../../../hooks'
+import { UserDocument } from '../../../types/firebase'
 import styles from './index.module.scss'
 
-const AccountInformation = () => (
-	<div className={styles.sidebarLeft_infor}>
-		<Row>
-			<Col md={3}>
+const AccountInformation = () => {
+	const domain = useDomain()
+
+	const { data: user } = useDocumentData<UserDocument>(
+		`domains/${domain?.id}/users/${auth().currentUser.uid}`,
+	)
+
+	return (
+		<div className={styles.sidebarLeft_infor}>
+			<div
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+				}}
+			>
 				<div className={styles.sidebarLeft_infor__avatar}>
-					<Image src="/images/avatarfake.png" fluid />
+					<Image
+						src={
+							auth().currentUser.isAnonymous
+								? '/images/avatarfake.png'
+								: auth().currentUser.providerData[0].photoURL
+						}
+						fluid
+						width="50px"
+						roundedCircle
+					/>
 				</div>
-			</Col>
-			<Col md={9}>
 				<div className={styles.sidebarLeft_infor__desc}>
 					<div className={styles.sidebarLeft_infor__name}>
-						<h1 className={styles.userName}>Duong Van Ba</h1>
+						<span className={styles.userName}>
+							{auth().currentUser.isAnonymous
+								? 'Ẩn danh'
+								: auth().currentUser.providerData[0].displayName}
+						</span>
 					</div>
-					<div className={styles.sidebarLeft_infor__money}>9992599 VND</div>
+					<div className={styles.sidebarLeft_infor__money}>
+						{user?.balance.toLocaleString('vi')}
+					</div>
 				</div>
-			</Col>
-		</Row>
-	</div>
-)
+			</div>
+		</div>
+	)
+}
 
 export default AccountInformation

@@ -1,0 +1,42 @@
+.pageHistory {
+
+	&_serviceWrap {
+		border-bottom: 1px solid #e3e3e3
+	}
+
+	&_service {
+		padding        : 1rem 1.5rem;
+		display        : flex;
+		justify-content: space-between;
+
+
+		&__des {
+			display: flex;
+		}
+
+		&__icon {
+			margin-right: 1rem;
+		}
+
+		&__text {
+			font-size  : 14px;
+			line-height: 21px;
+			columns    : #000000;
+		}
+
+		&__sta {
+			text-align: right;
+		}
+
+		&__price {
+			color      : #000000;
+			font-size  : .9rem;
+			font-weight: bold;
+		}
+
+		&__state {
+			font-size: 1rem;
+			color    : #00A758;
+		}
+	}
+}

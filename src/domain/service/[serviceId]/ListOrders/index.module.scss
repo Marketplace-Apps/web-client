@@ -1,0 +1,33 @@
+.ServiceManager {
+	margin-bottom: 5rem;
+
+	&_main {
+		padding: 0 1.5rem;
+	}
+
+	//_ListBoxItem
+	&_ListBoxItem {
+		display: flex;
+	}
+
+	// end _ListBoxItem
+}
+
+.pageOrder_content {
+	margin-top: 2rem;
+	padding-left: 20px;
+
+	&__day {
+		font-size: 1rem;
+		line-height: 1.2rem;
+		margin-bottom: 1rem;
+		color: #71a7f9;
+	}
+}
+
+.order_item {
+	&__title {
+		display: flex;
+		justify-content: space-between;
+	}
+}

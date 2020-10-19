@@ -15,7 +15,7 @@
 		"noFallthroughCasesInSwitch": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
-		"target": "esnext",
+		"target": "es6",
 		"strict": false,
 		"baseUrl": "./src",
   },
