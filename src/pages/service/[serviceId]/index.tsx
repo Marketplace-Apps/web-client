@@ -8,6 +8,7 @@ import Error from 'next/error'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { DomainServiceDocument, ServiceActionDocument } from 'types/firebase'
+import ListClientIframes from '../../../domain/service/[serviceId]/ListClientIframes'
 import { useDocumentData, useDomain } from '../../../hooks'
 
 const ServiceDetailPage = () => {
@@ -56,13 +57,16 @@ const ServiceDetailPage = () => {
 						/>
 					)}
 					<ServiceHeader icon={service.icon} name={service.name} />
-					<ListActions
-						minPrice={service.min_price}
-						onSelectAction={action => {
-							setSelectedAction(action)
-							onShowActionDetailModal()
-						}}
-					/>
+					<div className="p-3 d-flex justify-content-end">
+						<ListClientIframes />
+						<ListActions
+							minPrice={service.min_price}
+							onSelectAction={action => {
+								setSelectedAction(action)
+								onShowActionDetailModal()
+							}}
+						/>
+					</div>
 					<ListOrders
 						serviceData={service}
 						onSelectAction={action => {

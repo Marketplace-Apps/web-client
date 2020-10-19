@@ -128,3 +128,10 @@ export type NotificationDocument = {
 	created_at: number
 	bubble: boolean
 }
+
+export type IframeDocument = {
+	id: string
+	name: string
+	icon_url: string
+	host: string
+}
