@@ -1,15 +1,15 @@
 import CustomButton from 'components/CustomButton'
 import MenuItem from 'domain/me/MenuItem'
-import {auth, firestore} from 'firebase/app'
+import { auth, firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
-import React, {useState} from 'react'
-import {Image, Row} from 'react-bootstrap'
-import {useAuthState} from 'react-firebase-hooks/auth'
-import {useDocumentData} from 'react-firebase-hooks/firestore'
-import {BsPersonFill} from 'react-icons/bs'
-import {FcContacts, FcRules} from 'react-icons/fc'
-import {toast} from 'react-toastify'
-import {UserDocument} from '../../types/firebase'
+import React, { useState } from 'react'
+import { Image, Row } from 'react-bootstrap'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { BsPersonFill } from 'react-icons/bs'
+import { FcContacts, FcRules } from 'react-icons/fc'
+import { toast } from 'react-toastify'
+import { useDocumentData, useDomain } from '../../hooks'
+import { UserDocument } from '../../types/firebase'
 
 const MENU_ITEMS = [
 	{
@@ -24,15 +24,13 @@ const MENU_ITEMS = [
 	},
 ]
 
-const MePage = (props: { domainId: string }) => {
+const MePage = () => {
 	const [user, loading] = useAuthState(auth())
 
-	const [userDocument] = useDocumentData<UserDocument>(
-		firestore()
-			.collection('domains')
-			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
-			.collection('users')
-			.doc(auth().currentUser?.uid || 'uid'),
+	const domain = useDomain()
+
+	const { data: userDocument } = useDocumentData<UserDocument>(
+		`domains/${domain?.id}/users/${user?.uid || 'uid'}`,
 	)
 
 	const [isSigningInAnonymously, setIsSigningInAnonymously] = useState<boolean>(
@@ -56,7 +54,7 @@ const MePage = (props: { domainId: string }) => {
 	) =>
 		await firestore()
 			.collection('domains')
-			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
+			.doc(domain?.id)
 			.collection('users')
 			.doc(uid)
 			.set({
@@ -80,7 +78,7 @@ const MePage = (props: { domainId: string }) => {
 			})
 			const userRef = await firestore()
 				.collection('domains')
-				.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
+				.doc(domain?.id)
 				.collection('users')
 				.doc(auth().currentUser.uid)
 				.get()
@@ -111,7 +109,7 @@ const MePage = (props: { domainId: string }) => {
 			})
 			const userRef = await firestore()
 				.collection('domains')
-				.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
+				.doc(domain?.id)
 				.collection('users')
 				.doc(anonymousUser.uid)
 				.get()
@@ -120,7 +118,7 @@ const MePage = (props: { domainId: string }) => {
 			const oldUser = userRef.data()
 			await firestore()
 				.collection('domains')
-				.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
+				.doc(domain?.id)
 				.collection('users')
 				.doc(anonymousUser.uid)
 				.delete()
@@ -150,7 +148,7 @@ const MePage = (props: { domainId: string }) => {
 			})
 			const userRef = await firestore()
 				.collection('domains')
-				.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
+				.doc(domain?.id)
 				.collection('users')
 				.doc(auth().currentUser.uid)
 				.get()
@@ -165,7 +163,7 @@ const MePage = (props: { domainId: string }) => {
 	}
 
 	return (
-		<MainLayout title="Cá nhân" domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}>
+		<MainLayout title="Cá nhân">
 			<div className="pageUser">
 				<div
 					style={{
@@ -320,5 +318,5 @@ const MePage = (props: { domainId: string }) => {
 		</MainLayout>
 	)
 }
- 
+
 export default MePage

@@ -1,17 +1,15 @@
-import { auth, firestore } from 'firebase/app'
+import { auth } from 'firebase/app'
 import React from 'react'
 import { Image } from 'react-bootstrap'
-import { useDocumentData } from 'react-firebase-hooks/firestore'
+import { useDocumentData, useDomain } from '../../../hooks'
 import { UserDocument } from '../../../types/firebase'
 import styles from './index.module.scss'
 
-const AccountInformation = (props: { domainId: string }) => {
-	const [user] = useDocumentData<UserDocument>(
-		firestore()
-			.collection('domains')
-			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
-			.collection('users')
-			.doc(auth().currentUser.uid),
+const AccountInformation = () => {
+	const domain = useDomain()
+
+	const { data: user } = useDocumentData<UserDocument>(
+		`domains/${domain?.id}/users/${auth().currentUser.uid}`,
 	)
 
 	return (

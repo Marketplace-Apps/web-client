@@ -1,21 +1,17 @@
-import { firestore } from 'firebase/app'
 import React from 'react'
 import { ListGroup } from 'react-bootstrap'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { FaBell } from 'react-icons/fa'
+import { useCollectionData, useDomain } from '../../hooks'
 import { NotificationDocument } from '../../types/firebase'
 import styles from './index.module.scss'
 import ListGuideItem from './ListGuideItem'
 import ListNotificationItem from './ListNotificationItem'
 
-const RightSidebar = (props: { domainId: string }) => {
-	const [notifications] = useCollectionData<NotificationDocument>(
-		firestore()
-			.collection('domains')
-			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
-			.collection('notifications')
-			.orderBy('created_at', 'desc')
-			.limit(5),
+const RightSidebar = () => {
+	const domain = useDomain()
+
+	const { data: notifications } = useCollectionData<NotificationDocument>(
+		`domains/${domain?.id}/notifications`,
 	)
 
 	return (

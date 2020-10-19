@@ -5,12 +5,12 @@ import AccountInformation from './AccountInformation'
 import styles from './index.module.scss'
 import LeftSidebarMenu from './LefSidebarMenu'
 
-const LeftSidebar = (props: { domainId: string }) => {
+const LeftSidebar = () => {
 	const [user] = useAuthState(auth())
 
 	return (
 		<div className={styles.sidebarLeft}>
-			{user && <AccountInformation domainId={props.domainId} />}
+			{user && <AccountInformation />}
 			<LeftSidebarMenu />
 		</div>
 	)

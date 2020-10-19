@@ -1,8 +1,7 @@
 import ListAdminPaymentMethodsItem from 'domain/deposit/ListAdminPaymentMethodsItem'
-import { firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
 import React from 'react'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useCollectionData, useDomain } from '../../hooks'
 import { PaymentMethodDocument } from '../../types/firebase'
 
 const Title = (props: { title: string }) => (
@@ -20,16 +19,18 @@ const Title = (props: { title: string }) => (
 	</h2>
 )
 
-const DepositPage = (props: { domainId: string }) => {
-	const [paymentMethods] = useCollectionData<PaymentMethodDocument>(
-		firestore()
-			.collection('domains')
-			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
-			.collection('payment_methods'),
+const DepositPage = () => {
+	const domain = useDomain()
+
+	const { data: paymentMethods } = useCollectionData<PaymentMethodDocument>(
+		`domains/${domain?.id}/payment_methods`,
+		[],
+		null,
+		100,
 	)
 
 	return (
-		<MainLayout domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'} title="Phương thức thanh toán">
+		<MainLayout title="Phương thức thanh toán">
 			<div className="pageAddCash" style={{ padding: '1rem 1.5rem' }}>
 				<Title title="Vui lòng chọn một trong các phương thức thanh toán dưới đây" />
 				{paymentMethods?.map(paymentMethod => (
@@ -39,6 +40,5 @@ const DepositPage = (props: { domainId: string }) => {
 		</MainLayout>
 	)
 }
- 
 
 export default DepositPage

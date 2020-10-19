@@ -5,6 +5,8 @@ export type DomainServiceDocument = {
 	visible: boolean
 	tag: string
 	min_price: number
+	published: boolean
+	import_price_is_flexible: boolean
 }
 
 export type ServiceConfigDocument = {

@@ -3,26 +3,22 @@ import ActionDetailModal from 'domain/service/[serviceId]/ActionDetailModal'
 import ListActions from 'domain/service/[serviceId]/ListActions'
 import ListOrders from 'domain/service/[serviceId]/ListOrders'
 import ServiceHeader from 'domain/service/[serviceId]/ServiceHeader'
-import { firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { useDocumentData } from 'react-firebase-hooks/firestore'
 import { DomainServiceDocument, ServiceActionDocument } from 'types/firebase'
+import { useDocumentData, useDomain } from '../../../hooks'
 
-const ServiceDetailPage = (props: { domainId: string }) => {
+const ServiceDetailPage = () => {
+	const domain = useDomain()
+
 	const router = useRouter()
 	const { serviceId } = router.query as { serviceId: string }
-	const [service, loadingService, error] = useDocumentData<
+
+	const { data: service, loading, error } = useDocumentData<
 		DomainServiceDocument
-	>(
-		firestore()
-			.collection('domains')
-			.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
-			.collection('services')
-			.doc(serviceId),
-	)
+	>(`domains/${domain?.id}/services/${serviceId}`)
 
 	const [isShowActionDetailModal, setIsShowActionDetailModal] = useState<
 		boolean
@@ -36,13 +32,13 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 	] = useState<ServiceActionDocument | null>(null)
 
 	return (
-		<MainLayout title="Chi tiết dịch vụ" domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}>
-			{loadingService && (
+		<MainLayout title="Chi tiết dịch vụ">
+			{!service && (
 				<div style={{ minHeight: '100vh' }}>
 					<CenteredSpinner />
 				</div>
 			)}
-			{!service && !loadingService && (
+			{!service && !loading && (
 				<Error statusCode={400} title="Không có dữ liệu về dịch vụ này" />
 			)}
 			{error && <Error statusCode={500} title="Có lỗi xảy ra!" />}
@@ -68,7 +64,6 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 						}}
 					/>
 					<ListOrders
-						domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}
 						serviceData={service}
 						onSelectAction={action => {
 							setSelectedAction(action)
@@ -80,6 +75,5 @@ const ServiceDetailPage = (props: { domainId: string }) => {
 		</MainLayout>
 	)
 }
- 
 
 export default ServiceDetailPage

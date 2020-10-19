@@ -1,62 +1,38 @@
 import ListTransactionsItem from 'domain/transaction/ListTransactionsItem'
-import {auth, firestore} from 'firebase/app'
+import { auth } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
-import React, {useEffect, useState} from 'react'
-import {useCollectionData} from 'react-firebase-hooks/firestore'
+import React, { useEffect } from 'react'
 import CenteredSpinner from '../../components/CenteredSpinner'
-import {classifyDataByDay, isScrollToBottom} from '../../helpers'
-import {PaymentHistoryDocument} from '../../types/firebase'
+import { classifyDataByDay, isScrollToBottom } from '../../helpers'
+import { useCollectionData, useDomain } from '../../hooks'
+import { PaymentHistoryDocument } from '../../types/firebase'
 
-const TransactionPage = (props: { domainId: string | null }) => {
-	const paymentHistoriesQuery = firestore()
-		.collection('domains')
-		.doc(props.domainId || typeof window != 'undefined' && window.location.hostname || 'null')
-		.collection('users')
-		.doc(auth().currentUser?.uid || 'uid')
-		.collection('payment_histories')
-		.orderBy('created_at', 'desc')
-		.limit(10)
+const TransactionPage = () => {
+	const domain = useDomain()
 
-	const [inititalpaymentHistorie] = useCollectionData<PaymentHistoryDocument>(
-		paymentHistoriesQuery,
+	const { data: paymentHistories, fetchMore, hasMore } = useCollectionData<
+		PaymentHistoryDocument
+	>(
+		`domains/${domain?.id}/users/${
+			auth().currentUser?.uid || 'uid'
+		}/payment_histories`,
 	)
-	const [hasMore, setHasMore] = useState<boolean>(true)
-
-	const [paymentHistories, setPaymentHistories] = useState<
-		PaymentHistoryDocument[]
-	>([])
 
 	const classifyPaymentHistoriesByDay = classifyDataByDay<
 		PaymentHistoryDocument
 	>(paymentHistories || [])
 
 	const handleLoadMore = () => {
-		if (isScrollToBottom() && hasMore && !!paymentHistories.length) {
-			const fn = paymentHistoriesQuery.limit(paymentHistories.length + 10)
-			fn.onSnapshot(snap => {
-				setPaymentHistories([
-					...snap.docs.map(doc => doc.data()),
-				] as PaymentHistoryDocument[])
-				setHasMore(
-					snap.docs.map(doc => doc.data()).length >=
-						paymentHistories.length + 10,
-				)
-			})
-		}
+		if (isScrollToBottom() && hasMore) fetchMore()
 	}
-
-	useEffect(() => {
-		if (!inititalpaymentHistorie) return
-		setPaymentHistories(inititalpaymentHistorie)
-	}, [inititalpaymentHistorie])
 
 	useEffect(() => {
 		window.addEventListener('scroll', handleLoadMore)
 		return () => window.removeEventListener('scroll', handleLoadMore)
-	}, [hasMore, paymentHistories])
+	}, [hasMore])
 
 	return (
-		<MainLayout title="Lịch sử giao dịch" domainId={props.domainId || typeof window != 'undefined' && window.location.hostname || 'null'}>
+		<MainLayout title="Lịch sử giao dịch">
 			<div className="pageHistory" style={{ padding: '1rem 0' }}>
 				<div className="pageHistory__selectDate">
 					<div
@@ -117,5 +93,4 @@ const TransactionPage = (props: { domainId: string | null }) => {
 	)
 }
 
- 
 export default TransactionPage

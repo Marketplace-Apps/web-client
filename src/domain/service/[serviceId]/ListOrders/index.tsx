@@ -1,12 +1,8 @@
-import { auth, firestore } from 'firebase/app'
+import { auth } from 'firebase/app'
+import { useCollectionData, useDomain } from 'hooks'
 import React, { useEffect, useState } from 'react'
 import { Row } from 'react-bootstrap'
 import {
-	useCollectionData,
-	useDocumentData,
-} from 'react-firebase-hooks/firestore'
-import {
-	DomainDocument,
 	DomainServiceDocument,
 	OrderDocument,
 	ServiceActionDocument,
@@ -19,41 +15,23 @@ import RelativeTimeFromNow from '../RelativeTimeFromNow'
 import styles from './index.module.scss'
 
 type ListOrdersProps = {
-	domainId: string
 	serviceData: DomainServiceDocument
 	onSelectAction: (action: ServiceActionDocument) => void
 }
 
-const ListOrders = ({
-	domainId,
-	serviceData,
-	onSelectAction,
-}: ListOrdersProps) => {
-	const ordersQuery = firestore()
-		.collection('domains')
-		.doc(domainId)
-		.collection('services')
-		.doc(serviceData.id)
-		.collection('orders')
-		.where('user_id', '==', auth().currentUser.uid)
-		.orderBy('created_at', 'desc')
-		.limit(10)
+const ListOrders = ({ serviceData, onSelectAction }: ListOrdersProps) => {
+	const domain = useDomain()
 
-	const [domain] = useDocumentData<DomainDocument>(
-		firestore().collection('domains').doc(domainId),
-	)
+	const { data: orders, hasMore, fetchMore, loading } = useCollectionData<
+		OrderDocument
+	>(`domains/${domain?.id}/services/${serviceData.id}/orders`, [
+		['user_id', '==', auth().currentUser.uid],
+	])
 
-	const [orderActions] = useCollectionData<ServiceActionDocument>(
-		firestore()
-			.collection(`services/${serviceData.id}_config/actions`)
-			.where('is_order_action', '==', true),
+	const { data: orderActions } = useCollectionData<ServiceActionDocument>(
+		`services/${serviceData.id}_config/actions`,
+		[['is_order_action', '==', true]],
 	)
-
-	const [inititalOrders, loading, error] = useCollectionData<OrderDocument>(
-		ordersQuery,
-	)
-	const [hasMore, setHasMore] = useState<boolean>(true)
-	const [orders, setOrders] = useState<OrderDocument[]>([])
 
 	const classifiedOrdersByDay = classifyDataByDay<OrderDocument>(orders || [])
 
@@ -72,26 +50,13 @@ const ListOrders = ({
 	}
 
 	const handleLoadMore = () => {
-		if (isScrollToBottom() && hasMore && !!orders.length) {
-			const fn = ordersQuery.limit(orders.length + 10)
-			fn.onSnapshot(snap => {
-				setOrders([...snap.docs.map(doc => doc.data())] as OrderDocument[])
-				setHasMore(
-					snap.docs.map(doc => doc.data()).length >= orders.length + 10,
-				)
-			})
-		}
+		if (isScrollToBottom() && hasMore) fetchMore()
 	}
-
-	useEffect(() => {
-		if (!inititalOrders) return
-		setOrders(inititalOrders)
-	}, [inititalOrders])
 
 	useEffect(() => {
 		window.addEventListener('scroll', handleLoadMore)
 		return () => window.removeEventListener('scroll', handleLoadMore)
-	}, [hasMore, orders])
+	}, [hasMore])
 
 	return (
 		<>
