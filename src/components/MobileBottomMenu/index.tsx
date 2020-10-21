@@ -1,21 +1,22 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { BsFillPersonFill } from 'react-icons/bs'
-import { FaBell, FaHistory, FaHome, FaMoneyBill } from 'react-icons/fa'
+import { FaHistory } from 'react-icons/fa'
+import { FcHome, FcManager, FcNews } from 'react-icons/fc'
+import { GiMoneyStack } from 'react-icons/gi'
 import styles from './style.module.scss'
 
 const PageList = [
-	{ name: 'Thông báo', icon: FaBell, pathname: '/', color: '#117a8b' },
+	{ name: 'Thông báo', icon: FcNews, pathname: '/', color: '#117a8b' },
 	{
 		name: 'Nạp tiền',
-		icon: FaMoneyBill,
+		icon: GiMoneyStack,
 		pathname: '/deposit',
 		color: '#089b06',
 	},
 	{
-		name: '',
-		icon: FaHome,
+		name: 'Dịch vụ',
+		icon: FcHome,
 		pathname: '/service',
 		color: '#343a40',
 	},
@@ -27,7 +28,7 @@ const PageList = [
 	},
 	{
 		name: 'Cá nhân',
-		icon: BsFillPersonFill,
+		icon: FcManager,
 		pathname: '/me',
 		color: 'grey',
 	},
