@@ -80,6 +80,12 @@ export type PaymentMethodDocument = {
 	note: string
 }
 
+export type PaymentMethodNoteDocument = {
+	id: string
+	type: string
+	content: string
+}
+
 export type UserDocument = {
 	id: string
 	avatar_url: string
@@ -127,4 +133,12 @@ export type NotificationDocument = {
 	videos: string[]
 	created_at: number
 	bubble: boolean
+}
+
+export type IframeDocument = {
+	id: string
+	name: string
+	icon: string
+	url: string
+	type: string
 }

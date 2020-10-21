@@ -14,9 +14,11 @@ import { RiBillFill } from 'react-icons/ri'
 import {
 	DomainDocument,
 	DomainServiceDocument,
+	IframeDocument,
 	OrderDocument,
 	ServiceActionDocument,
 } from 'types/firebase'
+import { compileJavascriptCode } from '../../../../helpers'
 import styles from './index.module.scss'
 
 type DetailOrderModalProps = {
@@ -27,6 +29,7 @@ type DetailOrderModalProps = {
 	domainData: DomainDocument
 	orderActions: ServiceActionDocument[]
 	onSelectAction: (action: ServiceActionDocument) => void
+	orderWidgetIframes: IframeDocument[]
 }
 
 const STATUS = {
@@ -46,6 +49,7 @@ const TYPE = {
 const DetailOrderModal = ({
 	isShow,
 	onClose,
+	data: order,
 	data: {
 		fullname,
 		created_at,
@@ -61,6 +65,7 @@ const DetailOrderModal = ({
 	domainData,
 	orderActions,
 	onSelectAction,
+	orderWidgetIframes,
 }: DetailOrderModalProps) => {
 	return (
 		<Modal size="lg" show={isShow} onHide={onClose} keyboard={false}>
@@ -184,6 +189,19 @@ const DetailOrderModal = ({
 							</Col>
 						))}
 					</Row>
+					{orderWidgetIframes?.map(orderWidgetIframe => (
+						<div>
+							<iframe
+								src={compileJavascriptCode(orderWidgetIframe?.url, order)}
+								width="100%"
+								height="100%"
+								seamless
+								style={{
+									border: 'none',
+								}}
+							/>
+						</div>
+					))}
 				</div>
 			</div>
 		</Modal>

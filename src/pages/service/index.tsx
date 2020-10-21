@@ -1,4 +1,3 @@
-import CenteredSpinner from 'components/CenteredSpinner'
 import GroupedByTypeListServicesContainer from 'domain/home/components/GroupedByTypeListServicesContainer'
 import GroupedByTypeListServicesHeader from 'domain/home/components/GroupedByTypeListServicesHeader'
 import ServicePreview from 'domain/home/components/ServicePreview'
@@ -18,8 +17,6 @@ const ServicePage = () => {
 	const { data: domainServices, loading } = useCollectionData<
 		DomainServiceDocument
 	>(`domains/${domain?.id}/services`, [['published', '==', true]], null, 100)
-
-	console.log({ domainServices })
 
 	const classifiedByTagServices = classifyDataByField<
 		string,
@@ -44,7 +41,6 @@ const ServicePage = () => {
 				</Container>
 			</div>
 			<GroupedByTypeListServicesContainer>
-				{loading && <CenteredSpinner />}
 				{!domainServices && !loading && (
 					<Error statusCode={400} title="Không có dữ liệu về tên miền này" />
 				)}
@@ -56,8 +52,8 @@ const ServicePage = () => {
 								name={`Dịch vụ ${group.key}`}
 							/>
 							<Row>
-								{group.data.map(serviceAction => (
-									<ServicePreview {...serviceAction} />
+								{group.data.map(service => (
+									<ServicePreview {...service} />
 								))}
 							</Row>
 						</>

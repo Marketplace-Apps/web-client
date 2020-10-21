@@ -1,30 +1,30 @@
 .header {
-  &__search {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-  }
+	&__search {
+		margin-bottom: 1.5rem;
+		padding: 1rem;
+	}
 
-  &__inputSearch {
-    width: 100% !important;
-    padding: 2rem 4rem 2rem 2rem;
-    font-size: 1.2rem;
-    border-radius: 35px;
-  }
+	&__inputSearch {
+		width: 100% !important;
+		padding: 2rem 4rem 2rem 2rem;
+		font-size: 1.2rem;
+		border-radius: 35px;
+	}
 
-  &__form {
-    position: relative;
-  }
+	&__form {
+		position: relative;
+	}
 
-  &__btnSearch {
-    position: absolute;
-    right: 0.5rem;
-    padding: 2px;
-  }
+	&__btnSearch {
+		position: absolute;
+		right: 0.5rem;
+		padding: 2px;
+	}
 }
 
 .list_button {
-	padding        : 1.5rem 2.5rem;
-	display        : flex;
+	padding: 1.5rem 2.5rem;
+	display: flex;
 	justify-content: flex-end;
 
 	&__btn {
@@ -39,13 +39,13 @@
 //responsive
 @media screen and (min-device-width: 320px) and (max-device-width: 992px) {
 	.page_wrapper {
-		padding-left    : 0rem;
-		padding-right   : 0rem;
+		padding-left: 0rem;
+		padding-right: 0rem;
 		background-color: #faf7f7;
 	}
 
 	.page_main {
-		border-top-left-radius : 0rem;
+		border-top-left-radius: 0rem;
 		border-top-right-radius: 0rem;
 	}
 }

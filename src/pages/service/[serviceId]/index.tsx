@@ -6,8 +6,10 @@ import ServiceHeader from 'domain/service/[serviceId]/ServiceHeader'
 import MainLayout from 'layouts/MainLayout'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DomainServiceDocument, ServiceActionDocument } from 'types/firebase'
+import ListClientPopupIframes from '../../../domain/service/[serviceId]/ListClientPopupIframes'
+import ListClientWidgetIframes from '../../../domain/service/[serviceId]/ListClientWidgetIframes'
 import { useDocumentData, useDomain } from '../../../hooks'
 
 const ServiceDetailPage = () => {
@@ -30,6 +32,10 @@ const ServiceDetailPage = () => {
 		selectedAction,
 		setSelectedAction,
 	] = useState<ServiceActionDocument | null>(null)
+
+	useEffect(() => {
+		if (service && !service.visible) router.push('/service')
+	}, [service])
 
 	return (
 		<MainLayout title="Chi tiết dịch vụ">
@@ -56,13 +62,17 @@ const ServiceDetailPage = () => {
 						/>
 					)}
 					<ServiceHeader icon={service.icon} name={service.name} />
-					<ListActions
-						minPrice={service.min_price}
-						onSelectAction={action => {
-							setSelectedAction(action)
-							onShowActionDetailModal()
-						}}
-					/>
+					<div className="p-3 d-flex justify-content-end">
+						<ListClientPopupIframes />
+						<ListActions
+							minPrice={service.min_price}
+							onSelectAction={action => {
+								setSelectedAction(action)
+								onShowActionDetailModal()
+							}}
+						/>
+					</div>
+					<ListClientWidgetIframes />
 					<ListOrders
 						serviceData={service}
 						onSelectAction={action => {
