@@ -1,6 +1,7 @@
 import ListAdminPaymentMethodsItem from 'domain/deposit/ListAdminPaymentMethodsItem'
 import MainLayout from 'layouts/MainLayout'
 import React from 'react'
+import CenteredSpinner from '../../components/CenteredSpinner'
 import { useCollectionData, useDomain } from '../../hooks'
 import { PaymentMethodDocument } from '../../types/firebase'
 
@@ -22,20 +23,26 @@ const Title = (props: { title: string }) => (
 const DepositPage = () => {
 	const domain = useDomain()
 
-	const { data: paymentMethods } = useCollectionData<PaymentMethodDocument>(
-		`domains/${domain?.id}/payment_methods`,
-		[],
-		null,
-		100,
-	)
+	const { data: paymentMethods, loading } = useCollectionData<
+		PaymentMethodDocument
+	>(`domains/${domain?.id}/payment_methods`, [], null, 100)
 
 	return (
 		<MainLayout title="Phương thức thanh toán">
 			<div className="pageAddCash" style={{ padding: '1rem 1.5rem' }}>
 				<Title title="Vui lòng chọn một trong các phương thức thanh toán dưới đây" />
-				{paymentMethods?.map(paymentMethod => (
-					<ListAdminPaymentMethodsItem {...paymentMethod} />
-				))}
+				{!paymentMethods && <CenteredSpinner />}
+				{paymentMethods && !paymentMethods.length && (
+					<p>Vui lòng liên hệ admin để lấy thông tin thanh toán</p>
+				)}
+				{paymentMethods &&
+					!!paymentMethods.length &&
+					paymentMethods?.map(paymentMethod => (
+						<ListAdminPaymentMethodsItem
+							{...paymentMethod}
+							domainId={domain.id}
+						/>
+					))}
 			</div>
 		</MainLayout>
 	)

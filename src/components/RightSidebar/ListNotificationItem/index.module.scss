@@ -1,17 +1,17 @@
 .page_wrapper {
-	padding-left    : 4rem;
-	padding-right   : 4rem;
+	padding-left: 4rem;
+	padding-right: 4rem;
 	background-color: #faf7f7;
 }
 
 .page_main {
-	height    : 100%;
+	height: 100%;
 	background: #ffffff;
 }
 
 .pageNotification__header {
-	display        : flex;
-	align-items    : center;
+	display: flex;
+	align-items: center;
 	justify-content: space-between;
 
 	img {
@@ -32,7 +32,7 @@
 	}
 
 	&__iconImg {
-		width : 35px;
+		width: 35px;
 		height: 35px;
 	}
 }
@@ -59,13 +59,13 @@
 
 @media screen and (min-device-width: 320px) and (max-device-width: 992px) {
 	.page_wrapper {
-		padding-left    : 0rem;
-		padding-right   : 0rem;
+		padding-left: 0rem;
+		padding-right: 0rem;
 		background-color: #faf7f7;
 	}
 
 	.page_main {
-		border-top-left-radius : 0rem;
+		border-top-left-radius: 0rem;
 		border-top-right-radius: 0rem;
 	}
 }
@@ -88,11 +88,10 @@
 
 @media screen and (min-device-width: 992px) {
 	.page_main {
-		background             : #ffffff;
-		border-top-left-radius : 2.5rem;
+		background: #ffffff;
+		border-top-left-radius: 2.5rem;
 		border-top-right-radius: 2.5rem;
 	}
-
 }
 
 @media screen and (min-device-width: 992px) and (max-device-width: 1024px) {
@@ -102,13 +101,13 @@
 
 	.btnLastchild {
 		margin-top: 5px;
-		padding   : 5px 15px;
+		padding: 5px 15px;
 	}
 }
 
 @media screen and (min-device-width: 1025px) and (max-device-width: 1429px) {
 	.btnLastchild {
 		margin-top: 5px;
-		padding   : 5px 15px;
+		padding: 5px 15px;
 	}
 }

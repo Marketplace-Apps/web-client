@@ -6,7 +6,7 @@ import ServiceHeader from 'domain/service/[serviceId]/ServiceHeader'
 import MainLayout from 'layouts/MainLayout'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DomainServiceDocument, ServiceActionDocument } from 'types/firebase'
 import ListClientPopupIframes from '../../../domain/service/[serviceId]/ListClientPopupIframes'
 import ListClientWidgetIframes from '../../../domain/service/[serviceId]/ListClientWidgetIframes'
@@ -32,6 +32,10 @@ const ServiceDetailPage = () => {
 		selectedAction,
 		setSelectedAction,
 	] = useState<ServiceActionDocument | null>(null)
+
+	useEffect(() => {
+		if (service && !service.visible) router.push('/service')
+	}, [service])
 
 	return (
 		<MainLayout title="Chi tiết dịch vụ">

@@ -80,6 +80,12 @@ export type PaymentMethodDocument = {
 	note: string
 }
 
+export type PaymentMethodNoteDocument = {
+	id: string
+	type: string
+	content: string
+}
+
 export type UserDocument = {
 	id: string
 	avatar_url: string
