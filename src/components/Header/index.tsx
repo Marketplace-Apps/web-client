@@ -1,16 +1,19 @@
 import { auth } from 'firebase/app'
 import { useDomain } from 'hooks'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { Image, Nav, Navbar } from 'react-bootstrap'
-import { GrLogout } from 'react-icons/gr'
+import { AiOutlinePoweroff } from 'react-icons/ai'
 import styles from './index.module.scss'
 
 const Header = () => {
 	const domain = useDomain()
+	const router = useRouter()
 
 	const onLogout = () => {
 		auth().signOut()
+		router.push('/auth/sign-in')
 	}
 
 	return (
@@ -38,9 +41,11 @@ const Header = () => {
 							</a>
 						</Link>
 					</Nav>
-					<div className="header__notify" onClick={onLogout}>
-						<GrLogout size="25px" />
-					</div>
+					{auth().currentUser && (
+						<div className="header__notify" onClick={onLogout}>
+							<AiOutlinePoweroff size="25px" color="white" />
+						</div>
+					)}
 				</Navbar>
 			</div>
 		</div>

@@ -1,8 +1,8 @@
-import {useCollectionData} from 'hooks'
-import {useRouter} from 'next/router'
-import React, {useState} from 'react'
-import {Button, Image} from 'react-bootstrap'
-import {IframeDocument} from 'types/firebase'
+import { useCollectionData } from 'hooks'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
+import { Image } from 'react-bootstrap'
+import { IframeDocument } from 'types/firebase'
 import ClientPopupIframe from '../ClientPopupIframe'
 import styles from './index.module.scss'
 
@@ -38,15 +38,20 @@ const ListClientPopupIframes = () => {
 					}}
 					show={isShowClientPopupIframe}
 					url={selectedPopupIframe.url}
+					name={selectedPopupIframe.name}
 				/>
 			)}
 			{clientPopupIframes?.map(clientPopupIframe => (
-				<Button
+				<div
 					className={styles.HeaderServices__button}
-					variant="outline-secondary"
 					onClick={() => {
 						onShowClientPopupIframe()
 						setSelectedPopupIframe(clientPopupIframe)
+					}}
+					style={{
+						border: '1px solid #25ADE1',
+						borderRadius: '60px',
+						padding: '7px 10px 7px 10px',
 					}}
 				>
 					<Image
@@ -54,9 +59,13 @@ const ListClientPopupIframes = () => {
 						src={clientPopupIframe.icon}
 						width="25px"
 						className="mr-2"
+						roundedCircle
+						style={{
+							border: 'none',
+						}}
 					/>
 					<span style={{ color: '#25ADE1' }}>{clientPopupIframe.name}</span>
-				</Button>
+				</div>
 			))}
 		</>
 	)

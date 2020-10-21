@@ -2,7 +2,7 @@ import MainLayout from 'layouts/MainLayout'
 import dayjs from 'libs/dayjs'
 import React, { useEffect } from 'react'
 import { Col, Image, Row } from 'react-bootstrap'
-import { BsFillPersonFill } from 'react-icons/bs'
+import { FcAssistant } from 'react-icons/fc'
 import CenteredSpinner from '../components/CenteredSpinner'
 import { isScrollToBottom } from '../helpers'
 import { useCollectionData, useDomain } from '../hooks'
@@ -20,6 +20,8 @@ const HomePage = () => {
 	} = useCollectionData<NotificationDocument>(
 		`domains/${domain?.id}/notifications`,
 	)
+
+	console.log({ notifications })
 
 	const handleLoadMore = () => {
 		if (isScrollToBottom() && hasMore) fetchMore()
@@ -44,26 +46,26 @@ const HomePage = () => {
 								className="mb-3"
 							>
 								<div className="d-flex align-items-center">
-									<BsFillPersonFill size="40px" />
+									<FcAssistant size="40px" />
 									<div className="d-flex flex-column ml-2">
-										<p className="font-weight-bold">Admin</p>
-										<p
+										<span className="font-weight-bold">Admin</span>
+										<span
 											style={{
 												fontSize: '15px',
 											}}
 										>
 											{dayjs(new Date(created_at)).locale('vi').fromNow()}
-										</p>
+										</span>
 									</div>
 								</div>
-								<div className="p-4">
+								<div className="p-2">
 									<p className="font-weight-bold mb-2">{title}</p>
 									<p>{description}</p>
 									{images && images.length && (
 										<Row>
 											{images.map(image => (
-												<Col xs={6} sm={4}>
-													<Image src={image} />
+												<Col xs={12} sm={4}>
+													<Image src={image} width="100%" />
 												</Col>
 											))}
 										</Row>

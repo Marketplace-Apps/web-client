@@ -59,6 +59,19 @@ const SignInPage = () => {
 		try {
 			const GoogleProvider = new auth.GoogleAuthProvider()
 			await auth().signInWithPopup(GoogleProvider)
+			router.push('/')
+		} catch (error) {
+			toast.error(error.message, {
+				position: toast.POSITION.TOP_RIGHT,
+				autoClose: 4000,
+			})
+		}
+	}
+
+	const signInAnonymously = async () => {
+		try {
+			await auth().signInAnonymously()
+			router.push('/')
 		} catch (error) {
 			toast.error(error.message, {
 				position: toast.POSITION.TOP_RIGHT,
@@ -72,14 +85,28 @@ const SignInPage = () => {
 			<Row
 				style={{
 					marginRight: 0,
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
 				}}
 			>
-				<Col md={6} lg={8} className={styles.bgS + ' d-none d-md-block'}></Col>
-				<Col xs={12} md={6} lg={4} className={styles.signin_main + '  p-5'}>
-					<div style={{ position: 'relative', marginTop: '15%' }}>
+				<Col
+					xs={{
+						span: 10,
+						offset: 1,
+					}}
+					md={{
+						span: 6,
+						offset: 3,
+					}}
+					lg={{
+						span: 4,
+						offset: 4,
+					}}
+					className={styles.signin_main + '  p-5'}
+					style={{
+						height: '100vh',
+						marginTop: '10%',
+					}}
+				>
+					<div style={{ position: 'relative' }}>
 						<div className={styles.title + ' text-center'}>
 							<h1 className="mb-5">Đăng nhập</h1>
 							<h2 className="mb-3 text-center">
@@ -128,11 +155,23 @@ const SignInPage = () => {
 						<Button
 							style={{
 								paddingTop: '1rem',
+								display: 'flex',
+								margin: '0 auto',
+							}}
+							variant="primary"
+							onClick={signInAnonymously}
+							className="mt-5"
+						>
+							Đăng nhập ẩn danh
+						</Button>
+						<Button
+							style={{
 								paddingBottom: '1rem',
 								display: 'flex',
 								margin: '0 auto',
 							}}
-							variant="primary mt-5"
+							variant="primary"
+							className="mt-2"
 							onClick={signInWithGoogleProvider}
 						>
 							<Image

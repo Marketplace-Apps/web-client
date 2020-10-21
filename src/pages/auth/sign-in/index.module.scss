@@ -1,44 +1,47 @@
 .a {
-    color: red
+	color: red;
 }
 
 .bgS {
-
-    height: 100vh;
+	height: 100vh;
 }
 
 .title {
-    margin-bottom: h1 {
-        color: #949FB1;
-        font-size: 3rem;
-        font-weight: bold;
-    }
+	margin-bottom: h1 {
+		color: white;
+		font-size: 3rem;
+		font-weight: bold;
+	}
 
-    h2 {
-        color: #949FB1;
-        font-size: 2.5rem;
-        text-align: left;
-    }
+	h2 {
+		color: white;
+		font-size: 2.5rem;
+		text-align: left;
+	}
 }
 
 .signin_main {
-    // background-color: #fff;
-    height: 100%;
-    position: relative;
+	// background-color: #fff;
+	height: 100%;
+	position: relative;
 
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0.7;
-        background-color: #ffffff;
-    }
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0.7;
+	}
 }
 
 .signin {
-    background: url('/images/imageBGS.jpg') center no-repeat;
-    background-size: cover;
+	background: linear-gradient(
+		to left,
+		#00f260,
+		#0575e6
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	height: 100%;
+	width: 100%;
 }
