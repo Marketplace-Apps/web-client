@@ -132,6 +132,7 @@ export type NotificationDocument = {
 export type IframeDocument = {
 	id: string
 	name: string
-	icon_url: string
-	host: string
+	icon: string
+	url: string
+	type: string
 }

@@ -28,9 +28,13 @@ const ListOrders = ({ serviceData, onSelectAction }: ListOrdersProps) => {
 		['user_id', '==', auth().currentUser.uid],
 	])
 
-	const { data: orderActions } = useCollectionData<ServiceActionDocument>(
+	const { data: orderActions, error } = useCollectionData<
+		ServiceActionDocument
+	>(
 		`services/${serviceData.id}_config/actions`,
 		[['is_order_action', '==', true]],
+		null,
+		100,
 	)
 
 	const classifiedOrdersByDay = classifyDataByDay<OrderDocument>(orders || [])

@@ -19,8 +19,6 @@ const ServicePage = () => {
 		DomainServiceDocument
 	>(`domains/${domain?.id}/services`, [['published', '==', true]], null, 100)
 
-	console.log({ domainServices })
-
 	const classifiedByTagServices = classifyDataByField<
 		string,
 		DomainServiceDocument & { key: string }
