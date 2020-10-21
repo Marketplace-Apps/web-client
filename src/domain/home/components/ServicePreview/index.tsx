@@ -23,6 +23,8 @@ const ServicePreview = ({
 			: '/auth/sign-in'
 		: ''
 
+	console.log({ href, as, visible })
+
 	const Children = () => (
 		<div
 			className={styles.service__item}
@@ -48,8 +50,10 @@ const ServicePreview = ({
 		<Col xs={4} xl={3}>
 			{!visible && <Children />}
 			{visible && (
-				<Link href={href} as={as}>
-					<Children />
+				<Link href={href} as={as} passHref prefetch>
+					<a className={styles.service__link}>
+						<Children />
+					</a>
 				</Link>
 			)}
 		</Col>
