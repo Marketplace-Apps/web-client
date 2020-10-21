@@ -6,9 +6,15 @@ type ClientPopupIframeProps = {
 	show: boolean
 	onHide: () => void
 	url: string
+	name: string
 }
 
-const ClientPopupIframe = ({ show, onHide, url }: ClientPopupIframeProps) => {
+const ClientPopupIframe = ({
+	show,
+	onHide,
+	url,
+	name,
+}: ClientPopupIframeProps) => {
 	return (
 		<Modal
 			show={show}
@@ -17,6 +23,9 @@ const ClientPopupIframe = ({ show, onHide, url }: ClientPopupIframeProps) => {
 			dialogClassName={styles.custom_dialog}
 			scrollable
 		>
+			<Modal.Header closeButton>
+				<Modal.Title>{name}</Modal.Title>
+			</Modal.Header>
 			<Modal.Body
 				style={{
 					height: '100%',

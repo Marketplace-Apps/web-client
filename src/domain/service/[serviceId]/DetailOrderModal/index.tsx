@@ -1,4 +1,3 @@
-import ModalHeader from 'components/ModalHeader'
 import { auth } from 'firebase/app'
 import dayjs from 'libs/dayjs'
 import React from 'react'
@@ -75,7 +74,9 @@ const DetailOrderModal = ({
 					marginBottom: 0,
 				}}
 			>
-				<ModalHeader onClose={onClose} title={`Đơn hàng #${id}`} />
+				<Modal.Header closeButton>
+					<Modal.Title>{`Đơn hàng #${id}`}</Modal.Title>
+				</Modal.Header>
 				<h1 className={styles.singleOrder__title + ' text-center mt-3'}>
 					<Image
 						className={styles.singleOrder__icontitle}

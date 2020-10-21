@@ -2,8 +2,9 @@ import CustomButton from 'components/CustomButton'
 import MenuItem from 'domain/me/MenuItem'
 import { auth, firestore } from 'firebase/app'
 import MainLayout from 'layouts/MainLayout'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { Image, Row } from 'react-bootstrap'
+import { Button, Image, Row } from 'react-bootstrap'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { BsPersonFill } from 'react-icons/bs'
 import { FcContacts, FcRules } from 'react-icons/fc'
@@ -26,6 +27,7 @@ const MENU_ITEMS = [
 
 const MePage = () => {
 	const [user, loading] = useAuthState(auth())
+	const router = useRouter()
 
 	const domain = useDomain()
 
@@ -207,7 +209,7 @@ const MePage = () => {
 									}}
 								>
 									<p>Khách vãng lai</p>
-									<p>ID: {user.uid}</p>
+									<p>ID: {user.uid.substring(0, 15)}</p>
 									<p>
 										{userDocument?.balance
 											? userDocument?.balance.toLocaleString('vi')
@@ -260,7 +262,6 @@ const MePage = () => {
 						style={{
 							margin: 0,
 						}}
-						noGutters
 					>
 						{MENU_ITEMS.map(item => (
 							<MenuItem {...item} />
@@ -273,22 +274,30 @@ const MePage = () => {
 							display: 'flex',
 							justifyContent: 'center',
 							flexDirection: 'column',
+							padding: 10,
 						}}
 					>
 						<CustomButton
 							onClick={signInAnonymously}
 							isLoading={isSigningInAnonymously}
 							loadingText="Đang đăng nhập"
-							disabled={isSigningInWithGoogleProvider}
+							disabled={isSigningInWithGoogleProvider || isSigningInAnonymously}
 						>
 							Đăng nhập ẩn danh
 						</CustomButton>
+						<Button
+							className="mt-3"
+							variant="primary"
+							onClick={() => router.push('/auth/sign-in')}
+						>
+							Đăng nhập với username/password
+						</Button>
 						<CustomButton
 							className="mt-3"
 							onClick={signInWithGoogleProvider}
 							isLoading={isSigningInWithGoogleProvider}
 							loadingText="Đang đăng nhập"
-							disabled={isSigningInAnonymously}
+							disabled={isSigningInWithGoogleProvider || isSigningInAnonymously}
 						>
 							Đăng nhập bằng tài khoản Google
 						</CustomButton>
@@ -300,6 +309,8 @@ const MePage = () => {
 							display: 'flex',
 							justifyContent: 'center',
 							flexDirection: 'column',
+							padding: '15px',
+							marginBottom: '15px',
 						}}
 					>
 						<p>

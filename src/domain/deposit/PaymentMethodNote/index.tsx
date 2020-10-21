@@ -1,4 +1,5 @@
 import React from 'react'
+import { Alert } from 'react-bootstrap'
 import {
 	FaCheckCircle,
 	FaExclamationCircle,
@@ -35,24 +36,23 @@ const ALERT_ICON = {
 const PaymentMethodNote = (props: { type: string; content: string }) => {
 	const { type, content } = props
 
-	const Icon = ALERT_ICON[type].icon
-	const iconColor = ALERT_ICON[type].color
-
 	return (
 		<div
 			style={{
-				backgroundColor: ALERT_BACKGROUND[type],
-				color: '#fff',
-				padding: '10px',
 				fontSize: '1rem',
-				borderRadius: '10px',
 			}}
-			className="d-flex my-2"
 		>
-			<div className="mr-3 d-flex align-items-center">
-				<Icon color={iconColor} size="25px" />
+			<div className="d-flex align-items-center">
+				<Alert
+					variant={type}
+					className="d-flex"
+					style={{
+						width: '100%',
+					}}
+				>
+					{content}
+				</Alert>
 			</div>
-			<div className="d-flex">{content}</div>
 		</div>
 	)
 }

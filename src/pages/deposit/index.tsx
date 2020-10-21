@@ -30,10 +30,14 @@ const DepositPage = () => {
 	return (
 		<MainLayout title="Phương thức thanh toán">
 			<div className="pageAddCash" style={{ padding: '1rem 1.5rem' }}>
-				<Title title="Vui lòng chọn một trong các phương thức thanh toán dưới đây" />
+				{paymentMethods && !!paymentMethods.length && (
+					<Title title="Vui lòng chọn một trong các phương thức thanh toán dưới đây" />
+				)}
 				{!paymentMethods && <CenteredSpinner />}
 				{paymentMethods && !paymentMethods.length && (
-					<p>Vui lòng liên hệ admin để lấy thông tin thanh toán</p>
+					<p className="text-center">
+						Vui lòng liên hệ admin để lấy thông tin thanh toán
+					</p>
 				)}
 				{paymentMethods &&
 					!!paymentMethods.length &&

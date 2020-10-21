@@ -1,9 +1,8 @@
 import CustomButton from 'components/CustomButton'
-import ModalHeader from 'components/ModalHeader'
 import { auth } from 'firebase/app'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { Col, Form, Modal } from 'react-bootstrap'
+import { Form, Modal } from 'react-bootstrap'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ServiceActionDocument } from 'types/firebase'
 import useFetch, { CachePolicies } from 'use-http'
@@ -90,7 +89,9 @@ const ActionDetailModal = ({
 	return (
 		<Modal show={show} onHide={onHide} size="lg" keyboard={false}>
 			<div className={styles.action}>
-				<ModalHeader onClose={onHide} title={data.name} />
+				<Modal.Header closeButton>
+					<Modal.Title>{data.name}</Modal.Title>
+				</Modal.Header>
 				<FormProvider {...methods}>
 					<Form onSubmit={onSubmit}>
 						<div className={styles.action__des}>
@@ -123,19 +124,23 @@ const ActionDetailModal = ({
 							</Form.Group>
 							<div
 								style={{
-									border: '1px dashed black',
-									padding: 10,
-									margin: 15,
+									padding: 5,
+									margin: 5,
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'space-between',
+									fontWeight: 'bold',
 								}}
 							>
-								<Form.Row className="mb-3">
-									<Col xs={3} className={styles.action__nameSelect}>
-										Tổng tiền
-									</Col>
-									<Col>
-										<Form.Control readOnly value={totalBill.toLocaleString()} />
-									</Col>
-								</Form.Row>
+								<div className={styles.action__nameSelect}>Tổng tiền</div>
+								<div
+									style={{
+										textAlign: 'right',
+										color: '#1313a0',
+									}}
+								>
+									{totalBill.toLocaleString()}
+								</div>
 							</div>
 							<div className="text-center">
 								<CustomButton

@@ -1,7 +1,7 @@
 import { firestore } from 'firebase'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { Button, Image } from 'react-bootstrap'
+import { Image } from 'react-bootstrap'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { ServiceActionDocument } from 'types/firebase'
 import styles from './index.module.scss'
@@ -24,14 +24,26 @@ const ListActions = (props: {
 	return (
 		<>
 			{actions?.map(action => (
-				<Button
+				<div
 					className={styles.HeaderServices__button}
 					onClick={() => props.onSelectAction(action)}
-					variant="outline-secondary"
+					style={{
+						border: '1px solid #25ADE1',
+						borderRadius: '60px',
+						padding: '7px 10px 7px 10px',
+					}}
 				>
-					<Image thumbnail src={action.icon} width="25px" />
+					<Image
+						thumbnail
+						src={action.icon}
+						width="25px"
+						roundedCircle
+						style={{
+							border: 'none',
+						}}
+					/>
 					<span style={{ color: '#25ADE1' }}>{action.name}</span>
-				</Button>
+				</div>
 			))}
 		</>
 	)

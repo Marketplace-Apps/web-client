@@ -30,12 +30,13 @@ const ServicePage = () => {
 					<Form inline className={styles.header__form}>
 						<FormControl
 							type="text"
-							placeholder="Search"
+							placeholder="Tìm dịch vụ"
 							className={styles.header__inputSearch}
+							style={{ padding: '10px' }}
 						/>
 						<BsSearch
 							className={styles.header__btnSearch}
-							style={{ fontSize: '2rem', color: 'green' }}
+							style={{ fontSize: '1.5rem' }}
 						/>
 					</Form>
 				</Container>
