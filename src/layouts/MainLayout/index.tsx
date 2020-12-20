@@ -32,7 +32,8 @@ export const MainLayout = ({ children, title }: MainLayout) => {
 					<Col md={12} className="d-none d-md-flex" style={{
 						background: 'linear-gradient(90deg, rgb(246, 79, 89), rgb(196, 113, 237), rgb(18, 194, 233))',
 						padding: '15px 0 170px 0',
-						marginBottom: -150
+						marginBottom: -150,
+						height:300
 					}}>
 						<PcHeader />
 					</Col>
@@ -44,7 +45,7 @@ export const MainLayout = ({ children, title }: MainLayout) => {
 							height: 'calc(100vh - 150px)',
 							borderRadius: 10,
 							width:300,
-							border: '1px solid #e8e8e8'
+							border: '1px solid #e8e8e8' 
 						}}>
 							<PcSidebar />
 						</div>

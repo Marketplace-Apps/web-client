@@ -45,8 +45,7 @@ const PcSidebarMenuItem = (props: RouteItem) => {
 
 export const PcSidebar = () => (
     <Row>
-        <Col md={12}><UserInfo /></Col>
-
+        <Col md={12} style={{height:60}}><UserInfo /></Col>
         <Col md={12} style={{ marginTop: 20 }}>
             <Row style={{ cursor: 'pointer' }}>
                 {
