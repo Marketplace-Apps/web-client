@@ -9,7 +9,11 @@ import 'react-toastify/dist/ReactToastify.css'
 import './global.scss'
 import { LiveQueryContextProvider } from 'react-livequery-hooks'
 import { ProtectedRoute } from '../components/common/ProtectedRoute'
-import { useAuth } from 'firebase-easy-hooks'
+import dayjs from 'dayjs'
+import 'dayjs/locale/vi'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
+
 
 const FIREBASE_CONFIG = {
 	apiKey: 'AIzaSyATf0V5INt6D29LAE_nMmUJhlXhC8wzw40',
@@ -25,7 +29,6 @@ const FIREBASE_CONFIG = {
 const NO_PROTECTED_ROUTES = [
 	'/auth/sign-in',
 	'/deposit',
-	'/me',
 	'/services',
 	'/',
 ]

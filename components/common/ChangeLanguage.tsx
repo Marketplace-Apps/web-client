@@ -7,7 +7,7 @@ export const ChangeLanguage = () => {
     const router = useRouter()
 
     return (
-        <Dropdown>
+        <Dropdown >
             <Dropdown.Toggle variant="outline-light" size="sm" id="dropdown-basic">
                 {router.locale}
             </Dropdown.Toggle>

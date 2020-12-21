@@ -23,7 +23,7 @@ const TransactionPage = () => {
 	const { items, fetch_more, has_more, empty, loading } = useCollectionData<
 		PaymentHistory
 	>(
-		domain && user && `domains/${domain?.id}/users/${user.uid}/payment-histories`,{limit:8}
+		domain && user && `domains/${domain?.id}/users/${user.uid}/payment-histories`, { limit: 8 }
 	)
 
 	const services = groupByKey(useServices(), 'id')
@@ -52,26 +52,26 @@ const TransactionPage = () => {
 							<Dropdown.Item>Hoàn tiền</Dropdown.Item>
 							<Dropdown.Divider />
 							{
-								[... services.values()].map(service => <Dropdown.Item>{service.name[router.locale]}</Dropdown.Item>)
-							} 
+								[...services.values()].map(service => <Dropdown.Item>{service.name[router.locale]}</Dropdown.Item>)
+							}
 						</Dropdown.Menu>
 					</Dropdown>
 				</Col>
 			</Row>
+			<div className="mt-5"/>
 			{
 				payments.map(({ day, list }) => (
 					<Fragment key={day}>
 						<Row >
-							<Col xs={12} className="d-flex justidy-content-center align-items-center mt-5 ml-2 mb-3">
+							<Col xs={12} className="d-flex justidy-content-center align-items-center mt-2 ml-2 mb-1">
 								<ImCalendar size={25} color="#59a2eb" />
-								
 								<span style={{ color: '#59a2eb', marginLeft: 5 }}>{dayjs(new Date(list[0].created_at)).locale('vi').format('DD/MM/YYYY')}</span>
 							</Col>
 						</Row>
 						{
-							list.map(item => (
-								<Row noGutters key={item.id} style={{ borderBottom: '1px dotted gray', padding: '10px 0 10px 0 ' }} >
-									<Col xs={2} className="d-flex justify-content-center align-items-center" > 
+							list.map((item, index) => (
+								<Row noGutters key={item.id} style={{ borderBottom: index < list.length - 1 && '1px dotted gray', padding: '10px 0 0px 0 ' }} >
+									<Col xs={2} className="d-flex justify-content-center align-items-center" >
 										<img src={services.get(item.service_id)?.icon} style={{ width: 50 }} />
 									</Col>
 									<Col xs={6} md={3}>

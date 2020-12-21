@@ -1,5 +1,5 @@
-import dayjs from 'libs/dayjs'
-import React, { useEffect } from 'react'
+import dayjs from 'dayjs'
+import React from 'react'
 import { Col, Image, Row } from 'react-bootstrap'
 import { FcAssistant } from 'react-icons/fc'
 import { useCollectionData } from 'firebase-easy-hooks'
@@ -7,14 +7,13 @@ import { useDomain } from '../hooks/useDomain'
 import { useInfinityScroll } from '../hooks/useInfinityScroll'
 import { CenteredSpinner } from '../components/common/CenteredSpinner'
 import { MainLayout } from '../layouts/MainLayout'
-import { useRouter } from 'next/router'
 import { Notification } from '../types'
+import useTranslation from 'next-translate/useTranslation'
+
 
 const HomePage = () => {
 
-	const domain = useDomain()
-
-	const { locale } = useRouter()
+	const domain = useDomain() 
 
 	const {
 		data: notifications,
@@ -30,7 +29,7 @@ const HomePage = () => {
 	useInfinityScroll(() => has_more && fetch_more())
 
 	return (
-		<MainLayout title={{ en: 'Home', vi: 'Trang chủ' }}>
+		<MainLayout title={{ en: 'Home', vi: 'Trang chủ' }}> 
 			{loading && <CenteredSpinner />}
 			{empty && (
 				<p className="text-center">Không có thông báo</p>

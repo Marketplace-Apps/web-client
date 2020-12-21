@@ -17,7 +17,7 @@ const PcSidebarMenuItem = (props: RouteItem) => {
 
     return <Col
         md={12}
-        onClick={() => router.push(props.href)}
+        onClick={() => props.onClick ? props.onClick() : (props.href && router.push(props.href))}
         className="d-flex justify-content-start align-items-center"
         style={{
             padding: 10,
@@ -25,7 +25,7 @@ const PcSidebarMenuItem = (props: RouteItem) => {
             borderRadius: '20px 0 0 20px',
             marginTop: 10
         }}
-        key={props.href}
+        key={props.href || props.name.en}
 
     >
         <props.icon style={{ color, fontSize: '3rem', padding: '5px', height: 40 }} />
@@ -45,7 +45,7 @@ const PcSidebarMenuItem = (props: RouteItem) => {
 
 export const PcSidebar = () => (
     <Row>
-        <Col md={12} style={{height:60}}><UserInfo /></Col>
+        <Col md={12} style={{ height: 60 }}><UserInfo /></Col>
         <Col md={12} style={{ marginTop: 20 }}>
             <Row style={{ cursor: 'pointer' }}>
                 {

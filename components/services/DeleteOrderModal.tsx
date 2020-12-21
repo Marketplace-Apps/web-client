@@ -13,6 +13,7 @@ export type DeleteOrderModal = {
     order: Order
     service: ServiceProvider<any>
     onHide?: Function
+    onDeleted?: Function
 }
 export const DeleteOrderModal = (props: DeleteOrderModal) => {
 
@@ -21,7 +22,8 @@ export const DeleteOrderModal = (props: DeleteOrderModal) => {
     const { del, delete_error, deleting } = useDeleteAction(domain && props.service && props.order && `domains/${domain?.id}/services/${props.service.id}/orders/${props.order.id}/`, (
         data, error) => {
         if (error) return
-        props?.onHide()
+        props.onDeleted && props.onDeleted()
+        props.onHide && props.onHide()
     })
 
 
@@ -73,7 +75,8 @@ export function useDeleteOrderModal(order: Order, service: ServiceProvider<any>,
     return {
         showDeleteOrderModal,
         DeleteOrderModal: visible && <DeleteOrderModal
-            onHide={() => { setVisible(false), onDeleted() }}
+            onHide={() => setVisible(false)}
+            onDeleted={() => onDeleted()}
             order={order}
             service={service}
         />

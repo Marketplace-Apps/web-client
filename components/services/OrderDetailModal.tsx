@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Alert, Badge, Button, ButtonGroup, Card, Col, Dropdown, DropdownButton, Modal, Row, Spinner } from "react-bootstrap";
 import { BiBullseye } from "react-icons/bi";
 import { BsCalendarFill, BsClockFill } from "react-icons/bs";
@@ -7,13 +7,19 @@ import { Order, ServiceProvider } from "../../types";
 import { useExtendOrderModal } from "./ExtendOrderModal";
 import { useReportErrorModal } from "./ReportErrorModal";
 import { useUpdateOrderModal } from './UpdateOrderModal'
-import { VscLoading } from 'react-icons/vsc'
+import { VscError, VscLoading } from 'react-icons/vsc'
 import { RiCheckDoubleLine } from "react-icons/ri";
 import { CgBorderStyleDotted } from "react-icons/cg";
-import { FcAutomatic, FcBusinessman, FcCalendar, FcClock, FcEditImage, FcFlowChart, FcRating, FcSettings } from "react-icons/fc";
+import { FcAutomatic, FcBusinessman, FcCalendar, FcClock, FcEditImage, FcFlowChart, FcHeatMap, FcRating, FcSettings } from "react-icons/fc";
 import { IconButton } from "../common/IconButton";
 import { Router, useRouter } from "next/router";
 import { useDeleteOrderModal } from "./DeleteOrderModal";
+import Switch from 'react-input-switch'
+import { OrderStatusBadge } from "./OrderStatus";
+import { MdAssignmentReturn, MdBugReport, MdDone } from "react-icons/md";
+import { ImPause2 } from "react-icons/im";
+
+
 
 
 export type OrderDetailModal = {
@@ -34,6 +40,8 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
 
     const SubModalOpen = [DeleteOrderModal, UpdateOrderModal, ExtendOrderModal, ReportErrorModal].some(m => m)
 
+    const [value, setValue] = useState(0)
+
     return (
         <Fragment>
             {ExtendOrderModal}
@@ -49,9 +57,28 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                         <Modal.Body>
 
                             <Row>
-                                <Col>
+                                <Col xs={10}>
                                     <img src={props.service?.icon} width={30} className="mr-3 mb-1" />
                                     <span style={{ fontWeight: 'bold' }}>{props.service.name[router.locale]}</span>
+                                </Col>
+                                <Col xs={2} className="d-flex justify-content-end align-items-center">
+                                    <Switch
+                                        value={value} onChange={setValue}
+                                        styles={{
+                                            track: {
+                                                backgroundColor: 'gray'
+                                            },
+                                            trackChecked: {
+                                                backgroundColor: '#3aafea'
+                                            },
+                                            button: {
+                                                backgroundColor: 'white'
+                                            },
+                                            buttonChecked: {
+                                                backgroundColor: 'white'
+                                            }
+                                        }}
+                                    />
                                 </Col>
                             </Row>
 
@@ -65,15 +92,47 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                     <div style={{ fontSize: 14 }}> {props.order.description} </div>
                                 </Col>
                             </Row>
-                            <div className="d-flex justify-content-around align-items-center mt-4" style={{ color: '#17a2b8' }}>
-                                <div className="text-center"><BsClockFill size={40} /><div>Đã tạo</div></div>
-                                <div className="text-center">- - - - - - - - -</div>
-                                <div className="text-center">
-                                    <Spinner animation="border" variant="primary" />
-                                    <div>Đang xử lí</div>
-                                </div>
-                                <div className="text-center">- - - - - - - - -</div>
-                                <div className="text-center"><RiCheckDoubleLine size={40} /><div>Đã xong</div></div>
+                            <div className="d-flex justify-content-around align-items-center mt-4">
+                                <OrderStatusBadge
+                                    icon={BsClockFill}
+                                    text='Đã tạo'
+                                    has_previous={false}
+                                />
+                                <OrderStatusBadge
+                                    icon={ImPause2}
+                                    color="#fd8e2d"
+                                    text='Đang dừng'
+                                    visible={props.order.status == 'paused'}
+                                />
+                                <OrderStatusBadge
+                                    icon={<Spinner animation="border" variant="primary" />}
+                                    text='Đang chạy'
+                                    visible={props.order.status == 'running'}
+                                />
+                                <OrderStatusBadge
+                                    icon={VscError}
+                                    text='Lỗi'
+                                    color="red"
+                                    visible={props.order.status.includes('error')}
+                                />
+                                <OrderStatusBadge
+                                    icon={MdAssignmentReturn}
+                                    text='Đã hoàn tiền'
+                                    color="orange"
+                                    visible={props.order.status.includes('refund')}
+                                />
+                                <OrderStatusBadge
+                                    icon={MdBugReport}
+                                    text='Đã báo lỗi'
+                                    color="violet"
+                                    visible={props.order.status.includes('reported')}
+                                />
+                                <OrderStatusBadge
+                                    icon={MdDone}
+                                    text='Xong'
+                                    color="green"
+                                    visible={props.order.status.includes('done')}
+                                />
                             </div>
                             <Row className="mt-3" style={{ color: '#1176c0' }} >
                                 <Col xs={5} className="d-flex justify-content-start align-items-center">
@@ -98,8 +157,17 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                     <h4> <Badge variant="warning">{props.order.amount}</Badge></h4>
                                 </Col>
                                 <Col xs={5} className="d-flex justify-content-start align-items-center">
+                                    <FcHeatMap size={30} />
+                                    <span className="mr-1 ml-2 font-weight-bold">Còn lại</span>
+                                </Col>
+                                <Col xs={7}>
+                                    <h4> <Badge variant="warning">{props.order.remain_amount || (
+                                        (~~(props.order.end_time - Date.now()) / 1000 / 60 / 60 / 24)
+                                    )} {props.service.type == 'days' ? 'ngày' : 'lần'}</Badge></h4>
+                                </Col>
+                                <Col xs={5} className="d-flex justify-content-start align-items-center">
                                     <FcRating size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">Tổng đơn </span>
+                                    <span className="mr-1 ml-2 font-weight-bold">Tổng tiền </span>
                                 </Col>
                                 <Col xs={7}>
                                     <h4> <Badge variant="success">{props.order.total.toLocaleString()}</Badge></h4>
@@ -113,9 +181,9 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                             </Row>
                             <div className="d-flex justify-content-center align-items-center">
                                 <Button className="ml-2" variant="primary" size="sm" onClick={showUpdateOrderModal}>Cập nhật</Button>
-                                <Button className="ml-2" variant="warning" size="sm" onClick={showExtendOrderModal}>Gia hạn</Button>
-                                <Button className="ml-2" variant="dark" size="sm" onClick={showReportErrorModal}>Báo lỗi</Button>
-                                <Button className="ml-2" variant="danger" size="sm" onClick={showDeleteOrderModal}>Hủy đơn</Button>
+                                {props.service.type != 'one-time' && <Button className="ml-2" variant="warning" size="sm" onClick={showExtendOrderModal}>Gia hạn</Button>}
+                                {/* <Button className="ml-2" variant="dark" size="sm" onClick={showReportErrorModal}>Báo lỗi</Button> */}
+                                {props.service?.allow_auto_refund && <Button className="ml-2" variant="danger" size="sm" onClick={showDeleteOrderModal}>Hủy đơn</Button>}
                             </div>
                         </Modal.Body>
 

@@ -1,4 +1,4 @@
-import { useDomain } from 'hooks/useDomain'
+import { useDomain } from '../../hooks/useDomain'
 import Link from 'next/link'
 import React from 'react'
 import { Col, Image, Row } from 'react-bootstrap'

@@ -1,4 +1,4 @@
-import dayjs from 'libs/dayjs'
+import dayjs from 'dayjs'
 import React from 'react'
 import { Badge, Col, Row } from 'react-bootstrap'
 import { BiBullseye, BiTimeFive } from 'react-icons/bi'

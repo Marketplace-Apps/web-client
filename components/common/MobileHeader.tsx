@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import { useDomain } from 'hooks/useDomain'
+import { useDomain } from '../../hooks/useDomain'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -23,16 +23,7 @@ export const MobileHeader = () => {
 				<span style={{ marginLeft: 10, color: 'white', fontWeight: 'bold' }}>{domain?.name}</span>
 			</Col>
 			<Col className="d-flex justify-content-end align-items-center">
-				<ChangeLanguage />
-				{firebase.auth().currentUser && (
-					<AiOutlinePoweroff
-						size="25px"
-						color="white"
-						onClick={onLogout}
-						className="ml-4"
-					/>
-				)}
-
+				<ChangeLanguage /> 
 			</Col>
 		</Row>
 	)

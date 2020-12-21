@@ -8,7 +8,7 @@ export declare class Domain extends BaseEntity {
     domains: string[];
     name: string;
     refs: String[];
-    icon?:string
+    icon: string;
 }
 
 
@@ -26,7 +26,6 @@ export declare class DomainService extends BaseEntity {
     name: I18N;
     icon: string;
     allow_lost_profit?: boolean;
-    maintain:boolean
 }
 export declare class I18N {
     en: string;
@@ -48,6 +47,7 @@ export declare class Notification extends BaseEntity {
 }
 
 
+
 export declare class Order extends BaseEntity implements OrderInput {
     user_id: string;
     service_id: string;
@@ -56,7 +56,6 @@ export declare class Order extends BaseEntity implements OrderInput {
     title: string;
     description?: string;
     thumbnail: string;
-    service_icon: string;
     status: string;
     total: number;
     note: string;
@@ -66,6 +65,11 @@ export declare class Order extends BaseEntity implements OrderInput {
     server: string;
     voucher?: string;
     metadata: any;
+    logs: Array<{
+        created_at: number;
+        message: I18N;
+        admin: boolean;
+    }>;
 }
 export declare class OrderInput {
     target: string;
@@ -78,6 +82,9 @@ export declare class OrderInput {
 export declare class OrderRenew {
     n: number;
     voucher?: string;
+}
+export declare class OrderReport {
+    reason: string;
 }
 
 
@@ -94,7 +101,6 @@ export declare class PaymentHistory extends BaseEntity {
 }
 
 export declare class PaymentMethod extends BaseEntity {
-    type: string;
     domain_id: string;
     name: string;
     icon: string;
@@ -182,6 +188,7 @@ export declare class ServiceProvider<T> extends BaseEntity {
     prices: Prices<T>;
     bypass_api_error?: boolean;
     webhook?: boolean;
+    allow_auto_refund?: boolean;
 }
 
 export declare class User extends BaseEntity {

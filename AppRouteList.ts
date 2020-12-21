@@ -10,7 +10,9 @@ import { useAuth } from "firebase-easy-hooks"
 import { FcAdvertising, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign } from "react-icons/fc"
 import { MdCall } from 'react-icons/md'
 
+
 export type RouteItem = {
+    admin?: boolean
     name: I18N,
     href?: string,
     icon: IconType | string | any,
@@ -77,7 +79,8 @@ export const AppRouteList: AppRouteList = {
             Report: {
                 icon: FcComboChart,
                 name: { en: 'Reports', vi: 'Báo cáo' },
-                href: '/me/reports'
+                href: '/me/reports',
+                admin: true
             },
             Transactions: {
                 icon: FcElectricity,
@@ -87,25 +90,29 @@ export const AppRouteList: AppRouteList = {
             NotificationManager: {
                 icon: FcAdvertising,
                 name: { en: 'Manage notifications', vi: 'Quản lý thông báo' },
-                href: '/me/notifications'
+                href: '/me/notifications',
+                admin: true
             },
 
             UserManager: {
                 icon: FcBusinessman,
                 name: { en: 'Manage users', vi: 'Quản lý tài khoản' },
-                href: '/me/users'
+                href: '/me/users',
+                admin: true
             },
 
             AgencyManager: {
                 icon: FcConferenceCall,
                 name: { en: 'Manage agencies', vi: 'Quản lý đại lý' },
-                href: '/me/agencies'
+                href: '/me/agencies',
+                admin: true
             },
 
             SermiveManager: {
                 icon: FcGenealogy,
                 name: { en: 'Manage services', vi: 'Cài đặt dịch vụ' },
-                href: '/me/services'
+                href: '/me/services',
+                admin: true
             },
             PayementMethodManager: {
                 icon: FcCurrencyExchange,
@@ -113,12 +120,14 @@ export const AppRouteList: AppRouteList = {
                     en: 'Manage payment methods',
                     vi: 'Quản lý phương thức thanh toán'
                 },
-                href: '/me/payment-methods'
+                href: '/me/payment-methods',
+                admin: true
             },
             SiteConfig: {
                 icon: FcAutomatic,
                 name: { en: 'Config site', vi: 'Quản lý site' },
-                href: '/me/site-config'
+                href: '/me/site-config',
+                admin: true
             },
 
             Contact: {
@@ -151,9 +160,7 @@ export const AppRouteList: AppRouteList = {
     Logout: {
         icon: RiLogoutCircleRLine,
         name: { en: 'Logout', vi: 'Đăng xuất' },
-        onClick: () => {
-            firebase.auth().signOut()
-        },
+        onClick: () => firebase.auth().signOut(),
         visible: { guest: false, logged: true, mobile: false }
-    }
+    },
 }
