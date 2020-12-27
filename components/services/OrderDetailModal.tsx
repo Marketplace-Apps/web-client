@@ -102,36 +102,30 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                     icon={ImPause2}
                                     color="#fd8e2d"
                                     text='Đang dừng'
-                                    visible={props.order.status == 'paused'}
+                                    visible={props.order.active == false}
                                 />
                                 <OrderStatusBadge
                                     icon={<Spinner animation="border" variant="primary" />}
                                     text='Đang chạy'
-                                    visible={props.order.status == 'running'}
+                                    visible={props.order.running}
                                 />
                                 <OrderStatusBadge
                                     icon={VscError}
                                     text='Lỗi'
                                     color="red"
-                                    visible={props.order.status.includes('error')}
+                                    visible={props.order.error}
                                 />
                                 <OrderStatusBadge
                                     icon={MdAssignmentReturn}
                                     text='Đã hoàn tiền'
                                     color="orange"
-                                    visible={props.order.status.includes('refund')}
-                                />
-                                <OrderStatusBadge
-                                    icon={MdBugReport}
-                                    text='Đã báo lỗi'
-                                    color="violet"
-                                    visible={props.order.status.includes('reported')}
+                                    visible={props.order.refunded}
                                 />
                                 <OrderStatusBadge
                                     icon={MdDone}
                                     text='Xong'
                                     color="green"
-                                    visible={props.order.status.includes('done')}
+                                    visible={props.order.done}
                                 />
                             </div>
                             <Row className="mt-3" style={{ color: '#1176c0' }} >

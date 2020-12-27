@@ -14,7 +14,7 @@ export const OrderItem = (props: OrderItem) => {
 
 	return (
 		<div style={{
-			background: OrderStatus[props.order.status]?.color || '#dddddd',
+			background: '#dddddd',
 			margin: 10,
 			borderRadius: 10,
 			cursor: 'pointer',
@@ -36,7 +36,7 @@ export const OrderItem = (props: OrderItem) => {
 							<BiBullseye />
 							<span style={{ marginLeft: 5 }}>{props.order.amount}</span>
 							<Badge pill className="ml-2 mb-1" variant="light">{
-								OrderStatus[props.order.status][locale] || props.order.status
+								// OrderStatus[props.order.status][locale] || props.order.status
 							}</Badge>
 						</Col>
 						<Col xs={6} style={{ fontSize: 12 }} className="d-flex justify-content-end align-items-center">

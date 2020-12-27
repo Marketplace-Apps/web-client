@@ -20,12 +20,14 @@ export declare class DomainServiceTag {
 }
 export declare class DomainService extends BaseEntity {
     domain_id: string;
+    root_id: string;
+    maintain?: boolean;
     price: number;
     guarantee_price: number;
-    category: 'facebook' | 'instagram' | 'shopee';
     name: I18N;
     icon: string;
     allow_lost_profit?: boolean;
+    category: 'facebook' | 'instagram' | 'shopee';
 }
 export declare class I18N {
     en: string;
@@ -47,8 +49,8 @@ export declare class Notification extends BaseEntity {
 }
 
 
-
-export declare class Order extends BaseEntity implements OrderInput {
+export declare type OrderStatus = 'created' | 'running' | 'error' | 'error-refunded' | 'done' | 'deleted';
+export declare class Order extends BaseEntity {
     user_id: string;
     service_id: string;
     domain_id: string;
@@ -56,13 +58,17 @@ export declare class Order extends BaseEntity implements OrderInput {
     title: string;
     description?: string;
     thumbnail: string;
-    status: string;
+    running?: boolean;
+    active?: boolean;
+    error?: boolean;
+    refunded?: boolean;
+    done?: boolean;
+    deleted?: boolean;
     total: number;
     note: string;
     amount: number;
     end_time?: number;
     remain_amount?: number;
-    server: string;
     voucher?: string;
     metadata: any;
     logs: Array<{
@@ -72,19 +78,17 @@ export declare class Order extends BaseEntity implements OrderInput {
     }>;
 }
 export declare class OrderInput {
-    target: string;
-    amount: number;
-    days?: number;
+    active?: boolean;
+    error?: boolean;
+    refunded?: boolean;
+    done?: boolean;
+    deleted?: boolean;
+    metadata: any;
     voucher?: string;
-    server?: string;
-    note: string;
 }
 export declare class OrderRenew {
     n: number;
     voucher?: string;
-}
-export declare class OrderReport {
-    reason: string;
 }
 
 
@@ -183,6 +187,7 @@ export declare class ServiceProvider<T> extends BaseEntity {
     maintain?: boolean;
     name: I18N;
     type: 'one-time' | 'days' | 'times';
+    category: 'facebook' | 'instagram' | 'shopee';
     icon: string;
     form: Form<T>;
     prices: Prices<T>;
