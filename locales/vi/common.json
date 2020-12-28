@@ -1,3 +1,15 @@
 {
-    "title":"Xin chào"
+    "title": "Xin chào",
+    "my_balance": "Số dư của bạn",
+    "order_total": "Giá trị đơn hàng",
+    "require": "Bắt buộc",
+    "create": "Tạo mới",
+    "update": "Cập nhật",
+    "change_price": "Thay đổi giá",
+    "renew": "Gia hạn",
+    "delete": "Xóa",
+    "submit":"Xác nhận",
+    "close":"Đóng",
+    "select_date":"Chọn ngày",
+    "introduce":"Giới thiệu" 
 }

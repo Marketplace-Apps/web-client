@@ -1,14 +1,15 @@
 import { AiFillHome } from "react-icons/ai"
 import { CgMenuGridO } from "react-icons/cg"
-import { FaDollarSign, FaHistory, FaShoppingCart } from "react-icons/fa"
+import { FaDollarSign, FaHistory, FaShoppingCart, FaToolbox } from "react-icons/fa"
 import firebase from 'firebase'
-import { RiContactsFill, RiLogoutCircleRLine } from "react-icons/ri"
+import { RiContactsFill, RiLogoutCircleRLine, RiServiceFill } from "react-icons/ri"
 import { I18N } from "./types"
 import { IconType } from "react-icons/lib"
 import { useRouter } from "next/router"
 import { useAuth } from "firebase-easy-hooks"
 import { FcAdvertising, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign } from "react-icons/fc"
 import { MdCall } from 'react-icons/md'
+import { GrServicePlay } from 'react-icons/gr'
 
 
 export type RouteItem = {
@@ -53,13 +54,13 @@ export const AppRouteList: AppRouteList = {
         visible: { guest: false }
     },
     Services: {
-        icon: FcElectricalSensor,
+        icon: RiServiceFill,
         name: { en: 'Service', vi: 'Dịch vụ' },
         href: '/services',
         color: 'orange'
     },
     Tools: {
-        icon: FcNfcSign,
+        icon: FaToolbox,
         name: { en: 'Tools', vi: 'Tiện ích' },
         href: '/tools',
         visible: { guest: false }

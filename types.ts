@@ -18,16 +18,23 @@ export declare class DomainServiceTag {
     background_color: string;
     border?: string;
 }
+export declare type DomainServicePrice = {
+    basic: number;
+    guarantee: number;
+};
 export declare class DomainService extends BaseEntity {
     domain_id: string;
     root_id: string;
     maintain?: boolean;
-    price: number;
-    guarantee_price: number;
+    promote_price: number;
+    prices: {
+        [server: string]: DomainServicePrice;
+    };
     name: I18N;
     icon: string;
     allow_lost_profit?: boolean;
     category: 'facebook' | 'instagram' | 'shopee';
+    ref: string;
 }
 export declare class I18N {
     en: string;
@@ -46,11 +53,12 @@ export declare class Notification extends BaseEntity {
     icon?: string;
     language: typeof LanguageList[number];
     images: string[];
+    ref: string;
 }
 
 
 export declare type OrderStatus = 'created' | 'running' | 'error' | 'error-refunded' | 'done' | 'deleted';
-export declare class Order extends BaseEntity {
+export declare class Order<T = any> extends BaseEntity {
     user_id: string;
     service_id: string;
     domain_id: string;
@@ -70,12 +78,13 @@ export declare class Order extends BaseEntity {
     end_time?: number;
     remain_amount?: number;
     voucher?: string;
-    metadata: any;
+    metadata: T;
     logs: Array<{
         created_at: number;
         message: I18N;
         admin: boolean;
     }>;
+    ref: string;
 }
 export declare class OrderInput {
     active?: boolean;
@@ -94,14 +103,13 @@ export declare class OrderRenew {
 
 export declare class PaymentHistory extends BaseEntity {
     user_id: string;
-    icon: string;
     domain_id: string;
     description?: I18N;
     service_id: string;
-    service: I18N;
     amount: number;
     total: number;
     balance_after: number;
+    ref: string;
 }
 
 export declare class PaymentMethod extends BaseEntity {
@@ -111,20 +119,15 @@ export declare class PaymentMethod extends BaseEntity {
     account_name: string;
     account_number: string;
     secret_key?: string;
+    ref: string;
 }
 
 
-export declare type ServiceActionList = 'ADD' | 'RENEW' | 'DELETE' | 'EDIT';
-export declare const ServiceActionMap: {
-    ADD: string;
-    RENEW: string;
-    EDIT: string;
-    DELETE: string;
-};
 export declare class ServiceProviderItemOption {
     label?: I18N;
     value: any;
     icon?: string;
+    color?: string;
 }
 export declare class ServiceProviderFormItemAlert<T> {
     content: {
@@ -148,53 +151,32 @@ export declare class ServiceProviderFormItem<T> {
     input_mask: 'text' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page';
     options: ServiceProviderItemOption[];
 }
-export declare type ServiceProviderCreatePriceAgruments<T> = {
-    data: T;
-    price: number;
-    guarantee_price: number;
-};
-export declare type ServiceProviderEditPriceAgruments<T> = {
-    payload: Partial<T>;
-    order: T;
-    price: number;
-    guarantee_price: number;
-};
-export declare type ServiceProviderRenewPriceAgruments<T> = {
-    n: number;
-    order: T;
-    price: number;
-    guarantee_price: number;
-};
-export declare type ServiceProviderDelPriceAgruments<T> = {
-    order: T;
-    price: number;
-    guarantee_price: number;
-};
 export declare type FormItem<T> = ServiceProviderFormItem<T> & {
     name: string;
     alerts?: Array<ServiceProviderFormItemAlert<T>>;
     require: boolean;
 };
-export declare type Form<T> = FormItem<T>[];
-export declare type Prices<T> = {
-    ADD: (data: ServiceProviderCreatePriceAgruments<T>) => number;
-    EDIT?: (data: ServiceProviderEditPriceAgruments<T>) => number;
-    RENEW?: (data: ServiceProviderRenewPriceAgruments<T>) => number;
-    DELETE?: (data: ServiceProviderDelPriceAgruments<T>) => number;
+export declare type ServiceProviderAction = {
+    active?: boolean;
+    price: string;
+    process: string;
+    form: Array<FormItem<any>>;
+    validator?: string;
+    color?: string;
+    payment_note: string;
 };
 export declare class ServiceProvider<T> extends BaseEntity {
     user_id?: string;
     maintain?: boolean;
     name: I18N;
-    type: 'one-time' | 'days' | 'times';
+    type: 'one-time' | 'duration' | 'times';
     category: 'facebook' | 'instagram' | 'shopee';
     icon: string;
-    form: Form<T>;
-    prices: Prices<T>;
-    bypass_api_error?: boolean;
-    webhook?: boolean;
-    allow_auto_refund?: boolean;
+    actions: {
+        [key: string]: ServiceProviderAction;
+    };
 }
+
 
 export declare class User extends BaseEntity {
     balance: number;
@@ -202,15 +184,12 @@ export declare class User extends BaseEntity {
     domain_id: string;
     email: string;
     prices?: {
-        [service: string]: {
-            price?: number;
-            guarantee_price?: number;
-        };
+        [service: string]: DomainService['prices'];
     };
     total_deposit: number;
     total_used: number;
+    ref: string;
 }
-
 
 
 export declare class Voucher extends BaseEntity {
@@ -225,6 +204,6 @@ export declare class Voucher extends BaseEntity {
     limit: number;
     used: number;
     min_balance: number;
-    when: ServiceActionList;
+    when: string;
     services: string[];
 }

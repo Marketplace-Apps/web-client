@@ -3,7 +3,7 @@ import React, { Fragment, useState } from "react";
 import { Alert, Badge, Button, ButtonGroup, Card, Col, Dropdown, DropdownButton, Modal, Row, Spinner } from "react-bootstrap";
 import { BiBullseye } from "react-icons/bi";
 import { BsCalendarFill, BsClockFill } from "react-icons/bs";
-import { Order, ServiceProvider } from "../../types";
+import { DomainService, Order, ServiceProvider } from "../../types";
 import { useExtendOrderModal } from "./ExtendOrderModal";
 import { useReportErrorModal } from "./ReportErrorModal";
 import { useUpdateOrderModal } from './UpdateOrderModal'
@@ -18,6 +18,8 @@ import Switch from 'react-input-switch'
 import { OrderStatusBadge } from "./OrderStatus";
 import { MdAssignmentReturn, MdBugReport, MdDone } from "react-icons/md";
 import { ImPause2 } from "react-icons/im";
+import { useActionModal } from "./ActionModal";
+import { Domain } from "domain";
 
 
 
@@ -25,31 +27,22 @@ import { ImPause2 } from "react-icons/im";
 export type OrderDetailModal = {
     order: Order
     onHide?: Function
-    service: ServiceProvider<any>
+    service: ServiceProvider<any>,
+    domain_service: DomainService
 }
 export const OrderDetailModal = (props: OrderDetailModal) => {
 
-    const router = useRouter()
+    const router = useRouter() 
 
-    const { ExtendOrderModal, showExtendOrderModal } = useExtendOrderModal(props.order, props.service)
-    const { ReportErrorModal, showReportErrorModal } = useReportErrorModal(props.order, props.service)
-    const { UpdateOrderModal, showUpdateOrderModal } = useUpdateOrderModal(props.order, props.service)
-    const { DeleteOrderModal, showDeleteOrderModal } = useDeleteOrderModal(props.order, props.service, () => props.onHide())
-
-
-
-    const SubModalOpen = [DeleteOrderModal, UpdateOrderModal, ExtendOrderModal, ReportErrorModal].some(m => m)
+    const { ActionModal, showActionModal } = useActionModal(props.service, props.domain_service) 
 
     const [value, setValue] = useState(0)
 
     return (
-        <Fragment>
-            {ExtendOrderModal}
-            {ReportErrorModal}
-            {UpdateOrderModal}
-            {DeleteOrderModal}
+        <Fragment> 
+            {ActionModal}
             {
-                !SubModalOpen && props.order && (
+                !ActionModal && props.order && (
                     <Modal show={true} onHide={props.onHide} >
                         <Modal.Header closeButton>
                             <Modal.Title>Order detail</Modal.Title>
@@ -154,11 +147,8 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                     <FcHeatMap size={30} />
                                     <span className="mr-1 ml-2 font-weight-bold">Còn lại</span>
                                 </Col>
-                                <Col xs={7}>
-                                    <h4> <Badge variant="warning">{props.order.remain_amount || (
-                                        (~~(props.order.end_time - Date.now()) / 1000 / 60 / 60 / 24)
-                                    )} {props.service.type == 'days' ? 'ngày' : 'lần'}</Badge></h4>
-                                </Col>
+
+
                                 <Col xs={5} className="d-flex justify-content-start align-items-center">
                                     <FcRating size={30} />
                                     <span className="mr-1 ml-2 font-weight-bold">Tổng tiền </span>
@@ -167,19 +157,31 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                     <h4> <Badge variant="success">{props.order.total.toLocaleString()}</Badge></h4>
                                 </Col>
 
-                            </Row>
+                            </Row >
                             <Row className="mt-3" >
                                 <Col xs={12}>
                                     <Alert variant="primary">{props.order.note}</Alert>
                                 </Col>
                             </Row>
                             <div className="d-flex justify-content-center align-items-center">
-                                <Button className="ml-2" variant="primary" size="sm" onClick={showUpdateOrderModal}>Cập nhật</Button>
-                                {props.service.type != 'one-time' && <Button className="ml-2" variant="warning" size="sm" onClick={showExtendOrderModal}>Gia hạn</Button>}
-                                {/* <Button className="ml-2" variant="dark" size="sm" onClick={showReportErrorModal}>Báo lỗi</Button> */}
-                                {props.service?.allow_auto_refund && <Button className="ml-2" variant="danger" size="sm" onClick={showDeleteOrderModal}>Hủy đơn</Button>}
+                                {
+
+                                    Object
+                                        .keys(props.service.actions)
+                                        .filter(name => name != 'create')
+                                        .map( name => (
+                                            <Button
+                                                className="ml-2"
+                                                variant="primary"
+                                                size="sm"
+                                                onClick={() => showActionModal({ action_id: name, order: props.order })}
+                                            >
+                                                <span>{name}</span>
+                                            </Button>
+                                        ))
+                                }
                             </div>
-                        </Modal.Body>
+                        </Modal.Body >
 
                         <Modal.Footer>
 
@@ -187,10 +189,10 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                 Close
                       </Button>
                         </Modal.Footer>
-                    </Modal>
+                    </Modal >
                 )
             }
 
-        </Fragment>
+        </Fragment >
     )
 }

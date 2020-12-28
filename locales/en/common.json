@@ -1,6 +1,14 @@
 {
-    "title":"Hi",
-    "menu":{
-        
-    }
+    "title": "Hi",
+    "require": "Require",
+    "my_balance": "My balance",
+    "order_total": "Order total",
+    "create": "Create",
+    "update": "Update",
+    "renew": "Renew",
+    "delete": "Delete",
+    "submit":"Submit",
+    "close":"Close",
+    "select_date":"Select date",
+    "introduce":"Introduce" 
 }

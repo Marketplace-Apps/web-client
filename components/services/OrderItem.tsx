@@ -8,13 +8,23 @@ import { Router, useRouter } from 'next/router'
 
 export type OrderItem = { order: Order, onClick?: Function }
 
+function get_order_color(order: Order) {
+	if (order.deleted) return 'linear-gradient(to right, #232526, #414345)'
+	if (order.error) return 'linear-gradient(to right, #ff416c, #ff4b2b)'
+	if (order.done || order.refunded) return 'linear-gradient(to right, #00b4db, #0083b0)'
+	if (!order.active) return 'orange'
+	if (order.running) return 'linear-gradient(to right, #1d976c, #93f9b9)'
+
+	return 'linear-gradient(to right, #bbd2c5, #536976)'
+}
+
 export const OrderItem = (props: OrderItem) => {
 
 	const { locale } = useRouter()
 
 	return (
 		<div style={{
-			background: '#dddddd',
+			background: get_order_color(props.order),
 			margin: 10,
 			borderRadius: 10,
 			cursor: 'pointer',
@@ -40,7 +50,7 @@ export const OrderItem = (props: OrderItem) => {
 							}</Badge>
 						</Col>
 						<Col xs={6} style={{ fontSize: 12 }} className="d-flex justify-content-end align-items-center">
-							<BiTimeFive size={20}/>
+							<BiTimeFive size={20} />
 							<span style={{ marginLeft: 5 }}> {dayjs(new Date(props.order.created_at)).locale(locale).fromNow()}</span>
 						</Col>
 						<Col xs={12} style={{ fontWeight: 'bold' }} >{props.order.title}</Col>

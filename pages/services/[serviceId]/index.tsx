@@ -16,32 +16,35 @@ import { MainLayout } from '../../../layouts/MainLayout'
 import { OrderDetailModal } from '../../../components/services/OrderDetailModal'
 import { useCreateOrderModal } from '../../../components/services/CreateOrderModal'
 import { OrderItem } from '../../../components/services/OrderItem'
+import { useActionModal } from '../../../components/services/ActionModal'
+import useTranslation from 'next-translate/useTranslation'
+import { AiOutlineClear } from 'react-icons/ai'
 
 const ServiceDetailPage = () => {
 
 	const domain = useDomain()
 	const router = useRouter()
+	const { t } = useTranslation('common')
 
 	const { serviceId } = router.query
 
 	const { items, reload } = useCollectionData<Order>(domain && `domains/${domain.id}/services/${serviceId}/orders`)
-	const { item: service_price } = useDocumentData<DomainService>(domain && serviceId && `domains/${domain.id}/services/${serviceId}`)
+	const { item: domain_service } = useDocumentData<DomainService>(domain && serviceId && `domains/${domain.id}/services/${serviceId}`)
 	const { item: service } = useDocumentData<ServiceProvider<any>>(serviceId && `services/${serviceId}`)
 
 	const orders = groupByCreatedTime<Order>(items)
 
-	const { CreateOrderModal, showCreateOrderModal } = useCreateOrderModal(service, service_price, reload)
-
-
+	const { showActionModal, ActionModal } = useActionModal(service, domain_service, reload)
 
 	const [active_order, set_active_order] = useState<string>()
 
 	return (
 		<MainLayout title={service?.name || { en: 'Services', vi: 'Dịch vụ' }}>
-			{CreateOrderModal}
+			{ActionModal}
 			{
 				active_order && (
 					<OrderDetailModal
+						domain_service={domain_service}
 						onHide={() => set_active_order(null)}
 						order={active_order && orders && items.filter(o => o.id == active_order)[0]}
 						service={service}
@@ -67,22 +70,28 @@ const ServiceDetailPage = () => {
 						icon={FcNews}
 						iconProps={{ color: 'orange', size: 20, className: 'mb-1 mr-1' }}
 						className="mr-3"
-					>Giới thiệu</IconButton>
+					>{t('introduce')}</IconButton>
 
-					<IconButton
-						icon={IoIosAddCircle}
-						iconProps={{ color: 'white', size: 20, className: 'mb-1 mr-1' }}
-						onClick={() => showCreateOrderModal()}
-					>Tạo mới</IconButton>
+					{
+						service?.actions.create && (
+							<IconButton
+								icon={IoIosAddCircle}
+								iconProps={{ color: 'white', size: 20, className: 'mb-1 mr-1' }}
+								onClick={() => showActionModal({
+									action_id: 'create'
+								})}
+							>{t('create')}</IconButton>
+						)
+					}
 				</Col>
 				<Col xs={12} >
 					<InputGroup className="mb-3">
 						<DatePickerWrapper>
-							<Button variant="outline-primary">Chọn ngày</Button>
+							<Button variant="outline-primary">{t('select_date')}</Button>
 						</DatePickerWrapper>
 						<FormControl placeholder="Search UID" />
 						<InputGroup.Append>
-							<Button variant="outline-danger">Xóa lọc</Button>
+							<Button variant="outline-danger"><AiOutlineClear /></Button>
 						</InputGroup.Append>
 					</InputGroup>
 

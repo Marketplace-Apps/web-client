@@ -1,38 +1,46 @@
 import { Fragment, useMemo } from "react"
-import { useDocumentData } from "react-livequery-hooks"
+import { useFormContext } from "react-hook-form"
 import { SanboxJS } from "../../helpers/sandboxjs"
 import { useCurrentUser } from "../../hooks/useCurrentUser"
-import { useDomain } from "../../hooks/useDomain"
-import { Order, Prices, ServiceProvider } from "../../types"
+import { Domain, DomainService, Order, ServiceProvider, User } from "../../types"
 import { Bill } from "./Bill"
+import useTranslation from 'next-translate/useTranslation'
 
-export type ActionBill = {
-    service: ServiceProvider<any>,
-    type: keyof Prices<any>,
-    data: any,
-    order?: Order
+export interface PriceFunctionContext {
+    service: ServiceProvider<any>
+    domain: Domain,
+    domain_service: DomainService,
+    action_id: string
+    user: User,
+    order?: Order,
+    payload?: any
 }
+
+export type ActionBill = Omit<PriceFunctionContext, "user" | "payload">
+
 export const ActionBill = (props: ActionBill) => {
 
-    const domain = useDomain()
+    const form = useFormContext()
+    const user = useCurrentUser()
+    const payload = form.watch()
+    const ctx: PriceFunctionContext = { ...props, user, payload }
+    const action = props.service.actions[props.action_id]
+    const { t } = useTranslation('common')
 
-    const me = useCurrentUser()
-
-    const { item: prices } = useDocumentData(domain && `domains/${domain.id}/services/${props.service.id}`)
-
-    const price_function = props.service.prices[props.type]
-    const total_bill = useMemo<number>(() => prices && price_function ? SanboxJS.eval(price_function, {
-        data: props.data,
-        ...prices,
-        ...props.order || {}
-    }) : 0, [props.data])
+    const total_bill = useMemo<number>(() => {
+        try {
+            return action?.price ? SanboxJS.eval(action?.price, ctx) : 0
+        } catch (e) {
+            return 0
+        }
+    }, [props])
 
     return total_bill != 0 && (
         <Fragment>
-            <Bill total={total_bill} text="Tổng tiền" />
+            <Bill total={total_bill} text={t('order_total')} />
             <Bill
-                total={me?.balance}
-                text="Số dư của bạn"
+                total={user?.balance}
+                text={t('my_balance')}
                 background="linear-gradient(to right, #76b852, #8dc26f)"
             />
         </Fragment>

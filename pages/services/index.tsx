@@ -48,7 +48,7 @@ const ServicePage = () => {
 									pill
 									variant="danger"
 									style={{ position: 'absolute', top: 5, marginLeft:60 }}
-								>{service.price} đ </Badge>
+								>{service.promote_price} đ </Badge>
 							</div>
 							<div className="text-center" style={{ fontWeight: 'bold', color: '#46aaea' }}>
 								{service.name[router.locale]}
