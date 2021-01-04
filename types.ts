@@ -7,6 +7,7 @@ export declare class Domain extends BaseEntity {
     owner_id: string;
     domains: string[];
     name: string;
+    ref: string;
     refs: String[];
     icon: string;
 }
@@ -164,6 +165,7 @@ export declare type ServiceProviderAction = {
     validator?: string;
     color?: string;
     payment_note: string;
+    nane: I18N;
 };
 export declare class ServiceProvider<T> extends BaseEntity {
     user_id?: string;
@@ -206,4 +208,5 @@ export declare class Voucher extends BaseEntity {
     min_balance: number;
     when: string;
     services: string[];
+    ref: string;
 }

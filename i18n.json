@@ -1,8 +1,7 @@
 {
     "locales": [
         "en",
-        "vi",
-        "cn"
+        "vi" 
     ],
     "defaultLocale": "en",
     "pages": {

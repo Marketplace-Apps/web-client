@@ -1,25 +1,16 @@
 import dayjs from "dayjs";
 import React, { Fragment, useState } from "react";
-import { Alert, Badge, Button, ButtonGroup, Card, Col, Dropdown, DropdownButton, Modal, Row, Spinner } from "react-bootstrap";
-import { BiBullseye } from "react-icons/bi";
-import { BsCalendarFill, BsClockFill } from "react-icons/bs";
+import { Alert, Badge, Button, Col, Modal, Row, Spinner } from "react-bootstrap";
+import { BsClockFill } from "react-icons/bs";
 import { DomainService, Order, ServiceProvider } from "../../types";
-import { useExtendOrderModal } from "./ExtendOrderModal";
-import { useReportErrorModal } from "./ReportErrorModal";
-import { useUpdateOrderModal } from './UpdateOrderModal'
 import { VscError, VscLoading } from 'react-icons/vsc'
-import { RiCheckDoubleLine } from "react-icons/ri";
-import { CgBorderStyleDotted } from "react-icons/cg";
-import { FcAutomatic, FcBusinessman, FcCalendar, FcClock, FcEditImage, FcFlowChart, FcHeatMap, FcRating, FcSettings } from "react-icons/fc";
-import { IconButton } from "../common/IconButton";
-import { Router, useRouter } from "next/router";
-import { useDeleteOrderModal } from "./DeleteOrderModal";
+import { FcBusinessman, FcClock, FcFlowChart, FcHeatMap, FcRating, FcSettings } from "react-icons/fc";
+import { useRouter } from "next/router";
 import Switch from 'react-input-switch'
 import { OrderStatusBadge } from "./OrderStatus";
 import { MdAssignmentReturn, MdBugReport, MdDone } from "react-icons/md";
 import { ImPause2 } from "react-icons/im";
 import { useActionModal } from "./ActionModal";
-import { Domain } from "domain";
 
 
 
@@ -32,14 +23,14 @@ export type OrderDetailModal = {
 }
 export const OrderDetailModal = (props: OrderDetailModal) => {
 
-    const router = useRouter() 
+    const router = useRouter()
 
-    const { ActionModal, showActionModal } = useActionModal(props.service, props.domain_service) 
+    const { ActionModal, showActionModal } = useActionModal(props.service, props.domain_service)
 
     const [value, setValue] = useState(0)
 
     return (
-        <Fragment> 
+        <Fragment>
             {ActionModal}
             {
                 !ActionModal && props.order && (
@@ -169,7 +160,7 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                     Object
                                         .keys(props.service.actions)
                                         .filter(name => name != 'create')
-                                        .map( name => (
+                                        .map(name => (
                                             <Button
                                                 className="ml-2"
                                                 variant="primary"
