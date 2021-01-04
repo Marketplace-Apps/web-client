@@ -165,7 +165,7 @@ export declare type ServiceProviderAction = {
     validator?: string;
     color?: string;
     payment_note: string;
-    nane: I18N;
+    name: I18N;
 };
 export declare class ServiceProvider<T> extends BaseEntity {
     user_id?: string;

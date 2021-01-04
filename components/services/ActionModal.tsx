@@ -31,8 +31,7 @@ const ActionModal = (props: ActionModal) => {
     const router = useRouter()
     const { t } = useTranslation('common')
 
-
-    const getDefaultValues = (data = {}) => action?.form.reduce((p, c) => {
+    const getDefaultValues = (data = {}) => action?.form?.reduce((p, c) => {
         if (!c.default_value) return p
         const value = SanboxJS.eval(c.default_value, data)
         if (value !== undefined) p[c.name] = value
@@ -79,7 +78,7 @@ const ActionModal = (props: ActionModal) => {
             <FormProvider {...form}>
                 <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id }))}>
                     {
-                        action?.form.map(item => <GenericInput key={item.name} {...item} />)
+                        action?.form?.map(item => <GenericInput key={item.name} {...item} />)
                     }
                     {error?.message && <Alert variant="danger">{error.message}</Alert>}
                     <ActionBill

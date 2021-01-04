@@ -167,7 +167,7 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                                 size="sm"
                                                 onClick={() => showActionModal({ action_id: name, order: props.order })}
                                             >
-                                                <span>{name}</span>
+                                                <span>{props.service.actions[name].name[router.locale]}</span>
                                             </Button>
                                         ))
                                 }

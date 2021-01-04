@@ -31,28 +31,28 @@ const ServicePage = () => {
 					<Col
 						key={service.id}
 						xs={4}
-						md={4}
-						lg={2}
+						md={3}
+						lg={1}
 						onClick={() => router.push(`services/${service.root_id}`)} style={{ cursor: 'pointer' }}
 					>
 						<div
 							className="d-flex flex-column justify-content-start align-items-center align-content-center"
 						>
-							<div className="d-flex justify-content-center align-items-start" style={{width:80}}>
+							<div className="d-flex justify-content-center align-items-start" style={{ width: 80 }}>
 								<img
 									src={service.icon}
-									width={80}
-									height={80} 
+									width={40}
+									height={40}
 								/>
 								<Badge
 									pill
 									variant="danger"
-									style={{ position: 'absolute', top: 5, marginLeft:60 }}
+									style={{ position: 'absolute', top: 0, marginLeft: 40 }}
 								>{service.promote_price} đ </Badge>
 							</div>
 							<div className="text-center" style={{ fontWeight: 'bold', color: '#46aaea' }}>
 								{service.name[router.locale]}
-							</div> 
+							</div>
 						</div>
 					</Col>
 				))}

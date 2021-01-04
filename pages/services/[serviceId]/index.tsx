@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useDomain } from '../../../hooks/useDomain'
-import { Button, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
+import { Button, Col, Dropdown, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
 import { useCollectionData, useDocumentData } from 'react-livequery-hooks'
 import { DomainService, Order, ServiceProvider } from '../../../types'
 import { groupByCreatedTime } from '../../../helpers/group'
@@ -88,6 +88,16 @@ const ServiceDetailPage = () => {
 						<DatePickerWrapper>
 							<Button variant="outline-primary">{t('select_date')}</Button>
 						</DatePickerWrapper>
+						<Dropdown>
+							<Dropdown.Toggle variant="success" id="dropdown-basic">
+								Status
+  							</Dropdown.Toggle>
+							<Dropdown.Menu>
+								<Dropdown.Item href="#/action-1">Running</Dropdown.Item>
+								<Dropdown.Item href="#/action-2">Error</Dropdown.Item>
+								<Dropdown.Item href="#/action-3">Done</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown>
 						<FormControl placeholder="Search UID" />
 						<InputGroup.Append>
 							<Button variant="outline-danger"><AiOutlineClear /></Button>
