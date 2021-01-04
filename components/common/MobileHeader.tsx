@@ -13,7 +13,7 @@ export const MobileHeader = () => {
 	const domain = useDomain()
 	const router = useRouter()
 	const user = useCurrentUser()
-	const { user } = useAuth()
+	const { user: firebase_user } = useAuth()
 
 	const onLogout = () => {
 		firebase.auth().signOut()
@@ -28,7 +28,7 @@ export const MobileHeader = () => {
 			</Col>
 			<Col className="d-flex justify-content-end align-items-center">
 				<Button size="sm" className="mr-2" variant="outline-light" onClick={() => router.push('/me')}>
-					<img src={user?.photoURL || 'https://www.w3schools.com/w3images/avatar2.png'} width={20} style={{ borderRadius: '100%', marginRight: 5 }} />
+					<img src={firebase_user?.photoURL || 'https://www.w3schools.com/w3images/avatar2.png'} width={20} style={{ borderRadius: '100%', marginRight: 5 }} />
 					<span>{user?.balance.toLocaleString()} đ</span>
 				</Button>
 				<ChangeLanguage />
