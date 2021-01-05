@@ -33,7 +33,7 @@ const NO_PROTECTED_ROUTES = [
 	'/',
 ]
 
-const BASE_URL = 'http://localhost:5555/livequery/'//process.env.NODE_ENV == 'development' ? 'http://localhost:5555/livequery/' : 'https://unhgl5ql7g.execute-api.ap-southeast-1.amazonaws.com/livequery/'
+const BASE_URL = 'https://ssm-api.ongmatmedia.com/livequery/'
 
 if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG)
 

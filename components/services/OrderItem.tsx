@@ -37,7 +37,8 @@ export const OrderItem = (props: OrderItem) => {
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
 					borderTopLeftRadius: 10,
-					borderBottomLeftRadius: 10
+					borderBottomLeftRadius: 10,
+					border:'1px dotted gray'
 				}}>
 				</Col>
 				<Col xs={9} >

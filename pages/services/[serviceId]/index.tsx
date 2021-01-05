@@ -89,7 +89,7 @@ const ServiceDetailPage = () => {
 							<Button variant="outline-primary">{t('select_date')}</Button>
 						</DatePickerWrapper>
 						<Dropdown>
-							<Dropdown.Toggle variant="success" id="dropdown-basic">
+							<Dropdown.Toggle variant="outline-info" id="dropdown-basic">
 								Status
   							</Dropdown.Toggle>
 							<Dropdown.Menu>
