@@ -33,7 +33,7 @@ const NO_PROTECTED_ROUTES = [
 	'/',
 ]
 
-const BASE_URL = 'https://ssm-api.ongmatmedia.com/livequery/'
+const BASE_URL = typeof location == 'undefined' ? '' : `https://api.${location.hostname}`
 
 if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG)
 
