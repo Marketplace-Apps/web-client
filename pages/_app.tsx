@@ -33,7 +33,7 @@ const NO_PROTECTED_ROUTES = [
 	'/',
 ]
 
-const BASE_URL = typeof location == 'undefined' ? '' : `https://api.${location.hostname}/livequery/`
+const BASE_URL = typeof location == 'undefined' ? '' : `https://api.${location.hostname.split('.').slice(1).join('.')}/livequery/`
 
 if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG)
 
