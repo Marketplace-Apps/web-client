@@ -25,7 +25,7 @@ const MePage = () => {
 						})
 						.filter(item => !item.admin || (item.admin && isAdmin))
 						.map(item => (
-							<Col xs={12} sm={6} md={4} lg={3}>
+							<Col xs={12} sm={6} md={4} lg={3} key={item.name.en}>
 								<LinkCard {...item} />
 							</Col>
 						))

@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useDomain } from '../../../hooks/useDomain'
 import { Button, Col, Dropdown, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
-import { useCollectionData, useDocumentData } from 'react-livequery-hooks'
-import { DomainService, Order, ServiceProvider } from '../../../types'
+import { lt, useCollectionData, useDocumentData } from 'react-livequery-hooks'
+import { DomainService, Order, ServiceProvider, ServiceProviderAction } from '../../../types'
 import { groupByCreatedTime } from '../../../helpers/group'
 import { ImCalendar } from 'react-icons/im'
 import { IoIosAddCircle } from 'react-icons/io'
@@ -18,6 +18,8 @@ import { OrderItem } from '../../../components/services/OrderItem'
 import { useActionModal } from '../../../components/services/ActionModal'
 import useTranslation from 'next-translate/useTranslation'
 import { AiOutlineClear } from 'react-icons/ai'
+import { get_ms_end_day } from '../../../helpers/time'
+import { OrderStatusClear, OrderStatusList } from '../../../const'
 
 const ServiceDetailPage = () => {
 
@@ -27,18 +29,21 @@ const ServiceDetailPage = () => {
 
 	const { serviceId } = router.query
 
-	const { items, reload } = useCollectionData<Order>(domain && `domains/${domain.id}/services/${serviceId}/orders`)
+	const { items, reload, filter, filters } = useCollectionData<Order>(domain && `domains/${domain.id}/services/${serviceId}/orders`, { limit: 10 })
 	const { item: domain_service } = useDocumentData<DomainService>(domain && serviceId && `domains/${domain.id}/services/${serviceId}`)
-	const { item: service } = useDocumentData<ServiceProvider<any>>(serviceId && `services/${serviceId}`)
+	// const { item: service } = useDocumentData<ServiceProvider<any>>(serviceId && `services/${serviceId}`)
+	const { item: create_action } = useDocumentData<ServiceProviderAction>(serviceId && `services/${serviceId}/actions/create`)
 
 	const orders = groupByCreatedTime<Order>(items)
 
-	const { showActionModal, ActionModal } = useActionModal(service, domain_service, reload)
+	const { showActionModal, ActionModal } = useActionModal(domain_service, reload)
 
 	const [active_order, set_active_order] = useState<string>()
 
+
+
 	return (
-		<MainLayout title={service?.name || { en: 'Services', vi: 'Dịch vụ' }}>
+		<MainLayout title={domain_service?.name || { en: 'Services', vi: 'Dịch vụ' }}>
 			{ActionModal}
 			{
 				active_order && (
@@ -46,14 +51,13 @@ const ServiceDetailPage = () => {
 						domain_service={domain_service}
 						onHide={() => set_active_order(null)}
 						order={active_order && orders && items.filter(o => o.id == active_order)[0]}
-						service={service}
 					/>
 				)
 			}
 			<Row style={{ marginTop: 10, marginBottom: 15 }}>
 				<Col xs={12} lg={6} className="d-flex justify-content-start align-items-center">
-					<img src={service?.icon} width={30} height={30} />
-					<div style={{ marginLeft: 10, fontWeight: 'bold' }}>{service?.name[router.locale]}</div>
+					<img src={domain_service?.icon} width={30} height={30} />
+					<div style={{ marginLeft: 10, fontWeight: 'bold' }}>{domain_service?.name[router.locale]}</div>
 				</Col>
 				<Col xs={12} lg={6} className="d-flex p-3 justify-content-end align-items-center">
 
@@ -72,35 +76,46 @@ const ServiceDetailPage = () => {
 					>{t('introduce')}</IconButton>
 
 					{
-						service?.actions.create && (
+						create_action && (
 							<IconButton
 								icon={IoIosAddCircle}
 								iconProps={{ color: 'white', size: 20, className: 'mb-1 mr-1' }}
-								onClick={() => showActionModal({
-									action_id: 'create'
-								})}
+								onClick={() => showActionModal({ action: create_action })}
 							>{t('create')}</IconButton>
 						)
 					}
 				</Col>
 				<Col xs={12} >
 					<InputGroup className="mb-3">
-						<DatePickerWrapper>
-							<Button variant="outline-primary">{t('select_date')}</Button>
+						<DatePickerWrapper onChange={d => filter({ ...filters, created_at: lt(get_ms_end_day(d)) })}>
+							<Button variant="outline-primary">{filters.created_at ? new Date(filters.created_at.value).toLocaleDateString('vi') : t('select_date')}</Button>
 						</DatePickerWrapper>
 						<Dropdown>
-							<Dropdown.Toggle variant="outline-info" id="dropdown-basic">
-								Status
-  							</Dropdown.Toggle>
+							<Dropdown.Toggle className="ml-1" variant="outline-primary" id="dropdown-basic">
+								{Object.keys(filters).filter(key => filters[key])[0] || 'Status'}
+							</Dropdown.Toggle>
 							<Dropdown.Menu>
-								<Dropdown.Item href="#/action-1">Running</Dropdown.Item>
-								<Dropdown.Item href="#/action-2">Error</Dropdown.Item>
-								<Dropdown.Item href="#/action-3">Done</Dropdown.Item>
+								<Dropdown.Item onClick={() => filter({
+									...filters,
+									...OrderStatusClear
+								})}>all</Dropdown.Item>
+								{
+									Object.keys(OrderStatusList).slice(1).map(status => (
+										<Dropdown.Item onClick={() => filter({
+											...filters,
+											...OrderStatusClear,
+											[status]: true,
+										})}>{status}</Dropdown.Item>
+									))
+								}
 							</Dropdown.Menu>
 						</Dropdown>
-						<FormControl placeholder="Search UID" />
+						<FormControl
+							className="ml-1"
+							placeholder={`${t('search')} UID`}
+						/>
 						<InputGroup.Append>
-							<Button variant="outline-danger"><AiOutlineClear /></Button>
+							<Button variant="outline-danger" onClick={() => filter({})}><AiOutlineClear /></Button>
 						</InputGroup.Append>
 					</InputGroup>
 

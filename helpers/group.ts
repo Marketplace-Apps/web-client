@@ -30,11 +30,16 @@ export function groupBy3Key<T>(items: T[], group_key1: keyof T, group_key2: keyo
 
 
 export function groupByCreatedTime<T extends { id: string, created_at: number }>(items: T[]) {
-    const list = items.map(item => ({ ...item, __day: new Date(item.created_at).toLocaleDateString() }))
+    const list = items.map(item => ({
+        ...item,
+        __day: new Date(item.created_at).toLocaleDateString('vi') 
+    }))
     const grouped = groupBy2Key(list, '__day', 'id')
     const list_day = [...grouped.keys()].sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
-    return list_day.map(day => ({
+    return list_day
+    .map(day => ({
         day,
-        list: [...grouped.get(day).values()].sort((b, a) => a.created_at - b.created_at)
+        list: [...grouped.get(day).values()].sort((b, a) => b.created_at - a.created_at)
     }))
+    .sort((a,b) => b.list[0].created_at - a.list[0].created_at)
 }

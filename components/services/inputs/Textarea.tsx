@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import { Col, Form } from "react-bootstrap";
-import { useFormContext } from "react-hook-form";
-import { FormItem, ServiceProviderFormItem } from "../../../types";
+import { useFormContext } from "react-hook-form"; 
+import { ServiceProviderActionFormItem } from "../../../types";
 import { FormItemRow } from "./FormItemRow";
 
-export const Textarea = (props: FormItem<any>) => {
+export const Textarea = (props: ServiceProviderActionFormItem) => {
 
     const form = useFormContext()
     const { locale } = useRouter()
@@ -13,7 +13,7 @@ export const Textarea = (props: FormItem<any>) => {
     return (
         <FormItemRow {...props}>
             <Form.Control
-                name={props.name}
+                name={props.id}
                 as="textarea"
                 ref={form.register()}
                 rows={4}

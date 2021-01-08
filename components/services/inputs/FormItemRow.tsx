@@ -2,11 +2,11 @@ import { useRouter } from "next/router";
 import { PropsWithChildren } from "react";
 import { Alert, Badge, Col, Form } from "react-bootstrap";
 import { useForm, useFormContext } from "react-hook-form";
-import { FormItem } from "../../../types";
 import { FormAlert } from "./FormAlert";
 import useTranslation from 'next-translate/useTranslation'
+import { ServiceProviderActionFormItem } from "../../../types";
 
-export type FormItemRow = PropsWithChildren<FormItem<any>> & {
+export type FormItemRow = PropsWithChildren<ServiceProviderActionFormItem> & {
     append?: JSX.Element
 }
 
@@ -39,10 +39,10 @@ export const FormItemRow = (props: FormItemRow) => {
 
             {/* Error */}
             {
-                form.errors[props.name] && (
+                form.errors[props.id] && (
                     <Col xs={12} className="mt-2">
                         <Alert variant="danger">
-                            {form.errors[props.name].message}
+                            {form.errors[props.id].message}
                         </Alert>
                     </Col>
                 )

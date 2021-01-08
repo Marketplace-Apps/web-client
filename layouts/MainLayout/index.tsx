@@ -54,7 +54,8 @@ export const MainLayout = ({ children, title }: MainLayout) => {
 						style={{
 							backgroundColor: 'white',
 							borderRadius: 20,
-							padding: 20
+							padding: 20,
+							minHeight:'calc(100vh - 30px)'
 						}}
 						className="flex-grow-1"
 					>

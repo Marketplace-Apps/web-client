@@ -35,7 +35,7 @@ const HomePage = () => {
 				<p className="text-center">Không có thông báo</p>
 			)}
 			{notifications.map(
-				({ title, description, images, created_at }) => (
+				({ title, description, created_at }) => (
 					<div
 						style={{
 							backgroundColor: '#F7F7F7',
@@ -60,7 +60,7 @@ const HomePage = () => {
 						<div className="p-2">
 							<p className="font-weight-bold mb-2">{title}</p>
 							<p>{description}</p>
-							{images && images.length && (
+							{/* {images && images.length && (
 								<Row>
 									{images.map(image => (
 										<Col xs={12} sm={6}>
@@ -68,7 +68,7 @@ const HomePage = () => {
 										</Col>
 									))}
 								</Row>
-							)}
+							)} */}
 
 						</div>
 					</div>

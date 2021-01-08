@@ -30,10 +30,17 @@ const NO_PROTECTED_ROUTES = [
 	'/auth/sign-in',
 	'/deposit',
 	'/services',
-	'/',
+	'/admin-contact',
+	'/'
 ]
 
-const BASE_URL = typeof location == 'undefined' ? '' : `https://api.${location.hostname.split('.').slice(1).join('.')}/livequery/`
+function get_api_base_url() { 
+	if (process.env.NODE_ENV == 'development') return 'https://api.ongmatmedia.com/livequery/'
+	if (typeof location == 'undefined') return ''
+	return `https://api.${location.hostname.split('.').slice(1).join('.')}/livequery/`
+}
+
+
 
 if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG)
 
@@ -42,6 +49,7 @@ firebase.firestore().settings({
 	ignoreUndefinedProperties: true,
 })
 
+const BASE_URL = get_api_base_url()
 const websocket_url = BASE_URL.replace('http', 'ws') + 'realtime-updates'
 
 export default function App({ Component, pageProps }: AppProps) {

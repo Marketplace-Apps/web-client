@@ -1,22 +1,21 @@
-import dayjs from "dayjs";
+
 import { Fragment } from "react";
-import { Alert, Badge, Col, Form, Spinner } from "react-bootstrap";
+import { Alert, Col, Form, } from "react-bootstrap";
 import { useFormContext } from "react-hook-form";
-import { BiTimeFive } from "react-icons/bi";
-import { FcBusinessman, FcOpenedFolder, FcPackage, FcPortraitMode, FcRadarPlot } from "react-icons/fc";
+import { FcBusinessman, FcPackage, FcRadarPlot } from "react-icons/fc";
 import { useAction } from "react-livequery-hooks";
-import { FormItem, ServiceProviderFormItem } from "../../../types";
+import { ServiceProviderActionFormItem } from "../../../types";
 import { CenteredSpinner } from "../../../components/common/CenteredSpinner";
 import { FormItemRow } from "./FormItemRow";
 
-export const FacebookProfilePage = (props: FormItem<any>) => {
+export const FacebookProfilePage = (props: ServiceProviderActionFormItem) => {
 
     const form = useFormContext()
 
     const { data, excute, loading, error } = useAction(`utils/facebook-profile-page`, 'GET', (data, error) => {
         console.error(error)
         if (error) return
-        form.setValue(props.name, data.id)
+        form.setValue(props.id, data.id)
     })
 
     async function onBlur(e) {
@@ -70,7 +69,7 @@ export const FacebookProfilePage = (props: FormItem<any>) => {
             append={Info}
         >
             <Form.Control
-                name={props.name}
+                name={props.id}
                 ref={form.register()}
                 onBlur={onBlur}
             />

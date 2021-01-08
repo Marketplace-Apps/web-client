@@ -8,8 +8,14 @@
     "change_price": "Thay đổi giá",
     "renew": "Gia hạn",
     "delete": "Xóa",
-    "submit":"Xác nhận",
-    "close":"Đóng",
-    "select_date":"Chọn ngày",
-    "introduce":"Giới thiệu" 
+    "submit": "Xác nhận",
+    "close": "Đóng",
+    "select_date": "Chọn ngày",
+    "introduce": "Giới thiệu",
+    "guest": "Khách",
+    "search": "Tìm kiếm",
+    "show_origin": "Xem giá cũ",
+    "show_edited": "Xem giá mới",
+    "compare": "So sánh",
+    "edit": "Chỉnh sửa"
 }

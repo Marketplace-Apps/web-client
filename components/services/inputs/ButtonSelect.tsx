@@ -1,19 +1,18 @@
-import { FormEvent, Fragment, useEffect, useMemo, useState } from "react";
-import { Badge, Button, Col, Form } from "react-bootstrap";
+import { Fragment } from "react";
+import { Button } from "react-bootstrap";
 import { Controller, useFormContext } from "react-hook-form";
-import { FormItem, ServiceProviderFormItem } from "../../../types";
-import { SanboxJS } from "../../../helpers/sandboxjs";
+import { ServiceProviderActionFormItem } from "../../../types";
 import { FormItemRow } from "./FormItemRow";
 
-export const ButtonSelect = (props: FormItem<any>) => {
+export const ButtonSelect = (props: ServiceProviderActionFormItem) => {
 
     const form = useFormContext()
 
     return (
-        <FormItemRow {...props}> 
+        <FormItemRow {...props}>
             <Controller
-                key={props.name}
-                name={props.name}
+                key={props.id}
+                name={props.id}
                 control={form.control}
                 render={({ value, onChange }) => (
                     <Fragment>
@@ -24,6 +23,7 @@ export const ButtonSelect = (props: FormItem<any>) => {
                                     className="mr-2 mb-2"
                                     variant={value == option.value ? 'primary' : 'outline-primary'}
                                     onClick={() => onChange(option.value)}
+                                    disabled={option.disabled}
                                 > {option.label.en}</Button>
                             ))
                         }

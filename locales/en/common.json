@@ -7,8 +7,14 @@
     "update": "Update",
     "renew": "Renew",
     "delete": "Delete",
-    "submit":"Submit",
-    "close":"Close",
-    "select_date":"Select date",
-    "introduce":"Introduce" 
+    "submit": "Submit",
+    "close": "Close",
+    "select_date": "Select date",
+    "introduce": "Introduce",
+    "guest": "Guest",
+    "search": "Search",
+    "show_origin": "Show origin",
+    "show_edited": "Show edited",
+    "compare": "Compare",
+    "edit": "Edit"
 }

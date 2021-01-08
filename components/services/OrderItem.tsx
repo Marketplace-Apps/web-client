@@ -5,15 +5,16 @@ import { BiBullseye, BiTimeFive } from 'react-icons/bi'
 import { Order } from '../../types'
 import { OrderStatus } from '../../constants'
 import { Router, useRouter } from 'next/router'
+import { OrderStatusList } from '../../const'
 
 export type OrderItem = { order: Order, onClick?: Function }
 
 function get_order_color(order: Order) {
-	if (order.deleted) return 'linear-gradient(to right, #232526, #414345)'
-	if (order.error) return 'linear-gradient(to right, #ff416c, #ff4b2b)'
-	if (order.done || order.refunded) return 'linear-gradient(to right, #00b4db, #0083b0)'
-	if (!order.active) return 'orange'
-	if (order.running) return 'linear-gradient(to right, #1d976c, #93f9b9)'
+	if (order.deleted) return OrderStatusList.deleted.color
+	if (order.error) return OrderStatusList.error.color
+	if (order.done || order.refunded) return OrderStatusList.done.color
+	if (!order.active) return OrderStatusList.active.color
+	if (order.running) return OrderStatusList.running.color
 
 	return 'linear-gradient(to right, #bbd2c5, #536976)'
 }
@@ -38,7 +39,7 @@ export const OrderItem = (props: OrderItem) => {
 					backgroundPosition: 'center',
 					borderTopLeftRadius: 10,
 					borderBottomLeftRadius: 10,
-					border:'1px dotted gray'
+					border: '1px dotted gray'
 				}}>
 				</Col>
 				<Col xs={9} >

@@ -31,7 +31,7 @@ export type AppRouteList = {
 
 export function isActivePath({ href }: RouteItem) {
     const { asPath } = useRouter()
-    return (href == '/' && asPath == '/') || (href != '/' && asPath?.includes(href))
+    return (href == '/' && asPath == '/') || (href != '/' && asPath?.indexOf(href) == 0)
 }
 
 export function isVisible(link: RouteItem) {
@@ -50,8 +50,7 @@ export const AppRouteList: AppRouteList = {
     Deposit: {
         icon: FaDollarSign,
         name: { en: 'Deposit', vi: 'Nạp tiền' },
-        href: '/deposit',
-        visible: { guest: false }
+        href: '/deposit'
     },
     Services: {
         icon: RiServiceFill,
@@ -102,14 +101,7 @@ export const AppRouteList: AppRouteList = {
                 admin: true
             },
 
-            AgencyManager: {
-                icon: FcConferenceCall,
-                name: { en: 'Manage agencies', vi: 'Quản lý đại lý' },
-                href: '/me/agencies',
-                admin: true
-            },
-
-            SermiveManager: {
+            ServiceManager: {
                 icon: FcGenealogy,
                 name: { en: 'Manage services', vi: 'Cài đặt dịch vụ' },
                 href: '/me/services',
@@ -121,7 +113,7 @@ export const AppRouteList: AppRouteList = {
                     en: 'Manage payment methods',
                     vi: 'Quản lý phương thức thanh toán'
                 },
-                href: '/me/payment-methods',
+                href: '/deposit',
                 admin: true
             },
             SiteConfig: {
@@ -133,7 +125,7 @@ export const AppRouteList: AppRouteList = {
 
             Contact: {
                 icon: FcBusinessContact,
-                name: { en: 'Admin contact', vi: 'Liên hệ admin' },
+                name: { en: 'Admin', vi: 'Liên hệ admin' },
                 href: '/admin-contact'
             },
             Logout: {
@@ -146,9 +138,9 @@ export const AppRouteList: AppRouteList = {
 
         }
     },
-    Contact1: {
+    Contact: {
         icon: MdCall,
-        name: { en: 'Admin contact', vi: 'Liên hệ admin' },
+        name: { en: 'Admin', vi: 'Liên hệ admin' },
         href: '/admin-contact',
         visible: { mobile: true, logged: false }
     },

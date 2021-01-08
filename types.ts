@@ -37,6 +37,19 @@ export declare class DomainService extends BaseEntity {
     category: 'facebook' | 'instagram' | 'shopee';
     ref: string;
 }
+
+
+export declare class Feed extends BaseEntity {
+    domain_id: string;
+    title: I18N;
+    description?: I18N;
+    images?: I18N[];
+    ref: string;
+    url?: string;
+    copy_content?: string;
+    payment_tab: boolean;
+    home_tab: boolean;
+}
 export declare class I18N {
     en: string;
     vi?: string;
@@ -49,12 +62,13 @@ export declare const LanguageList: readonly ["vi", "en", "tl", "cn"];
 export declare class Notification extends BaseEntity {
     user_id: string;
     domain_id: string;
-    title: string;
-    description?: string;
+    title: I18N;
+    description?: I18N;
     icon?: string;
-    language: typeof LanguageList[number];
-    images: string[];
     ref: string;
+    url?: string;
+    copy_content?: string;
+    read: boolean;
 }
 
 
@@ -86,6 +100,8 @@ export declare class Order<T = any> extends BaseEntity {
         admin: boolean;
     }>;
     ref: string;
+    start_count?: number;
+    last_count?: number;
 }
 export declare class OrderInput {
     active?: boolean;
@@ -110,6 +126,11 @@ export declare class PaymentHistory extends BaseEntity {
     amount: number;
     total: number;
     balance_after: number;
+    voucher?: {
+        code: string;
+        percent?: number;
+        amount?: number;
+    };
     ref: string;
 }
 
@@ -122,6 +143,26 @@ export declare class PaymentMethod extends BaseEntity {
     secret_key?: string;
     ref: string;
 }
+export declare class SendMoneyPayload {
+    to: string;
+    amount: number;
+    note: string;
+}
+
+
+export declare class ServiceProvider<T> extends BaseEntity {
+    user_id?: string;
+    maintain?: boolean;
+    name: I18N;
+    type: 'one-time' | 'duration' | 'times';
+    category: 'facebook' | 'instagram' | 'shopee';
+    icon: string;
+    crons: Array<{
+        delay: number;
+        script: string;
+    }>;
+    number_of_servers: number;
+}
 
 
 export declare class ServiceProviderItemOption {
@@ -129,6 +170,7 @@ export declare class ServiceProviderItemOption {
     value: any;
     icon?: string;
     color?: string;
+    disabled?: boolean;
 }
 export declare class ServiceProviderFormItemAlert<T> {
     content: {
@@ -141,42 +183,33 @@ export declare class ServiceProviderFormItemAlert<T> {
     url?: I18N;
     urlText?: I18N;
 }
-export declare class ServiceProviderFormItem<T> {
+export declare class ServiceProviderActionFormItem extends BaseEntity {
+    alerts?: Array<ServiceProviderFormItemAlert<any>>;
+    require: boolean;
     placeholder: I18N;
     label: I18N;
-    default_value?: (data: T) => any;
+    default_value?: string;
     required?: boolean;
     optional?: boolean;
-    editable?: boolean;
     is_number?: boolean;
     input_mask: 'text' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page';
     options: ServiceProviderItemOption[];
 }
-export declare type FormItem<T> = ServiceProviderFormItem<T> & {
-    name: string;
-    alerts?: Array<ServiceProviderFormItemAlert<T>>;
-    require: boolean;
+export declare type ServiceProviderActionForm = {
+    [name: string]: ServiceProviderActionFormItem;
 };
-export declare type ServiceProviderAction = {
-    active?: boolean;
+export declare class ServiceProviderAction extends BaseEntity {
+    service_id: string;
+    active: boolean;
+    hidden: boolean;
     price: string;
     process: string;
-    form: Array<FormItem<any>>;
+    form: ServiceProviderActionForm;
     validator?: string;
     color?: string;
     payment_note: string;
-    name: I18N;
-};
-export declare class ServiceProvider<T> extends BaseEntity {
-    user_id?: string;
-    maintain?: boolean;
-    name: I18N;
-    type: 'one-time' | 'duration' | 'times';
-    category: 'facebook' | 'instagram' | 'shopee';
-    icon: string;
-    actions: {
-        [key: string]: ServiceProviderAction;
-    };
+    name: string;
+    label: I18N;
 }
 
 
@@ -191,6 +224,7 @@ export declare class User extends BaseEntity {
     total_deposit: number;
     total_used: number;
     ref: string;
+    avatar: string;
 }
 
 

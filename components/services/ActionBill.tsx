@@ -2,15 +2,14 @@ import { Fragment, useMemo } from "react"
 import { useFormContext } from "react-hook-form"
 import { SanboxJS } from "../../helpers/sandboxjs"
 import { useCurrentUser } from "../../hooks/useCurrentUser"
-import { Domain, DomainService, Order, ServiceProvider, User } from "../../types"
+import { Domain, DomainService, Order, ServiceProvider, ServiceProviderAction, User } from "../../types"
 import { Bill } from "./Bill"
 import useTranslation from 'next-translate/useTranslation'
 
-export interface PriceFunctionContext {
-    service: ServiceProvider<any>
+export interface PriceFunctionContext { 
     domain: Domain,
     domain_service: DomainService,
-    action_id: string
+    action: ServiceProviderAction
     user: User,
     order?: Order,
     payload?: any
@@ -24,7 +23,7 @@ export const ActionBill = (props: ActionBill) => {
     const user = useCurrentUser()
     const payload = form.watch()
     const ctx: PriceFunctionContext = { ...props, user, payload }
-    const action = props.service.actions[props.action_id]
+    const action = props.action
     const { t } = useTranslation('common')
 
     const total_bill = useMemo<number>(() => {

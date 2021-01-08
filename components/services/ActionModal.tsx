@@ -4,7 +4,7 @@ import { Alert, Button, Col, Form, Modal } from "react-bootstrap"
 import { FormProvider, useForm } from "react-hook-form"
 import { FaCheck } from "react-icons/fa"
 import { useAction, useDocumentData } from "react-livequery-hooks"
-import { DomainService, Order, ServiceProvider, User } from "../../types"
+import { DomainService, Order, ServiceProvider, ServiceProviderAction, ServiceProviderActionFormItem, User } from "../../types"
 import { IconButton } from "../common/IconButton"
 import { SanboxJS } from "../../helpers/sandboxjs"
 import { useDomain } from "../../hooks/useDomain"
@@ -14,9 +14,8 @@ import useTranslation from 'next-translate/useTranslation'
 
 export type ActionModal = {
     domain_service: DomainService
-    service: ServiceProvider<any>,
     order?: Order
-    action_id: string
+    action: ServiceProviderAction
 
     visible: boolean
     onHide: Function
@@ -25,16 +24,16 @@ export type ActionModal = {
 
 const ActionModal = (props: ActionModal) => {
 
-    const { domain_service, service, order, action_id } = props
+    const { domain_service, order, action } = props
     const domain = useDomain()
-    const action = props.service?.actions[action_id]
     const router = useRouter()
     const { t } = useTranslation('common')
 
-    const getDefaultValues = (data = {}) => action?.form?.reduce((p, c) => {
-        if (!c.default_value) return p
-        const value = SanboxJS.eval(c.default_value, data)
-        if (value !== undefined) p[c.name] = value
+    const getDefaultValues = (data = {}) => Object.keys(action?.form || {}).reduce((p, c, index) => {
+        const item = action?.form[c] as ServiceProviderActionFormItem
+        if (!item.default_value) return p
+        const value = SanboxJS.eval(item.default_value, data)
+        if (value !== undefined) p[item.id] = value
         return p
     }, {})
 
@@ -43,7 +42,7 @@ const ActionModal = (props: ActionModal) => {
         excute,
         loading
     } = useAction(
-        domain && props.service && `domains/${domain.id}/services/${props.service.id}/orders${props.order ? `/${props.order.id}/~trigger-action` : ''}`,
+        domain && props.domain_service && `domains/${domain.id}/services/${props.domain_service.id}/orders${props.order ? `/${props.order.id}/~trigger-action` : ''}`,
         'POST',
         async (data, error) => {
             if (error) return
@@ -64,6 +63,8 @@ const ActionModal = (props: ActionModal) => {
         for (const key in default_values) form.setValue(key, default_values[key])
     }, [JSON.stringify(form.watch())])
 
+
+
     return (
         <Modal
             show={props.visible}
@@ -72,18 +73,17 @@ const ActionModal = (props: ActionModal) => {
             <Modal.Header closeButton>
                 <Modal.Title
                     style={{ fontSize: 20, fontWeight: 'bold' }}
-                >{props.service.name[router.locale]}</Modal.Title>
+                >{props.domain_service.name[router.locale]}</Modal.Title>
 
             </Modal.Header>
             <FormProvider {...form}>
-                <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id }))}>
+                <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
                     {
-                        action?.form?.map(item => <GenericInput key={item.name} {...item} />)
+                        Object.keys(action?.form).map(name => <GenericInput key={name} {... (action?.form[name])} />)
                     }
                     {error?.message && <Alert variant="danger">{error.message}</Alert>}
                     <ActionBill
-                        service={service}
-                        action_id={props.action_id}
+                        action={action}
                         order={order}
                         domain={domain}
                         domain_service={domain_service}
@@ -118,23 +118,20 @@ const ActionModal = (props: ActionModal) => {
 }
 
 export const useActionModal = (
-    service: ServiceProvider<any>,
     domain_service: DomainService,
     onSuccess?: Function
 ) => {
 
-    const [{ action_id, order }, set_action_id] = useState<{ action_id?: string, order?: Order }>({})
-    const showActionModal = set_action_id
+    const [{ action, order }, set_action_id] = useState<{ action?: ServiceProviderAction, order?: Order }>({})
 
     return {
-        showActionModal,
-        ActionModal: action_id && service && domain_service && <ActionModal
+        showActionModal: set_action_id,
+        ActionModal: action && domain_service && <ActionModal
             onHide={() => set_action_id({})}
             domain_service={domain_service}
-            service={service}
             visible={!!set_action_id}
             onSuccess={onSuccess}
-            action_id={action_id}
+            action={action}
             order={order}
         />
     }
