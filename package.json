@@ -22,7 +22,7 @@
 		"react-hook-form": "^6.9.4",
 		"react-icons": "^3.11.0",
 		"react-input-switch": "^2.2.2",
-		"react-livequery-hooks": "^1.0.79",
+		"react-livequery-hooks": "^1.0.81",
 		"react-nice-dates": "^3.0.7",
 		"react-toastify": "^6.0.8",
 		"sass": "^1.26.11",
