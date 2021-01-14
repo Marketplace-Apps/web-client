@@ -224,4 +224,5 @@ export declare class Voucher extends BaseEntity {
     service: string;
     server: number;
     ref: string;
+    allow_private_price: boolean
 }

@@ -1,102 +1,22 @@
 import { useRouter } from "next/router"
-import React, { CSSProperties, Fragment } from "react"
-import { Badge, Button, Col, Form, Modal, Row } from "react-bootstrap"
-import { Controller, FormProvider, RegisterOptions, useForm, useFormContext } from "react-hook-form"
+import React from "react"
+import { Button, Col, Form, Modal, Row } from "react-bootstrap"
+import { Controller, FormProvider, useForm } from "react-hook-form"
 import { FaCheck } from "react-icons/fa"
 import { MdDelete } from "react-icons/md"
-import { useAction, useCollectionData, useDeleteAction, useDocumentData } from "react-livequery-hooks"
-import NumberFormat from "react-number-format"
-import { groupByKey } from "../../helpers/group"
-import { useCurrentUser } from "../../hooks/useCurrentUser"
+import { useAction, useDeleteAction } from "react-livequery-hooks"
 import { useDomain } from "../../hooks/useDomain"
 import { useServices } from "../../hooks/useServices"
-import { ServiceProvider, Voucher } from "../../types"
-import { DatePickerWrapper } from "../common/DatePickerWrapper"
+import { Voucher } from "../../types"
+import { DateHourPicker } from "../common/DateHourPicker"
 import { IconButton } from "../common/IconButton"
+import { NumberFormatInput } from '../common/NumberFormatInput'
+
 
 export type VoucherModal = {
     voucher?: Voucher
     onSubmit?: (data: Voucher) => any,
     onHide?: Function
-}
-
-type NumberFormatInput = {
-    name: string,
-    disabled?: boolean,
-    rules?: Exclude<RegisterOptions, 'valueAsNumber' | 'valueAsDate' | 'setValueAs'>,
-    style?: CSSProperties
-}
-const NumberFormatInput = (props: NumberFormatInput) => {
-    const { control } = useFormContext()
-    return (
-        <Controller
-            control={control}
-            name={props.name}
-            render={({ onChange, value }) => (
-                <NumberFormat
-                    style={props.style}
-                    disabled={props.disabled}
-                    thousandSeparator
-                    allowNegative={false}
-                    isNumericString
-                    className="form-control"
-                    decimalScale={0}
-                    value={value}
-                    onValueChange={e => onChange(e.floatValue)}
-                    onFocus={e => e.target.select()}
-                />
-            )}
-        />
-    )
-}
-
-
-const DateHourPicker = (props: { name: string, rules?: Exclude<RegisterOptions, 'valueAsNumber' | 'valueAsDate' | 'setValueAs'> }) => {
-
-    const form = useFormContext()
-
-    return (
-        <Controller
-            control={form.control}
-            name={props.name}
-            rules={props.rules}
-            render={({ onChange, value }) => (
-                <Fragment>
-                    <Form.Control
-                        as="select"
-                        custom
-                        style={{ width: 80 }}
-                        onChange={e => {
-                            const hour = Number(e.target.value)
-                            const date = new Date(value)
-                            date.setHours(hour)
-                            date.setMinutes(0)
-                            date.setSeconds(0)
-                            date.setMilliseconds(0)
-                            onChange(date.getTime())
-                        }}
-                    >
-                        {new Array(24).fill(0).map((_, hour) => (
-                            <option
-                                selected={hour == new Date(value).getHours()}
-                                value={hour}
-                            >{hour}h</option>
-                        ))}
-                    </Form.Control>
-                    <DatePickerWrapper onChange={d => {
-                        const old_date = new Date(value)
-                        d.setHours(old_date.getHours())
-                        d.setMinutes(0)
-                        d.setSeconds(0)
-                        d.setMilliseconds(0)
-                        onChange(d.getTime())
-                    }}>
-                        <Form.Control className="ml-2" value={new Date(value).toLocaleDateString('vi')} />
-                    </DatePickerWrapper>
-                </Fragment >
-            )}
-        />
-    )
 }
 
 export const VoucherModal = (props: VoucherModal) => {
@@ -117,7 +37,8 @@ export const VoucherModal = (props: VoucherModal) => {
             used: 0,
             limit_per_user: 0,
             service: 'all',
-            server: 0
+            server: 0,
+            allow_private_price: false
         },
 
     })
@@ -140,7 +61,7 @@ export const VoucherModal = (props: VoucherModal) => {
     )
 
     const selected_service_id = form.watch().service as string
-    const selected_service = services.filter(s => s.id == selected_service_id)[0] 
+    const selected_service = services.filter(s => s.id == selected_service_id)[0]
 
     return (
         <Modal show={true} onHide={props.onHide}>
@@ -258,6 +179,27 @@ export const VoucherModal = (props: VoucherModal) => {
                                 </Row>
                             ) : null}
                         />
+
+                        <Row className="mb-3">
+                            <Col xs={12}><Form.Label>Private price user can use</Form.Label></Col>
+                            <Col xs={12}>
+                                <Controller
+                                    control={form.control}
+                                    name="allow_private_price"
+                                    render={({ onChange, value }) => (
+                                        <Form.Control
+                                            as="select"
+                                            custom
+                                            value={value ? "1" : "0"}
+                                            onChange={e => onChange(e.target.value == "1")}
+                                        >
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </Form.Control>
+                                    )}
+                                />
+                            </Col>
+                        </Row>
 
                     </Modal.Body>
                     <Modal.Footer>

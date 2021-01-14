@@ -13,13 +13,13 @@ export const MobileHeader = () => {
 	const domain = useDomain()
 	const router = useRouter()
 	const user = useCurrentUser()
-	const { user: firebase_user } = useAuth() 
+	const { user: firebase_user } = useAuth()
 
 	return (
 		<Row style={{ background: 'linear-gradient(90deg,#f64f59,#c471ed,#12c2e9)', padding: 10 }}>
 			<Col className="p-0">
 				<img src={domain?.icon} style={{ width: 40 }} />
-				<span style={{ marginLeft: 10, color: 'white', fontWeight: 'bold' }}>{domain?.name}</span>
+				<span style={{ marginLeft: 10, color: 'white', fontSize: 25 }}>{domain?.name}</span>
 			</Col>
 			<Col xs="auto" className="d-flex justify-content-between align-items-center">
 				<Button

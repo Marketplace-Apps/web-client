@@ -1,3 +1,4 @@
+import { useAuth } from "firebase-easy-hooks"
 import React, { useState } from "react"
 import { Badge, Button, Card, Col, Form, ListGroup, ProgressBar, Row } from "react-bootstrap"
 import { useForm } from "react-hook-form"
@@ -5,27 +6,25 @@ import { AiFillCopy } from "react-icons/ai"
 import { BiEdit } from "react-icons/bi"
 import { FcAlarmClock, FcCancel, FcClock, FcCopyleft, FcGenealogy } from "react-icons/fc"
 import { useCollectionData } from "react-livequery-hooks"
-import { AppRouteList } from "../../AppRouteList"
-import { IconButton } from "../../components/common/IconButton"
-import { VoucherItem } from "../../components/me/VoucherItem"
-import { VoucherModal } from "../../components/me/VoucherModal"
-import { useDomain } from "../../hooks/useDomain"
-import { MainLayout } from "../../layouts/MainLayout"
-import { Voucher } from "../../types"
+import { AppRouteList } from "../AppRouteList"
+import { IconButton } from "../components/common/IconButton"
+import { VoucherItem } from "../components/me/VoucherItem"
+import { VoucherModal } from "../components/me/VoucherModal"
+import { useDomain } from "../hooks/useDomain"
+import { MainLayout } from "../layouts/MainLayout"
+import { Voucher } from "../types"
 
 
 
 const VoucherManagerPage = () => {
 
     const domain = useDomain()
-
-    const form = useForm()
-
     const { items: vouchers } = useCollectionData<Voucher>(domain && `domains/${domain.id}/vouchers`)
-
+    const { user } = useAuth()
     const [show_create_modal, set_show_create_modal] = useState<boolean>(false)
     const [selected_voucher_index, set_selected_voucher_index] = useState<number>(-1)
-
+    const is_owner = domain && (user?.uid == domain?.owner_id)
+    
     return (
         <MainLayout title={AppRouteList.Me.children.SiteConfig.name}>
             {show_create_modal && <VoucherModal onHide={() => set_show_create_modal(false)} />}
@@ -38,12 +37,16 @@ const VoucherManagerPage = () => {
                 )
             }
 
-            <Row>
-                <Col xs="12" className="text-right">
-                    <Button onClick={() => set_show_create_modal(true)}>Create</Button>
-                </Col>
+            {
+               is_owner && (
+                    <Row>
+                        <Col xs="12" className="text-right">
+                            <Button onClick={() => set_show_create_modal(true)} size="sm">Create</Button>
+                        </Col>
 
-            </Row>
+                    </Row>
+                )
+            }
             <Row className="mt-3">
                 {
                     vouchers
@@ -52,7 +55,7 @@ const VoucherManagerPage = () => {
                             <Col sm={12} md={12} xl={3} lg={4} className="p-3">
                                 <VoucherItem
                                     voucher={voucher}
-                                    onClick={() => set_selected_voucher_index(index)}
+                                    onClick={ is_owner ? () => set_selected_voucher_index(index) : null}
                                 />
                             </Col>
                         )

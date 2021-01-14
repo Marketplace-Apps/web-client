@@ -9,7 +9,7 @@ import { useRouter } from "next/router"
 import { useAuth } from "firebase-easy-hooks"
 import { FcAdvertising, FcApproval, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign } from "react-icons/fc"
 import { MdCall } from 'react-icons/md'
-import { GrServicePlay } from 'react-icons/gr'
+import { FiAward } from 'react-icons/fi'
 
 
 export type RouteItem = {
@@ -50,13 +50,14 @@ export const AppRouteList: AppRouteList = {
     Deposit: {
         icon: FaDollarSign,
         name: { en: 'Deposit', vi: 'Nạp tiền' },
-        href: '/deposit'
+        href: '/deposit',
+        visible: { guest: false }
     },
     Services: {
         icon: RiServiceFill,
         name: { en: 'Service', vi: 'Dịch vụ' },
         href: '/services',
-        color: 'orange'
+        color: '#00bcc5'
     },
     Tools: {
         icon: FaToolbox,
@@ -69,6 +70,12 @@ export const AppRouteList: AppRouteList = {
         name: { en: 'Transactions', vi: 'Lịch sử' },
         href: '/transactions',
         visible: { guest: false, mobile: false }
+    },
+    VoucherList: {
+        icon: FiAward,
+        name: { en: 'Vouchers', vi: 'Khuyến mại' },
+        href: '/vouchers',
+        visible: { mobile: false }
     },
     Me: {
         icon: CgMenuGridO,
@@ -87,17 +94,16 @@ export const AppRouteList: AppRouteList = {
                 name: { en: 'Transactions', vi: 'Lịch sử' },
                 href: '/transactions'
             },
-            NotificationManager: {
+            FeedManager: {
                 icon: FcAdvertising,
-                name: { en: 'Manage notifications', vi: 'Quản lý tin tức' },
-                href: '/me/notifications',
+                name: { en: 'Manage feeds', vi: 'Quản lý tin tức' },
+                href: '/me/feeds',
                 admin: true
             },
-
             VoucherManager: {
                 icon: FcApproval,
                 name: { en: 'Manage vouchers', vi: 'Quản lý voucher' },
-                href: '/me/vouchers',
+                href: '/vouchers',
                 admin: true
             },
 

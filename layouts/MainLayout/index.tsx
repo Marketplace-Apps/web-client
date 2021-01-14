@@ -45,7 +45,7 @@ export const MainLayout = ({ children, title }: MainLayout) => {
 							padding: '40px 14px 0 60px',
 							marginLeft: 0,
 							height: 'calc(100vh - 150px)',
-							borderRadius: 10,
+							borderRadius: 20,
 							width: 300,
 							border: '1px solid #e8e8e8'
 						}}>

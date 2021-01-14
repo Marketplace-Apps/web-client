@@ -7,7 +7,7 @@ import { useAction } from "react-livequery-hooks"
 import { useDomain } from "../../hooks/useDomain"
 import { User } from "../../types"
 import { IconButton } from "../common/IconButton"
-import { NumberInput } from "../common/NumberInput"
+import { NumberFormatInput } from "../common/NumberFormatInput"
 
 
 export const SendMoney = (props: { user: User }) => {
@@ -28,24 +28,7 @@ export const SendMoney = (props: { user: User }) => {
                 <Row>
                     <Col xs={12} className="mb-2 font-weight-bold">Chuyển tiền</Col>
                     <Col xs={12} className="mb-2">
-                        <Controller
-                            name="amount"
-                            control={form.control}
-                            defaultValue={0}
-                            render={({ onChange, value }) => (
-                                <NumberInput
-                                    onFocus={e => e.target.select()}
-                                    size="sm"
-                                    defaultValue={0}
-                                    on_updated={onChange}
-                                    allow_decimal={false}
-                                    placeholder="Nhập số tiền muốn chuyển ... "
-                                    allow_negative={true}
-                                    disabled={loading}
-                                    value={value}
-                                />
-                            )}
-                        />
+                        <NumberFormatInput name="amount" placeholder="Nhập số tiền muốn chuyển ... " />
                     </Col>
                     <Col xs={12} className="mb-2 ">
                         <Form.Control

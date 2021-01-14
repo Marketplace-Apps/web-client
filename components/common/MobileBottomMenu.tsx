@@ -15,7 +15,7 @@ const MobileBottomMenuItem = (props: LinkCard) => {
     return <Link href={props.href} key={props.href}>
         <div className="text-center" style={{ cursor: 'pointer' }}>
             <props.icon style={{ color }} size={25} />
-            <div style={{ color, fontSize: 13, fontWeight: 'bold' }}>
+            <div style={{ color, fontSize: 16  }}>
                 {props.name[router.locale]}
             </div>
         </div>

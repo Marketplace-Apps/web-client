@@ -31,11 +31,12 @@ const NO_PROTECTED_ROUTES = [
 	'/deposit',
 	'/services',
 	'/admin-contact',
+	'/vouchers',
 	'/'
 ]
 
-function get_api_base_url() { 
-	if (process.env.NODE_ENV == 'development') return 'http://localhost/livequery/'
+function get_api_base_url() {
+	if (process.env.NODE_ENV == 'development') return 'http://192.168.1.232/livequery/'
 	if (typeof location == 'undefined') return ''
 	return `https://api.${location.hostname.split('.').slice(1).join('.')}/livequery/`
 }

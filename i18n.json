@@ -3,7 +3,7 @@
         "en",
         "vi" 
     ],
-    "defaultLocale": "en",
+    "defaultLocale": "vi",
     "pages": {
         "*": [
             "common"

@@ -9,7 +9,7 @@ import { Controller, FormProvider, useForm, useFormContext } from "react-hook-fo
 import { useDomain } from "../../hooks/useDomain"
 import { useCurrentUser } from "../../hooks/useCurrentUser"
 import { groupByKey } from "../../helpers/group"
-import { NumberInput } from "../common/NumberInput"
+import { NumberFormatInput } from "../common/NumberFormatInput"
 import { useToggle } from "../../hooks/useToggle"
 import { FcCancel } from "react-icons/fc"
 
@@ -117,22 +117,11 @@ export const SettingPrice = (props: SettingPrice) => {
                                                             {show_input_price && <Badge variant="warning">{import_price}</Badge>}
                                                             { show_default_price && <Badge variant="success" className="ml-1">{default_price} {show_percent && getComparePercent(default_price, import_price)}</Badge>}
                                                             { props.user_id && last_price && !show_edit && show_user_price && <Badge variant="danger" className="ml-1">{last_price} {show_percent && getComparePercent(last_price, import_price)}</Badge>}
-                                                            {show_edit && <Controller
+                                                            {show_edit && <NumberFormatInput
                                                                 name={`${domain_service.id}["${server}"]["${type}"]`}
-                                                                control={form.control}
+                                                                decimalScale={1}
                                                                 defaultValue={last_price || default_price || import_price}
-                                                                render={({ onChange, value }) => (
-                                                                    <NumberInput
-                                                                        onFocus={e => e.target.select()}
-                                                                        className="ml-1"
-                                                                        style={{ width: 50 }}
-                                                                        size="sm"
-                                                                        defaultValue={last_price || default_price || import_price}
-                                                                        on_updated={onChange}
-                                                                        allow_decimal={true}
-                                                                        allow_negative={false}
-                                                                    />
-                                                                )}
+                                                                style={{ width: 60, marginLeft: 10, height: 30 }}
                                                             />}
                                                         </Col>
                                                     ))

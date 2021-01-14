@@ -11,7 +11,7 @@ const PcSidebarMenuItem = (props: RouteItem) => {
     const router = useRouter()
     const visible = isVisible(props)
     const active = isActivePath(props)
-    const color = active ? 'white' : (props.color || '#666666')
+    const color = active ? 'white' : (props.color || 'black')
     if (!visible) return null
 
 
@@ -33,9 +33,9 @@ const PcSidebarMenuItem = (props: RouteItem) => {
         <span
             style={{
                 marginLeft: '.5rem',
-                fontSize: '1.1rem',
+                fontSize: '1.2rem',
                 color,
-                fontWeight: 'bold',
+                fontWeight: 'normal',
             }}
         >
             {props.name[router.locale]}

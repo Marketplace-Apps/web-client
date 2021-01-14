@@ -50,7 +50,7 @@ const ServicePage = () => {
 									style={{ position: 'absolute', top: 0, marginLeft: 40 }}
 								>{service.promote_price} đ </Badge>
 							</div>
-							<div className="text-center" style={{ fontWeight: 'bold', color: '#46aaea' }}>
+							<div className="text-center" style={{ fontSize: 17, color: '#0a6cab' }}>
 								{service.name[router.locale]}
 							</div>
 						</div>
