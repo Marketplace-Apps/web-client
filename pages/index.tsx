@@ -7,13 +7,11 @@ import { useDomain } from '../hooks/useDomain'
 import { useInfinityScroll } from '../hooks/useInfinityScroll'
 import { CenteredSpinner } from '../components/common/CenteredSpinner'
 import { MainLayout } from '../layouts/MainLayout'
-import { Notification } from '../types'
-import useTranslation from 'next-translate/useTranslation'
 
 
 const HomePage = () => {
 
-	const domain = useDomain() 
+	const domain = useDomain()
 
 	const {
 		data: notifications,
@@ -29,13 +27,13 @@ const HomePage = () => {
 	useInfinityScroll(() => has_more && fetch_more())
 
 	return (
-		<MainLayout title={{ en: 'Home', vi: 'Trang chủ' }}> 
+		<MainLayout title={{ en: 'Home', vi: 'Trang chủ' }}>
 			{loading && <CenteredSpinner />}
 			{empty && (
 				<p className="text-center">Không có thông báo</p>
 			)}
-			{notifications.map(
-				({ title, description, created_at }) => (
+			{/* {notifications.map(
+				({ title  }) => (
 					<div
 						style={{
 							backgroundColor: '#F7F7F7',
@@ -68,13 +66,13 @@ const HomePage = () => {
 										</Col>
 									))}
 								</Row>
-							)} */}
+							)} 
 
 						</div>
 					</div>
 				),
 			)
-			}
+			} */}
 		</MainLayout>
 	)
 }

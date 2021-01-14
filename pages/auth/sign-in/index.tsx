@@ -92,4 +92,10 @@ const SignInPage = () => {
 	)
 }
 
+export function getServerSideProps() {
+	return {
+		props: {}
+	}
+}
+
 export default SignInPage
