@@ -92,20 +92,20 @@ const ServiceDetailPage = () => {
 						</DatePickerWrapper>
 						<Dropdown>
 							<Dropdown.Toggle className="ml-1" variant="outline-primary" id="dropdown-basic">
-								{Object.keys(filters).filter(key => filters[key])[0] || 'Status'}
+								{Object.keys(OrderStatusList).filter(key => filters[key] == true)[0] || t('status')}
 							</Dropdown.Toggle>
 							<Dropdown.Menu>
 								<Dropdown.Item onClick={() => filter({
 									...filters,
 									...OrderStatusClear
-								})}>all</Dropdown.Item>
+								})}>{t('all')}</Dropdown.Item>
 								{
 									Object.keys(OrderStatusList).slice(1).map(status => (
 										<Dropdown.Item onClick={() => filter({
 											...filters,
 											...OrderStatusClear,
 											[status]: true,
-										})}>{status}</Dropdown.Item>
+										})}>{t(status)}</Dropdown.Item>
 									))
 								}
 							</Dropdown.Menu>
@@ -150,5 +150,9 @@ const ServiceDetailPage = () => {
 		</MainLayout>
 	)
 }
-
+export function getServerSideProps(){
+	return {
+		props: {}
+	}
+}
 export default ServiceDetailPage

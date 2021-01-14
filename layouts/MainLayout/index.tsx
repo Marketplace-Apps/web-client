@@ -8,6 +8,8 @@ import { MobileHeader } from '../../components/common/MobileHeader'
 import { PcHeader } from '../../components/common/PcHeader'
 import { PcSidebar } from '../../components/common/PcSidebar'
 import { I18N } from '../../types'
+import { IoIosArrowBack } from 'react-icons/io'
+import { IconButton } from '../../components/common/IconButton'
 
 export type MainLayout = {
 	children?: ReactNode
@@ -33,7 +35,7 @@ export const MainLayout = ({ children, title }: MainLayout) => {
 						background: 'linear-gradient(90deg, rgb(246, 79, 89), rgb(196, 113, 237), rgb(18, 194, 233))',
 						padding: '15px 0 170px 0',
 						marginBottom: -150,
-						height:300
+						height: 300
 					}}>
 						<PcHeader />
 					</Col>
@@ -44,8 +46,8 @@ export const MainLayout = ({ children, title }: MainLayout) => {
 							marginLeft: 0,
 							height: 'calc(100vh - 150px)',
 							borderRadius: 10,
-							width:300,
-							border: '1px solid #e8e8e8' 
+							width: 300,
+							border: '1px solid #e8e8e8'
 						}}>
 							<PcSidebar />
 						</div>
@@ -55,10 +57,10 @@ export const MainLayout = ({ children, title }: MainLayout) => {
 							backgroundColor: 'white',
 							borderRadius: 20,
 							padding: 20,
-							minHeight:'calc(100vh - 30px)'
+							minHeight: 'calc(100vh - 30px)'
 						}}
 						className="flex-grow-1"
-					>
+					> 
 						{children}
 					</Col>
 					<Col

@@ -59,19 +59,6 @@ export declare class I18N {
 export declare const LanguageList: readonly ["vi", "en", "tl", "cn"];
 
 
-export declare class Notification extends BaseEntity {
-    user_id: string;
-    domain_id: string;
-    title: I18N;
-    description?: I18N;
-    icon?: string;
-    ref: string;
-    url?: string;
-    copy_content?: string;
-    read: boolean;
-}
-
-
 export declare type OrderStatus = 'created' | 'running' | 'error' | 'error-refunded' | 'done' | 'deleted';
 export declare class Order<T = any> extends BaseEntity {
     user_id: string;
@@ -110,10 +97,6 @@ export declare class OrderInput {
     done?: boolean;
     deleted?: boolean;
     metadata: any;
-    voucher?: string;
-}
-export declare class OrderRenew {
-    n: number;
     voucher?: string;
 }
 
@@ -227,20 +210,18 @@ export declare class User extends BaseEntity {
     avatar: string;
 }
 
-
 export declare class Voucher extends BaseEntity {
     domain_id: string;
     code: string;
-    title: I18N;
     start_time: number;
     end_time: number;
     percent: number;
     max: number;
     min_require?: number;
     limit: number;
+    limit_per_user: any;
     used: number;
-    min_balance: number;
-    when: string;
-    services: string[];
+    service: string;
+    server: number;
     ref: string;
 }

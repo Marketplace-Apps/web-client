@@ -7,7 +7,7 @@ import { I18N } from "./types"
 import { IconType } from "react-icons/lib"
 import { useRouter } from "next/router"
 import { useAuth } from "firebase-easy-hooks"
-import { FcAdvertising, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign } from "react-icons/fc"
+import { FcAdvertising, FcApproval, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign } from "react-icons/fc"
 import { MdCall } from 'react-icons/md'
 import { GrServicePlay } from 'react-icons/gr'
 
@@ -89,8 +89,15 @@ export const AppRouteList: AppRouteList = {
             },
             NotificationManager: {
                 icon: FcAdvertising,
-                name: { en: 'Manage notifications', vi: 'Quản lý thông báo' },
+                name: { en: 'Manage notifications', vi: 'Quản lý tin tức' },
                 href: '/me/notifications',
+                admin: true
+            },
+
+            VoucherManager: {
+                icon: FcApproval,
+                name: { en: 'Manage vouchers', vi: 'Quản lý voucher' },
+                href: '/me/vouchers',
                 admin: true
             },
 

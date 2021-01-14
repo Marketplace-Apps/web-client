@@ -14,6 +14,7 @@ import { AppRouteList } from '../AppRouteList'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { get_ms_end_day } from '../helpers/time'
+import useTranslation from 'next-translate/useTranslation'
 
 const TransactionPage = () => {
 
@@ -27,13 +28,24 @@ const TransactionPage = () => {
         domain && user && `domains/${domain?.id}/users/${user.uid}/payment-histories`, { limit: 8 }
     )
 
-    const services = groupByKey(useServices(), 'id')
+    const { t } = useTranslation('common')
+
+    const services = groupByKey([
+        {
+            id: 'SEND_MONEY',
+            icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPaz_Rc8biOUNvof9yETcoKfH9jzLDCmRVzw&usqp=CAU',
+            name: { en: 'Send money', vi: 'Gửi tiền' }
+        },
+        {
+            id: 'RECEIVE_MONEY',
+            icon: 'https://img.icons8.com/cotton/2x/money-transfer.png',
+            name: { en: 'Receive money', vi: 'Nhận tiền' }
+        },
+        ...useServices(),
+    ], 'id')
     const payments = groupByCreatedTime(items)
 
     const service_types = {
-        SEND_MONEY: 'Gửi tiền',
-        RECEIVE_MONEY: 'Nhận tiền',
-        ____: '',
         ...[...services.values()].reduce((p, c) => ({
             ...p,
             [c.id]: c.name[router.locale]
@@ -47,20 +59,20 @@ const TransactionPage = () => {
             <Row>
                 <Col xs={6}>
                     <DatePickerWrapper onChange={d => filter({ ...filters, created_at: lt(get_ms_end_day(d)) })}>
-                        <Button variant="outline-primary">{filters.created_at ? new Date(filters.created_at.value - 24 * 60 * 60000).toLocaleDateString('vi') : 'Chọn ngày'}</Button>
+                        <Button variant="outline-primary">{filters.created_at ? new Date(filters.created_at.value - 24 * 60 * 60000).toLocaleDateString('vi') : t('select_date')}</Button>
                     </DatePickerWrapper>
                 </Col>
                 <Col xs={6} className="text-right">
                     <Dropdown>
                         <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
-                            {filters.service_id ? service_types[filters.service_id.value] : 'Tất cả'}
+                            {filters.service_id ? service_types[filters.service_id.value] : t('all')}
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => {
                                 const { service_id, ...rest } = filters
                                 filter(rest)
-                            }}>Tất cả</Dropdown.Item>
+                            }}>{t('all')}</Dropdown.Item>
                             {
                                 Object.keys(service_types).map(service_id => service_id.includes('__') ? <Dropdown.Divider /> : (
                                     <Dropdown.Item
@@ -91,7 +103,6 @@ const TransactionPage = () => {
                                     <Col xs={6} md={3}>
                                         <div style={{ fontWeight: 'bold' }}>{services.get(item.service_id)?.name[router.locale]}</div>
                                         <div style={{ fontSize: 12 }}>{dayjs(new Date(item.created_at)).locale('vi').format('H:m')}</div>
-                                        {/* <Badge variant="info">Voucher: HPNY [-20%]</Badge> */}
 
                                     </Col>
                                     <Col md={3} className="d-none d-md-block">

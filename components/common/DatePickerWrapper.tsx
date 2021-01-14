@@ -1,7 +1,9 @@
 import 'react-nice-dates/build/style.css'
-import { vi } from 'date-fns/locale'
+import * as locales from 'date-fns/locale'
+import { enUS } from 'date-fns/locale'
 import { DatePicker } from 'react-nice-dates'
 import { PropsWithChildren, useRef, useState } from 'react'
+import { useRouter } from 'next/router'
 
 
 export const DatePickerWrapper = (props: PropsWithChildren<{ onChange?: (date: Date) => any }>) => {
@@ -9,6 +11,7 @@ export const DatePickerWrapper = (props: PropsWithChildren<{ onChange?: (date: D
     const ua = navigator.userAgent.toLowerCase()
     const isMobile = ua.includes('ios') || ua.includes('android')
     const ref = useRef<HTMLInputElement>()
+    const { locale } = useRouter()
 
     const [date, setDate] = useState(new Date())
 
@@ -28,8 +31,9 @@ export const DatePickerWrapper = (props: PropsWithChildren<{ onChange?: (date: D
 
 
     return (
-        <DatePicker date={date} locale={vi} onDateChange={d => d && onChange(d)}>
+        <DatePicker date={date} locale={locales[locale] || enUS} onDateChange={d => d && onChange(d)}>
             {p => <span onClick={() => p.inputProps.onFocus()}>{props.children}</span>}
         </DatePicker>
     )
 }
+

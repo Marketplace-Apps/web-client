@@ -16,5 +16,13 @@
     "show_origin": "Show origin",
     "show_edited": "Show edited",
     "compare": "Compare",
-    "edit": "Edit"
+    "edit": "Edit",
+    "all": "All",
+    "status": "Status",
+    "deleted": "Deleted",
+    "error": "Error",
+    "done": "Done",
+    "refunded": "Refunded",
+    "active": "Active",
+    "running": "Running"
 }

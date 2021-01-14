@@ -1,12 +1,12 @@
 
 import React from 'react'
-import { useDomain } from '../../hooks/useDomain'
-import { MainLayout } from '../../layouts/MainLayout'
+import { useDomain } from '../hooks/useDomain'
+import { MainLayout } from '../layouts/MainLayout'
 import { useCollectionData } from 'react-livequery-hooks'
-import { PaymentMethod } from '../../types'
+import { PaymentMethod } from '../types'
 import { Alert, Badge, Button, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
-import { copy } from '../../helpers/copy'
-import { AppRouteList } from '../../AppRouteList'
+import { copy } from '../helpers/copy'
+import { AppRouteList } from '../AppRouteList'
 
 export const PaymentMethodItem = (props: { payment_method: PaymentMethod }) => {
 

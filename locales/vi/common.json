@@ -17,5 +17,13 @@
     "show_origin": "Xem giá cũ",
     "show_edited": "Xem giá mới",
     "compare": "So sánh",
-    "edit": "Chỉnh sửa"
+    "edit": "Chỉnh sửa",
+    "all": "Toàn bộ",
+    "status": "Trạng thái",
+    "deleted":"Đã xóa",
+    "error":"Lỗi",
+    "done":"Đã hoàn thành",
+    "refunded":"Đã hoàn tiền",
+    "active":"Kích hoạt",
+    "running":"Đang chạy"
 }
