@@ -38,15 +38,11 @@ export declare class DomainService extends BaseEntity {
     ref: string;
 }
 
-
 export declare class Feed extends BaseEntity {
     domain_id: string;
-    title: I18N;
-    description?: I18N;
-    images?: I18N[];
+    language: string;
+    content: string;
     ref: string;
-    url?: string;
-    copy_content?: string;
     payment_tab: boolean;
     home_tab: boolean;
 }
@@ -224,5 +220,5 @@ export declare class Voucher extends BaseEntity {
     service: string;
     server: number;
     ref: string;
-    allow_private_price: boolean
+    allow_private_price: boolean;
 }

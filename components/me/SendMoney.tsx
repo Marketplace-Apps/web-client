@@ -28,7 +28,11 @@ export const SendMoney = (props: { user: User }) => {
                 <Row>
                     <Col xs={12} className="mb-2 font-weight-bold">Chuyển tiền</Col>
                     <Col xs={12} className="mb-2">
-                        <NumberFormatInput name="amount" placeholder="Nhập số tiền muốn chuyển ... " />
+                        <NumberFormatInput
+                            allowNegative={true}
+                            name="amount"
+                            placeholder="Nhập số tiền muốn chuyển ... "
+                        />
                     </Col>
                     <Col xs={12} className="mb-2 ">
                         <Form.Control

@@ -12,6 +12,7 @@ export type NumberFormatInput = {
     placeholder?: string
     decimalScale?: number
     defaultValue?: number
+    allowNegative?:boolean
 }
 
 export const NumberFormatInput = (props: NumberFormatInput) => {
@@ -27,7 +28,7 @@ export const NumberFormatInput = (props: NumberFormatInput) => {
                     style={props.style}
                     disabled={props.disabled}
                     thousandSeparator
-                    allowNegative={false}
+                    allowNegative={props.allowNegative}
                     isNumericString
                     className="form-control"
                     decimalScale={props.decimalScale || 0}
