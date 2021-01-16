@@ -11,6 +11,7 @@ import { useCollectionData } from 'react-livequery-hooks'
 import { Feed } from '../types'
 import { FeedItem } from '../components/feeds/FeedItem'
 import { FeedModal } from '../components/feeds/FeedModal'
+import useTranslation from 'next-translate/useTranslation'
 
 
 const HomePage = () => {
@@ -30,16 +31,28 @@ const HomePage = () => {
 
 	const is_owner = domain && (domain.owner_id == user?.uid)
 
-	useInfinityScroll(() => has_more && fetch_more())
+	const is_edit_mode = is_owner && typeof location != 'undefined' && location.search.includes('edit=true')
 
 	const [selected_feed_index, set_selected_feed_index] = useState(-2)
+
+	function clickFeed(index: number) {
+		if (is_edit_mode) {
+			set_selected_feed_index(index)
+			return
+		}
+	}
+
+	useInfinityScroll(() => has_more && fetch_more())
+
+	const { t } = useTranslation('common')
+
 
 	return (
 		<MainLayout title={{ en: 'Home', vi: 'Trang chủ' }}>
 			{
-				is_owner && (
+				is_edit_mode && (
 					<Row><Col xs={12} className="text-right">
-						<Button onClick={() => set_selected_feed_index(-1)}>Create</Button>
+						<Button onClick={() => set_selected_feed_index(-1)}>{t('create')}</Button>
 					</Col></Row>
 				)
 			}
@@ -52,12 +65,19 @@ const HomePage = () => {
 				feed={feeds[selected_feed_index]}
 				onHide={() => set_selected_feed_index(-2)}
 			/>}
-			{
-				feeds.map((feed, i) => <FeedItem
-					feed={feed}
-					onClick={is_owner && (() => set_selected_feed_index(i))}
-				/>)
-			}
+
+			<Row className="mt-1">
+				{
+					feeds.map((feed, i) => (
+						<Col xs={12} md={12} xl={6} className="p-2" >
+							<FeedItem
+								feed={feed}
+								onClick={() => clickFeed(i)}
+							/>
+						</Col>
+					))
+				}
+			</Row>
 		</MainLayout>
 	)
 

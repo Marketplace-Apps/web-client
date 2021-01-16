@@ -1,3 +1,4 @@
+import useTranslation from "next-translate/useTranslation";
 import React, { Fragment, useState } from "react";
 import { Alert, Button, Card, Col, Modal, Row, Tab, Tabs } from "react-bootstrap";
 import { FcBusinessman, FcClock, FcCloth, FcMoneyTransfer, FcPositiveDynamic, FcTimeline, FcVoicemail } from "react-icons/fc";
@@ -18,17 +19,18 @@ export type UserDetailModal = {
 export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
 
     const domain = useDomain()
+    const { t } = useTranslation('common')
 
     const UserInformationReports = [
-        { name: 'Họ tên', value: user.name, icon: FcBusinessman },
+        { name: t('fullname'), value: user.name, icon: FcBusinessman },
         { name: 'Email', value: user.email, icon: FcVoicemail },
-        { name: 'Tham gia', value: user.created_at, icon: FcClock },
+        { name: t('create_at'), value: new Date(user.created_at).toLocaleDateString('vi'), icon: FcClock },
     ]
 
     const MoneyReports = [
-        { name: 'Số dư', value: user.balance.toLocaleString(), icon: FcMoneyTransfer },
-        { name: 'Đã dùng', value: user.total_used.toLocaleString(), icon: FcTimeline },
-        { name: 'Đã nạp', value: user.total_deposit.toLocaleString(), icon: FcCloth },
+        { name: t('balance'), value: user.balance.toLocaleString(), icon: FcMoneyTransfer },
+        { name: t('used'), value: user.total_used.toLocaleString(), icon: FcTimeline },
+        { name: t('deposited'), value: user.total_deposit.toLocaleString(), icon: FcCloth },
     ]
 
     return (
@@ -46,7 +48,7 @@ export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
 
                     <Tabs className="mt-3" >
 
-                        <Tab eventKey="info" title="Thông tin">
+                        <Tab eventKey="info" title={t('introduce')}>
                             <div className="p-2" style={{ border: '1px solid #dee2e6 ', borderRadius: '0 0 10px 10px' }}>
                                 <Row className="mt-2" style={{ color: '#17a2b8' }}>
                                     {
@@ -82,12 +84,12 @@ export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
                                 </Row>
                             </div>
                         </Tab>
-                        <Tab eventKey="deposit" title="Nạp tiền">
+                        <Tab eventKey="deposit" title={t('add_funds')}>
                             <div className="p-3" style={{ border: '1px solid #dee2e6 ', borderRadius: '0 0 10px 10px' }}>
-                                {domain && user && (domain.owner_id == user.id ? <Alert variant="danger">Liên hệ admin của bạn để nạp tiền </Alert> : <SendMoney user={user} />)}
+                                {domain && user && (domain.owner_id == user.id ? <Alert variant="danger">{t('contact')} admin</Alert> : <SendMoney user={user} />)}
                             </div>
                         </Tab>
-                        <Tab eventKey="prices" title="Giá cả">
+                        <Tab eventKey="prices" title={t('prices')}>
                             <div className="p-3" style={{ border: '1px solid #dee2e6 ', borderRadius: '0 0 10px 10px' }}>
                                 <SettingPrice user_id={user.id} />
                             </div>

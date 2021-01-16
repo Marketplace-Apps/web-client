@@ -1,3 +1,4 @@
+import useTranslation from "next-translate/useTranslation"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
@@ -19,7 +20,7 @@ const UserManagerPage = () => {
     const { locale } = useRouter()
 
     const [search, set_search] = useState('')
-
+    const { t } = useTranslation('common')
     const { items: users } = useCollectionData<User>(domain && `domains/${domain.id}/users`)
 
     const [active_user, set_active_user] = useState<number>(-1)
@@ -37,7 +38,7 @@ const UserManagerPage = () => {
             <Row>
                 <Col xs={12}>
                     <Form.Control
-                        placeholder="Search email/name"
+                        placeholder={`${t('search')} ${t('name')}, email, ...`}
                         value={search}
                         onChange={e => set_search(e.target.value)}
                         onFocus={e => e.target.select()}

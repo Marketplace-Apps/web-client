@@ -12,6 +12,8 @@ import { IconButton } from "../common/IconButton"
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 import firebase from 'firebase'
+import useTranslation from "next-translate/useTranslation"
+import { LanguageList } from "../../LanguageList"
 
 
 const EditorButtonList = [
@@ -105,16 +107,18 @@ export const FeedModal = (props: FeedModal) => {
         }
     )
 
+    const { t } = useTranslation('common')
+
     return (
         <Modal show={true} onHide={props.onHide}>
             <FormProvider {...form}>
                 <Form onSubmit={form.handleSubmit(data => excute(data))}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{props.feed ? 'Edit feed' : 'Create new feed'}</Modal.Title>
+                        <Modal.Title>{t('feed')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Row className="mb-3">
-                            <Col xs={12}> <Form.Label>Language</Form.Label></Col>
+                            <Col xs={12}> <Form.Label>{t('language')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Controller
                                     control={form.control}
@@ -126,15 +130,18 @@ export const FeedModal = (props: FeedModal) => {
                                             value={value}
                                             onChange={e => onChange(e.target.value)}
                                         >
-                                            <option value="en">English</option>
-                                            <option value="vi">Vietnam</option>
+                                            {
+                                                LanguageList.map(lang => (
+                                                    <option value={lang.id}>{lang.name}</option>
+                                                ))
+                                            }
                                         </Form.Control>
                                     )}
                                 />
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={12}> <Form.Label>Content</Form.Label></Col>
+                            <Col xs={12}> <Form.Label>{t('content')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Controller
                                     control={form.control}

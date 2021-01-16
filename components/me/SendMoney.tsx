@@ -1,4 +1,5 @@
 
+import useTranslation from "next-translate/useTranslation"
 import { useState } from "react"
 import { Alert, Button, Col, Form, Row } from "react-bootstrap"
 import { Controller, FormProvider, useForm } from "react-hook-form"
@@ -19,6 +20,7 @@ export const SendMoney = (props: { user: User }) => {
         form.reset()
     })
 
+    const { t } = useTranslation('common')
 
 
     return (
@@ -26,28 +28,28 @@ export const SendMoney = (props: { user: User }) => {
             <Form onSubmit={form.handleSubmit(data => excute(data))} >
                 <input type="hidden" name="to" value={props.user.id} ref={form.register()} />
                 <Row>
-                    <Col xs={12} className="mb-2 font-weight-bold">Chuyển tiền</Col>
+                    <Col xs={12} className="mb-2 font-weight-bold">{t('send_money.send_money')}</Col>
                     <Col xs={12} className="mb-2">
                         <NumberFormatInput
                             allowNegative={true}
                             name="amount"
-                            placeholder="Nhập số tiền muốn chuyển ... "
+                            placeholder={t('send_money.amount')}
                         />
                     </Col>
                     <Col xs={12} className="mb-2 ">
                         <Form.Control
                             as="textarea"
                             name="note"
-                            placeholder="Ghi chú chuyển tiền"
+                            placeholder={t('note')}
                             ref={form.register()}
                             rows={3}
                         />
                     </Col>
                     {data && <Col xs={12}> <Alert variant="success">Chuyển tiền thành công</Alert> </Col>}
                     <Col xs={12} className="text-right"><IconButton icon={BiSend} size="sm" disabled={loading} loading={loading} type="submit">OK</IconButton></Col>
-                    <Col xs={12} className="mt-4 font-weight-bold">Lịch sử chuyển tiền</Col>
+                    <Col xs={12} className="mt-4 font-weight-bold">{t('send_money.history')}</Col>
                     <Col xs={12} className="mt-2 font-weight-bold">
-                        <Alert variant="warning">Tính năng đang trong giai đoạn xây dựng</Alert>
+                        <Alert variant="warning">{t('in_development')}</Alert>
                     </Col>
                 </Row>
             </Form>

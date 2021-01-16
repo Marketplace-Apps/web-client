@@ -1,3 +1,4 @@
+import useTranslation from "next-translate/useTranslation"
 import { useRouter } from "next/router"
 import React from "react"
 import { Button, Col, Form, Modal, Row } from "react-bootstrap"
@@ -62,6 +63,7 @@ export const VoucherModal = (props: VoucherModal) => {
 
     const selected_service_id = form.watch().service as string
     const selected_service = services.filter(s => s.id == selected_service_id)[0]
+    const { t, lang } = useTranslation('common')
 
     return (
         <Modal show={true} onHide={props.onHide}>
@@ -72,7 +74,7 @@ export const VoucherModal = (props: VoucherModal) => {
                     </Modal.Header>
                     <Modal.Body>
                         <Row className="mb-3">
-                            <Col xs={12}> <Form.Label>Voucher code</Form.Label></Col>
+                            <Col xs={12}> <Form.Label>{t('vouchers.code')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Controller
                                     name="code"
@@ -94,8 +96,8 @@ export const VoucherModal = (props: VoucherModal) => {
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={6}><Form.Label>Total amount</Form.Label></Col>
-                            <Col xs={6}><Form.Label>Used</Form.Label></Col>
+                            <Col xs={6}><Form.Label>{t('vouchers.total')}</Form.Label></Col>
+                            <Col xs={6}><Form.Label>{t('vouchers.used')}</Form.Label></Col>
                             <Col xs={6}>
                                 <NumberFormatInput name="limit" rules={{ required: true }} />
                             </Col>
@@ -104,18 +106,18 @@ export const VoucherModal = (props: VoucherModal) => {
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={12}><Form.Label>Start time</Form.Label></Col>
+                            <Col xs={12}><Form.Label>{t('vouchers.start_time')}</Form.Label></Col>
                             <Col xs={12} className="d-flex"><DateHourPicker name="start_time" /></Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={12}><Form.Label>End time</Form.Label></Col>
+                            <Col xs={12}><Form.Label>{t('vouchers.end_time')}</Form.Label></Col>
                             <Col xs={12} className="d-flex">
                                 <DateHourPicker name="end_time" />
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={6}><Form.Label>Percent</Form.Label></Col>
-                            <Col xs={6}><Form.Label>User limit</Form.Label></Col>
+                            <Col xs={6}><Form.Label>{t('vouchers.percent')}</Form.Label></Col>
+                            <Col xs={6}><Form.Label>{t('vouchers.limit_per_user')}</Form.Label></Col>
                             <Col xs={6}>
                                 <NumberFormatInput name="percent" style={{ width: 60 }} />
                             </Col>
@@ -124,8 +126,8 @@ export const VoucherModal = (props: VoucherModal) => {
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={6}><Form.Label>Min order</Form.Label></Col>
-                            <Col xs={6}><Form.Label>Max amount</Form.Label></Col>
+                            <Col xs={6}><Form.Label>{t('vouchers.min_order')}</Form.Label></Col>
+                            <Col xs={6}><Form.Label>{t('vouchers.max_amount')}</Form.Label></Col>
                             <Col xs={6}>
                                 <NumberFormatInput name="min_require" />
                             </Col>
@@ -133,7 +135,7 @@ export const VoucherModal = (props: VoucherModal) => {
                                 <NumberFormatInput name="max" /> </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={12}><Form.Label>Service</Form.Label></Col>
+                            <Col xs={12}><Form.Label>{t('vouchers.service')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Controller
                                     control={form.control}
@@ -145,8 +147,8 @@ export const VoucherModal = (props: VoucherModal) => {
                                             value={value}
                                             onChange={e => onChange(e.target.value)}
                                         >
-                                            <option value="all">Tất cả dịch vụ</option>
-                                            <option value="deposit">Nạp tiền</option>
+                                            <option value="all">{t('all')}</option>
+                                            <option value="deposit">{t('add_funds')}</option>
                                             {
                                                 services.map(s => <option value={s.id}>{s.name[locale]}</option>)
                                             }
@@ -181,7 +183,7 @@ export const VoucherModal = (props: VoucherModal) => {
                         />
 
                         <Row className="mb-3">
-                            <Col xs={12}><Form.Label>Private price user can use</Form.Label></Col>
+                            <Col xs={12}><Form.Label>{t('vouchers.allow_prive_price')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Controller
                                     control={form.control}
@@ -193,8 +195,8 @@ export const VoucherModal = (props: VoucherModal) => {
                                             value={value ? "1" : "0"}
                                             onChange={e => onChange(e.target.value == "1")}
                                         >
-                                            <option value="1">Yes</option>
-                                            <option value="0">No</option>
+                                            <option value="1">{t('yes')}</option>
+                                            <option value="0">{t('no')}</option>
                                         </Form.Control>
                                     )}
                                 />

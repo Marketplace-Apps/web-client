@@ -4,6 +4,7 @@ import React from 'react'
 import { PaymentMethod } from '../../types'
 import { Alert, Badge, Button, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
 import { copy } from '../../helpers/copy'
+import { toast } from 'react-toastify'
 
 
 export const PaymentMethodItem = (props: { payment_method: PaymentMethod, onClick?: Function }) => {
@@ -29,22 +30,14 @@ export const PaymentMethodItem = (props: { payment_method: PaymentMethod, onClic
 					<div className="font-weight-bold" style={{ fontSize: 25 }}>{name}</div>
 					<div>{account_name}</div>
 					<div>{account_number}</div>
-					{
-						!props.onClick && (
-							<OverlayTrigger
-								trigger="click"
-								placement="top"
-								delay={{ show: 250, hide: 400 }}
-								overlay={<Tooltip id={id}> Đã copy </Tooltip>}
-							>
-								<Button
-									size="sm"
-									variant="outline-primary"
-									onClick={() => copy(account_number)}
-								>Copy</Button>
-							</OverlayTrigger>
-						)
-					}
+					<Button
+						size="sm"
+						variant="outline-primary"
+						onClick={() => {
+							copy(account_number)
+							toast.success('Copied')
+						}}
+					>Copy</Button>
 				</div>
 			</Col>
 		</Row>

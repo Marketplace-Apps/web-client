@@ -16,13 +16,10 @@ export type ActionModal = {
     domain_service: DomainService
     order?: Order
     action: ServiceProviderAction
-
-    visible: boolean
-    onHide: Function
     onSuccess?: Function
 }
 
-const ActionModal = (props: ActionModal) => {
+export const ActionModal = (props: ActionModal) => {
 
     const { domain_service, order, action } = props
     const domain = useDomain()
@@ -46,7 +43,6 @@ const ActionModal = (props: ActionModal) => {
         'POST',
         async (data, error) => {
             if (error) return
-            props.onHide()
             props.onSuccess && props.onSuccess()
         }
     )
@@ -66,54 +62,38 @@ const ActionModal = (props: ActionModal) => {
 
 
     return (
-        <Modal
-            show={props.visible}
-            onHide={() => props.onHide()}
-        >
-            <Modal.Header closeButton>
-                <Modal.Title
-                    style={{ fontSize: 20, fontWeight: 'bold' }}
-                >{props.domain_service.name[router.locale]}</Modal.Title>
 
-            </Modal.Header>
-            <FormProvider {...form}>
-                <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
-                    {
-                        Object.keys(action?.form).map(name => <GenericInput key={name} {... (action?.form[name])} />)
-                    }
-                    {error?.message && <Alert variant="danger">{error.message}</Alert>}
-                    <ActionBill
-                        action={action}
-                        order={order}
-                        domain={domain}
-                        domain_service={domain_service}
-                    />
+        <FormProvider {...form}>
+            <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
+                {
+                    Object.keys(action?.form).map(name => <GenericInput key={name} {... (action?.form[name])} />)
+                }
+                {error?.message && <Alert variant="danger">{error.message}</Alert>}
+                <ActionBill
+                    action={action}
+                    order={order}
+                    domain={domain}
+                    domain_service={domain_service}
+                />
 
-                    <Form.Row >
-                        <Col
-                            xs={12}
-                            className="d-flex justify-content-center align-items-center"
-                        >
-                            <IconButton
-                                icon={FaCheck}
-                                variant="primary"
-                                loadingtext="Đang xử lí"
-                                loading={loading}
-                                type="submit"
-                                disabled={loading}
-                            >{t('submit')}</IconButton>
-                        </Col>
-                    </Form.Row>
-                </Form>
-            </FormProvider>
-            <Modal.Footer>
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={props.onHide as any}
-                >{t('close')}</Button>
-            </Modal.Footer>
-        </Modal>
+                <Form.Row >
+                    <Col
+                        xs={12}
+                        className="d-flex justify-content-center align-items-center"
+                    >
+                        <IconButton
+                            icon={FaCheck}
+                            variant="primary"
+                            loadingtext="Đang xử lí"
+                            loading={loading}
+                            type="submit"
+                            disabled={loading}
+                        >{t('submit')}</IconButton>
+                    </Col>
+                </Form.Row>
+            </Form>
+        </FormProvider>
+
     )
 }
 
@@ -121,19 +101,39 @@ export const useActionModal = (
     domain_service: DomainService,
     onSuccess?: Function
 ) => {
-
+    const router = useRouter()
     const [{ action, order }, set_action_id] = useState<{ action?: ServiceProviderAction, order?: Order }>({})
-
+    const { t } = useTranslation('common')
+    
     return {
         showActionModal: set_action_id,
-        ActionModal: action && domain_service && <ActionModal
-            onHide={() => set_action_id({})}
-            domain_service={domain_service}
-            visible={!!set_action_id}
-            onSuccess={onSuccess}
-            action={action}
-            order={order}
-        />
+        ActionModal: action && domain_service && (
+            <Modal
+                show={action}
+                onHide={() => set_action_id({})}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title
+                        style={{ fontSize: 20, fontWeight: 'bold' }}
+                    >{domain_service.name[router.locale]}</Modal.Title>
+
+                </Modal.Header>
+                <ActionModal
+                    domain_service={domain_service}
+                    onSuccess={onSuccess}
+                    action={action}
+                    order={order}
+                />
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => set_action_id({})}
+                    >{t('close')}</Button>
+                </Modal.Footer>
+            </Modal>
+
+        )
     }
 
 }

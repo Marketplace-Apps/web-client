@@ -1,3 +1,4 @@
+import useTranslation from "next-translate/useTranslation"
 import { useRouter } from "next/router"
 import React from "react"
 import { Button, Col, Form, Modal, Row } from "react-bootstrap"
@@ -20,6 +21,7 @@ export const PaymentMethodModal = (props: PaymentMethodModal) => {
     const domain = useDomain()
 
     const form = useForm<PaymentMethod>({ defaultValues: props.payment_method })
+    const { t } = useTranslation('common')
 
     const { excute, loading } = useAction(
         `domains/${domain?.id}/payment-methods${props.payment_method ? `/${props.payment_method.id}` : ''}`,
@@ -43,11 +45,11 @@ export const PaymentMethodModal = (props: PaymentMethodModal) => {
             <FormProvider {...form}>
                 <Form onSubmit={form.handleSubmit(data => excute(data))}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{props.payment_method ? 'Edit payment method' : 'Create new payment method'}</Modal.Title>
+                        <Modal.Title>{t('payment_method.label')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Row className="mb-3">
-                            <Col xs={12}> <Form.Label>Name</Form.Label></Col>
+                            <Col xs={12}> <Form.Label>{t('payment_method.name')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Form.Control
                                     name="name"
@@ -58,7 +60,7 @@ export const PaymentMethodModal = (props: PaymentMethodModal) => {
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={12}><Form.Label>Icon URL</Form.Label></Col>
+                            <Col xs={12}><Form.Label>{t('payment_method.icon')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Form.Control
                                     name="icon"
@@ -69,7 +71,7 @@ export const PaymentMethodModal = (props: PaymentMethodModal) => {
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={12}><Form.Label>Owner account name</Form.Label></Col>
+                            <Col xs={12}><Form.Label>{t('payment_method.owner_name')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Form.Control
                                     name="account_name"
@@ -80,7 +82,7 @@ export const PaymentMethodModal = (props: PaymentMethodModal) => {
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={12}><Form.Label>Owner account number</Form.Label></Col>
+                            <Col xs={12}><Form.Label>{t('payment_method.account_number')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Form.Control
                                     name="account_number"
@@ -91,12 +93,12 @@ export const PaymentMethodModal = (props: PaymentMethodModal) => {
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={12}><Form.Label>Token</Form.Label></Col>
+                            <Col xs={12}><Form.Label>{t('payment_method.auto_token')}</Form.Label></Col>
                             <Col xs={12}>
                                 <Form.Control
                                     name="secret_key"
                                     onFocus={e => e.target.select()}
-                                    placeholder="Cookie or token"
+                                    placeholder="... "
                                     ref={form.register()}
                                 />
                             </Col>

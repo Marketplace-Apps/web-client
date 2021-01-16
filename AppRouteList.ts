@@ -59,17 +59,11 @@ export const AppRouteList: AppRouteList = {
         href: '/services',
         color: '#00bcc5'
     },
-    Tools: {
-        icon: FaToolbox,
-        name: { en: 'Tools', vi: 'Tiện ích' },
-        href: '/tools',
-        visible: { guest: false }
-    },
     Transactions: {
         icon: FaHistory,
         name: { en: 'Transactions', vi: 'Lịch sử' },
         href: '/transactions',
-        visible: { guest: false, mobile: false }
+        visible: { guest: false }
     },
     VoucherList: {
         icon: FiAward,
@@ -88,22 +82,17 @@ export const AppRouteList: AppRouteList = {
                 name: { en: 'Reports', vi: 'Báo cáo' },
                 href: '/me/reports',
                 admin: true
-            },
-            Transactions: {
-                icon: FcElectricity,
-                name: { en: 'Transactions', vi: 'Lịch sử' },
-                href: '/transactions'
-            },
+            }, 
             FeedManager: {
                 icon: FcAdvertising,
                 name: { en: 'Manage feeds', vi: 'Quản lý tin tức' },
-                href: '/me/feeds',
+                href: '/?edit=true',
                 admin: true
             },
             VoucherManager: {
                 icon: FcApproval,
                 name: { en: 'Manage vouchers', vi: 'Quản lý voucher' },
-                href: '/vouchers',
+                href: '/vouchers?edit=true',
                 admin: true
             },
 
@@ -126,7 +115,7 @@ export const AppRouteList: AppRouteList = {
                     en: 'Manage payment methods',
                     vi: 'Quản lý phương thức thanh toán'
                 },
-                href: '/deposit',
+                href: '/deposit?edit=true',
                 admin: true
             },
             SiteConfig: {

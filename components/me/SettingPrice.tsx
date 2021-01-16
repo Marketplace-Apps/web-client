@@ -12,6 +12,7 @@ import { groupByKey } from "../../helpers/group"
 import { NumberFormatInput } from "../common/NumberFormatInput"
 import { useToggle } from "../../hooks/useToggle"
 import { FcCancel } from "react-icons/fc"
+import useTranslation from "next-translate/useTranslation"
 
 export type Prices = {
     [service_id: string]: DomainService['prices']
@@ -33,6 +34,7 @@ export const SettingPrice = (props: SettingPrice) => {
     const form = useForm()
     const domain_prices = groupByKey(domain_services, 'id')
     const mother_domain_prices = groupByKey(mother_domain_services, 'id')
+    const { t } = useTranslation('common')
 
     const price_types = ['basic', 'guarantee']
 
@@ -81,12 +83,12 @@ export const SettingPrice = (props: SettingPrice) => {
         <Fragment>
             <Row><Col className="d-flex justify-content-between mb-3">
                 <ButtonGroup aria-label="Basic example">
-                    <Button onClick={toggle_show_input_price as any} variant={show_input_price ? 'warning' : 'outline-warning'}>Giá nhập</Button>
-                    <Button onClick={toggle_show_default_price as any} variant={show_default_price ? 'success' : 'outline-success'}>Giá chung</Button>
-                    {props.user_id && <Button onClick={toggle_show_user_price as any} variant={show_user_price ? 'danger' : 'outline-danger'}>Giá riêng</Button>}
-                    <Button onClick={toggle_show_percent as any} variant={show_percent ? 'dark' : 'outline-dark'}>Hiện %</Button>
+                    <Button onClick={toggle_show_input_price as any} variant={show_input_price ? 'warning' : 'outline-warning'}>{t('pricing.import')}</Button>
+                    <Button onClick={toggle_show_default_price as any} variant={show_default_price ? 'success' : 'outline-success'}>{t('pricing.common')}</Button>
+                    {props.user_id && <Button onClick={toggle_show_user_price as any} variant={show_user_price ? 'danger' : 'outline-danger'}>{t('pricing.private')}</Button>}
+                    <Button onClick={toggle_show_percent as any} variant={show_percent ? 'dark' : 'outline-dark'}>{t('show')} %</Button>
                 </ButtonGroup>
-                <Button className="ml-2" onClick={toggle_show_edit as any} variant={show_edit ? 'danger' : 'outline-danger'}>Cài giá riêng</Button>
+                <Button className="ml-2" onClick={toggle_show_edit as any} variant={show_edit ? 'danger' : 'outline-danger'}>{t('edit')}</Button>
             </Col></Row>
             <FormProvider {...form}>
                 <Form onSubmit={form.handleSubmit(prices => update({ prices }))}>
@@ -99,8 +101,8 @@ export const SettingPrice = (props: SettingPrice) => {
                                     <span className="font-weight-bold ml-2">{domain_service.name[locale]}</span>
                                 </Col>
                                 <Col xs={2}></Col>
-                                <Col xs={5} className="text-center">Giá thường</Col>
-                                <Col xs={5} className="text-center">Giá bảo hành</Col>
+                                <Col xs={5} className="text-center">{t('pricing.basic')}</Col>
+                                <Col xs={5} className="text-center">{t('pricing.guarantee')}</Col>
 
                                 {
                                     servers.map(({ price_types, server }) => (
@@ -150,14 +152,14 @@ export const SettingPrice = (props: SettingPrice) => {
                                         type="submit"
                                         loading={updating}
                                         disabled={updating}
-                                    >Xác nhận</IconButton>
+                                    >{t('submit')}</IconButton>
                                     <IconButton
                                         className="ml-1"
                                         size="sm"
                                         icon={FcCancel}
                                         onClick={toggle_show_edit as any}
                                         variant="dark"
-                                    >Hủy</IconButton>
+                                    >{t('close')}</IconButton>
                                 </Col>
                             </Row>
                         )

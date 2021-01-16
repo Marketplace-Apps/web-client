@@ -9,6 +9,7 @@ import { AppRouteList } from '../AppRouteList'
 import { useAuth } from 'firebase-easy-hooks'
 import { PaymentMethodItem } from '../components/deposit/PaymentMethodItem'
 import { PaymentMethodModal } from '../components/deposit/PaymentMethodModal'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -16,13 +17,15 @@ const DepositPage = () => {
 	const domain = useDomain()
 	const { user } = useAuth()
 	const is_owner = domain && (user?.uid == domain.owner_id)
+	const is_edit_mode = is_owner && typeof location != 'undefined' && location.search.includes('edit=true')
+
 	const { items: payment_methods, loading, empty } = useCollectionData<
 		PaymentMethod
 	>(domain && `domains/${domain.id}/payment-methods`)
-	
+	const { t } = useTranslation('common')
 
 	const [selected_payment_method_index, set_selected_payment_method_index] = useState(-2)
-
+	
 
 	return (
 		<MainLayout title={AppRouteList.Deposit.name}>
@@ -42,13 +45,13 @@ const DepositPage = () => {
 				)
 			}
 			{
-				is_owner && (
+				is_edit_mode && (
 					<Row>
 						<Col className="text-right">
 							<Button
 								size="sm"
 								onClick={() => set_selected_payment_method_index(-1)}
-							>Create</Button>
+							>{t('create')}</Button>
 						</Col>
 					</Row>
 				)
@@ -61,7 +64,7 @@ const DepositPage = () => {
 					>
 						<PaymentMethodItem
 							payment_method={payment_method}
-							onClick={is_owner && (() => set_selected_payment_method_index(index))}
+							onClick={is_edit_mode ? (() => set_selected_payment_method_index(index)) : null}
 						/>
 					</Col>
 					)

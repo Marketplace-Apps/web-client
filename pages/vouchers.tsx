@@ -1,4 +1,6 @@
 import { useAuth } from "firebase-easy-hooks"
+import useTranslation from "next-translate/useTranslation"
+import { useRouter } from "next/router"
 import React, { useState } from "react"
 import { Badge, Button, Card, Col, Form, ListGroup, ProgressBar, Row } from "react-bootstrap"
 import { useForm } from "react-hook-form"
@@ -9,7 +11,9 @@ import { useCollectionData } from "react-livequery-hooks"
 import { AppRouteList } from "../AppRouteList"
 import { VoucherItem } from "../components/vouchers/VoucherItem"
 import { VoucherModal } from "../components/vouchers/VoucherModal"
+import { groupByKey } from "../helpers/group"
 import { useDomain } from "../hooks/useDomain"
+import { useServices } from "../hooks/useServices"
 import { MainLayout } from "../layouts/MainLayout"
 import { Voucher } from "../types"
 
@@ -23,7 +27,12 @@ const VoucherManagerPage = () => {
     const [show_create_modal, set_show_create_modal] = useState<boolean>(false)
     const [selected_voucher_index, set_selected_voucher_index] = useState<number>(-1)
     const is_owner = domain && (user?.uid == domain?.owner_id)
-    
+    const is_edit_mode = is_owner && typeof location != 'undefined' && location.search.includes('edit=true')
+    const { t } = useTranslation('common')
+    const services = groupByKey(useServices(), 'id')
+    const { locale } = useRouter()
+
+
     return (
         <MainLayout title={AppRouteList.Me.children.SiteConfig.name}>
             {show_create_modal && <VoucherModal onHide={() => set_show_create_modal(false)} />}
@@ -37,10 +46,10 @@ const VoucherManagerPage = () => {
             }
 
             {
-               is_owner && (
+                is_edit_mode && (
                     <Row>
                         <Col xs="12" className="text-right">
-                            <Button onClick={() => set_show_create_modal(true)} size="sm">Create</Button>
+                            <Button onClick={() => set_show_create_modal(true)} size="sm">{t('create')}</Button>
                         </Col>
 
                     </Row>
@@ -53,8 +62,9 @@ const VoucherManagerPage = () => {
                         .map((voucher, index) =>
                             <Col sm={12} md={12} xl={3} lg={4} className="p-3">
                                 <VoucherItem
+                                    service_name={services.get(voucher.service)?.name[locale]}
                                     voucher={voucher}
-                                    onClick={ is_owner ? () => set_selected_voucher_index(index) : null}
+                                    onClick={is_edit_mode ? () => set_selected_voucher_index(index) : null}
                                 />
                             </Col>
                         )

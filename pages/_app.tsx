@@ -12,6 +12,7 @@ import { ProtectedRoute } from '../components/common/ProtectedRoute'
 import dayjs from 'dayjs'
 import 'dayjs/locale/vi'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { ToastContainer } from 'react-toastify'
 dayjs.extend(relativeTime)
 
 
@@ -66,6 +67,7 @@ export default function App({ Component, pageProps }: AppProps) {
 				},
 				retry: 3
 			})}>
+			<ToastContainer />
 			{
 				NO_PROTECTED_ROUTES.includes(router.pathname) ? <Component {...pageProps} /> : <ProtectedRoute Component={Component} pageProps={pageProps} />
 			}

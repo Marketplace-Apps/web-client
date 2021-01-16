@@ -36,22 +36,25 @@ export const FacebookProfilePage = (props: ServiceProviderActionFormItem) => {
 
             {
                 data && (
-                    <Form.Row className="p-3" style={{ cursor: 'pointer' }} onClick={() => window.open(`https://fb.com/${data.id}`, '_blank')}>
-                        <Col xs={6} className="d-flex justify-content-center align-items-center">
-                            <img src={data.thumbnail} style={{ width: '100%' }} />
+                    <Form.Row style={{ cursor: 'pointer' }} onClick={() => window.open(`https://fb.com/${data.id}`, '_blank')}>
+                        <Col xs={12} md={3}></Col>
+                        <Col xs={6} md={3} lg={2} className="d-flex justify-content-center align-items-center">
+                            <img src={data.thumbnail} style={{ width: '100%', maxWidth: 300 }} />
                         </Col>
-                        <Col xs={6} className="d-flex-column justify-content-around align-items-stretch">
-                            <div style={{ fontWeight: 'bold' }} className="mb-2">
-                                {data.title}
-                            </div>
-                            <div style={{ fontSize: 14 }}>
-                                {data.type == 'User' && <FcBusinessman size={25} />}
-                                {data.type == 'Page' && <FcPackage size={25} />}
-                        &nbsp;{data.type}
-                            </div>
-                            <div style={{ fontSize: 14 }}>
-                                {data.description && <FcRadarPlot size={25} />}
+                        <Col xs={6} md={3} lg={2} className="d-flex justify-content-center align-items-center">
+                            <div className="d-flex-column">
+                                <div style={{ fontWeight: 'bold' }} className="mb-2">
+                                    {data.title}
+                                </div>
+                                <div style={{ fontSize: 14 }}>
+                                    {data.type == 'User' && <FcBusinessman size={25} />}
+                                    {data.type == 'Page' && <FcPackage size={25} />}
+                                    <span className="ml-1">{data.type}</span>
+                                </div>
+                                <div style={{ fontSize: 14 }}>
+                                    {data.description && <FcRadarPlot size={25} />}
                         &nbsp;{data.description}
+                                </div>
                             </div>
                         </Col>
 

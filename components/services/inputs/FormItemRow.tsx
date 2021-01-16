@@ -21,15 +21,16 @@ export const FormItemRow = (props: FormItemRow) => {
 
             {/* Label */}
             <Col
-                xs={4}
+                xs={12}
                 style={{ fontSize: 15, fontWeight: 'bold' }}
+                className="d-flex justify-content-start mb-1"
             >
                 <div>{props.label[locale]}</div>
-                {props.require && <div><Badge variant="danger" pill>{t('require')}</Badge></div>}
+                {props.require && <div><Badge variant="danger" className="ml-1" pill>{t('require')}</Badge></div>}
             </Col>
 
             {/* Input */}
-            <Col xs={8}>
+            <Col xs={12}>
                 {props.children}
             </Col>
 

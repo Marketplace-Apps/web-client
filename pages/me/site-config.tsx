@@ -1,3 +1,4 @@
+import useTranslation from "next-translate/useTranslation"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import { AppRouteList } from "../../AppRouteList"
@@ -12,13 +13,13 @@ const SiteConfigPage = () => {
 
     const form = useForm()
 
-
+    const { t } = useTranslation('common')
 
     return (
         <MainLayout title={AppRouteList.Me.children.SiteConfig.name}>
             <Form>
                 <Form.Group as={Row} >
-                    <Form.Label column sm="2"> Tên site </Form.Label>
+                    <Form.Label column sm="2"> {t('title')} </Form.Label>
                     <Col sm="10"><Form.Control
                         defaultValue={domain?.name}
                         placeholder="SSM services"
@@ -29,7 +30,7 @@ const SiteConfigPage = () => {
                 </Form.Group>
 
                 <Form.Group as={Row} >
-                    <Form.Label column sm="2"> Icon  </Form.Label>
+                    <Form.Label column sm="2">  {t('logo')}  </Form.Label>
                     <Col sm="10">
                         <Form.Control
                             defaultValue={domain?.icon}
@@ -40,7 +41,7 @@ const SiteConfigPage = () => {
                     </Col>
                 </Form.Group>
 
-                <Button variant="primary" type="submit">Submit </Button>
+                <Button variant="primary" type="submit"> {t('submit')} </Button>
             </Form>
         </MainLayout>
     )
