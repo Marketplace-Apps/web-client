@@ -83,5 +83,11 @@
         "only_apply_for_server": "Only apply for server",
         "expired_in": "Expired in"
     },
-    "Internal server error":"Internal server error"
+    "server_errors": {
+        "Internal server error": "Internal server error",
+        "TOO_SMALL": "Too small",
+        "INVAILD_RECEIVER": "Invaild receiver",
+        "OUT_OF_BALANCE": "Out of balance",
+        "RECEIVER_NOT_FOUND": "Receiver not found"
+    }
 }

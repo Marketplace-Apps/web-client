@@ -1,12 +1,14 @@
 import { useAuth } from "firebase-easy-hooks"
 import useTranslation from "next-translate/useTranslation"
+import { useRouter } from "next/router"
 import { Col, Row } from "react-bootstrap"
-import { FcAutomatic, FcBusinessman, FcOrganization } from "react-icons/fc"
+import { FcOrganization } from "react-icons/fc"
 import { AppRouteList } from "../../AppRouteList"
 import { LinkCard } from "../../components/common/LinkCard"
 import { UserInfo } from "../../components/common/UserInfo"
 import { useCurrentUser } from "../../hooks/useCurrentUser"
 import { useDomain } from "../../hooks/useDomain"
+import { LanguageList } from "../../LanguageList"
 import { MainLayout } from "../../layouts/MainLayout"
 
 
@@ -17,6 +19,8 @@ const MePage = () => {
 	const user = useCurrentUser()
 	const isAdmin = domain?.owner_id && domain?.owner_id == user?.id
 	const { t } = useTranslation('common')
+
+	const router = useRouter()
 
 	return (
 		<MainLayout title={AppRouteList.Me.name}>
@@ -32,7 +36,7 @@ const MePage = () => {
 						<div>
 							<img
 								src={user?.avatar}
-								style={{ borderRadius: '100%', width: 80  , height: 80 }}
+								style={{ borderRadius: '100%', width: 80, height: 80 }}
 							/>
 						</div>
 						<div className="ml-2">
@@ -45,6 +49,29 @@ const MePage = () => {
 					</Col>
 				</Row>
 			</div>
+
+			<Row>
+				<Col xs={12} className="text-right">
+					{
+						LanguageList.map(({ icon, id }) => (
+							<img
+								src={icon}
+								width={60}
+								height={30}
+								className="m-2"
+								style={{ cursor: 'pointer' }}
+								onClick={() => {
+
+									router.push(router.pathname, router.asPath, {
+										locale: id
+									})
+
+								}}
+							/>
+						))
+					}
+				</Col>
+			</Row>
 
 			<Row>
 				{user?.email == 'duongvanba.com@gmail.com' && (

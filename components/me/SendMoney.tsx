@@ -46,7 +46,7 @@ export const SendMoney = (props: { user: User }) => {
                         />
                     </Col>
                     {data && <Col xs={12}> <Alert variant="success">Chuyển tiền thành công</Alert> </Col>}
-                    {error && <Col xs={12}><Alert variant="danger">{t(error.message)}</Alert></Col>}
+                    {error && <Col xs={12}><Alert variant="danger">{t('server_errors.' + error.message)}</Alert></Col>}
                     <Col xs={12} className="text-right"><IconButton icon={BiSend} size="sm" disabled={loading} loading={loading} type="submit">OK</IconButton></Col>
                     <Col xs={12} className="mt-4 font-weight-bold">{t('send_money.history')}</Col>
                     <Col xs={12} className="mt-2 font-weight-bold">

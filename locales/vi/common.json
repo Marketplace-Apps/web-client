@@ -84,5 +84,12 @@
         "only_apply_for_server": "Chỉ áp dụng cho server ",
         "expired_in": "Hết hạn vào"
     },
-    "Internal server error": "Lỗi server bạn báo admin nhé"
+    "server_errors":{
+        "Internal server error": "Lỗi server bạn báo admin nhé",
+        "TOO_SMALL": "Số tiền quá nhỏ",
+        "INVAILD_RECEIVER": "Người nhận không hợp lệ",
+        "OUT_OF_BALANCE": "Số dư của bạn không đủ",
+        "RECEIVER_NOT_FOUND": "Không tìm thấy người nhận"
+        
+    }
 }
