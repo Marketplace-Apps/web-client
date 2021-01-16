@@ -1,8 +1,8 @@
 {
-    "history":"Lịch sử",
-    "yes":"Có",
-    "no":"Không",
-    "logo":"Logo",
+    "history": "Lịch sử",
+    "yes": "Có",
+    "no": "Không",
+    "logo": "Logo",
     "title": "Xin chào",
     "balance": "Số dư",
     "deposited": "Đã nạp",
@@ -12,7 +12,7 @@
     "order_total": "Giá trị đơn hàng",
     "create_at": "Thời gian tạo",
     "require": "Bắt buộc",
-    "create": "Tạo mới",
+    "create": "Tạo",
     "update": "Cập nhật",
     "change_price": "Thay đổi giá",
     "renew": "Gia hạn",
@@ -69,19 +69,20 @@
     "vouchers": {
         "label": "Khuyến mại",
         "code": "Mã code",
-        "total":"Số lượng tối đa",
-        "start_time":"Ngày giờ bắt đầu",
-        "end_time":"Ngày giờ hết hạn",
-        "percent":"Phần trăm giảm giá",
-        "min_order":"Giá trị đơn hàng tối thiểu",
-        "max_amount":"Giá trị voucher tối đa",
-        "service":"Dịch vụ áp dụng",
-        "server":"Server áp dụng",
-        "allow_prive_price":"Áp dụng cho user có giá riêng", 
+        "total": "Số lượng tối đa",
+        "start_time": "Ngày giờ bắt đầu",
+        "end_time": "Ngày giờ hết hạn",
+        "percent": "Phần trăm giảm giá",
+        "min_order": "Giá trị đơn hàng tối thiểu",
+        "max_amount": "Giá trị voucher tối đa",
+        "service": "Dịch vụ áp dụng",
+        "server": "Server áp dụng",
+        "allow_prive_price": "Áp dụng cho user có giá riêng",
         "used": "Lượt đã sử dụng",
         "limit_per_user": "Giới hạn dùng mỗi user ",
         "apply_for_all_servers": "Áp dụng tất cả các server",
         "only_apply_for_server": "Chỉ áp dụng cho server ",
-        "expired_in":"Hết hạn vào"
-    }
+        "expired_in": "Hết hạn vào"
+    },
+    "Internal server error": "Lỗi server bạn báo admin nhé"
 }

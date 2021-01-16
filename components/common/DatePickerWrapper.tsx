@@ -9,10 +9,9 @@ import { useRouter } from 'next/router'
 export const DatePickerWrapper = (props: PropsWithChildren<{ onChange?: (date: Date) => any }>) => {
 
     const ua = navigator.userAgent.toLowerCase()
-    const isMobile = ua.includes('ios') || ua.includes('android')
+    const isMobile = ua.includes('iphone') || ua.includes('android')
     const ref = useRef<HTMLInputElement>()
     const { locale } = useRouter()
-
     const [date, setDate] = useState(new Date())
 
     function onChange(d: Date) {
@@ -25,7 +24,10 @@ export const DatePickerWrapper = (props: PropsWithChildren<{ onChange?: (date: D
             <div style={{ position: 'fixed', top: -1000 }}>
                 <input type="date" onChange={e => onChange(new Date(e.target.value))} ref={ref} />
             </div>
-            <span onClick={() => ref.current.click()}>{props.children}</span>
+            <span onClick={() => {
+                ref.current.focus()
+                ref.current.click()
+            }}>{props.children}</span>
         </>
     )
 

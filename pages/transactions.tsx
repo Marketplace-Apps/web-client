@@ -59,7 +59,7 @@ const TransactionPage = () => {
             <Row>
                 <Col xs={6}>
                     <DatePickerWrapper onChange={d => filter({ ...filters, created_at: lt(get_ms_end_day(d)) })}>
-                        <Button variant="outline-primary">{filters.created_at ? new Date(filters.created_at.value - 24 * 60 * 60000).toLocaleDateString('vi') : t('select_date')}</Button>
+                        <Button variant="outline-primary">{filters.created_at ? new Date(filters.created_at.value).toLocaleDateString('vi') : t('select_date')}</Button>
                     </DatePickerWrapper>
                 </Col>
                 <Col xs={6} className="text-right">
@@ -89,7 +89,7 @@ const TransactionPage = () => {
                 payments.map(({ day, list }) => (
                     <Fragment key={day}>
                         <Row >
-                            <Col xs={12} className="d-flex justidy-content-center align-items-center mt-2 ml-2 mb-1">
+                            <Col xs={12} className="d-flex justify-content-start align-items-center mt-2 ml-2 mb-1">
                                 <ImCalendar size={25} color="#59a2eb" />
                                 <span style={{ color: '#59a2eb', marginLeft: 5 }}>{dayjs(new Date(list[0].created_at)).locale('vi').format('DD/MM/YYYY')}</span>
                             </Col>
@@ -100,25 +100,28 @@ const TransactionPage = () => {
                                     <Col xs={2} className="d-flex justify-content-center align-items-center" >
                                         <img src={services.get(item.service_id)?.icon} style={{ width: 50 }} />
                                     </Col>
-                                    <Col xs={6} md={3}>
-                                        <div style={{ fontWeight: 'bold' }}>{services.get(item.service_id)?.name[router.locale]}</div>
-                                        <div style={{ fontSize: 12 }}>{dayjs(new Date(item.created_at)).locale('vi').format('H:m')}</div>
-
+                                    <Col xs={6} md={3} className="d-flex justify-content-start align-items-center ">
+                                        <div>
+                                            <div style={{ fontWeight: 'bold', color: '#2b69b7' }}>{services.get(item.service_id)?.name[router.locale]}</div>
+                                            <div style={{ fontSize: 12 }}>{dayjs(new Date(item.created_at)).locale('vi').format('H:m')}</div>
+                                        </div>
                                     </Col>
                                     <Col md={3} className="d-none d-md-block">
-                                        <Alert variant="light">"{item.description[router.locale]}"</Alert>
+                                        <Alert variant="light">{item.description[router.locale]}</Alert>
                                     </Col>
-                                    <Col xs={2}>
-                                        <Badge variant="info">9</Badge>
-                                        <Badge variant="light">x200</Badge>
+                                    <Col xs={2} className="d-flex justify-content-center align-items-center" >
+                                        <div >
+                                            <Badge variant="info">9</Badge>
+                                            <Badge variant="light">x200</Badge>
+                                        </div>
                                     </Col>
                                     <Col xs={2} >
                                         <Badge variant="primary" className="mr-1">{(item.balance_after - item.total).toLocaleString()}</Badge>
-                                        <Badge variant="success" className="mr-1">{item.total.toLocaleString()}</Badge>
+                                        <Badge variant={item.total > 0 ? "success" : 'danger'} className="mr-1">{item.total > 0 ? "+" : '-'} {item.total.toLocaleString()}</Badge>
                                         <Badge variant="dark" className="mr-1">= {item.balance_after.toLocaleString()}</Badge>
                                     </Col>
                                     <Col md={12} className="d-md-none d-sm-block">
-                                        <Alert style={{ margin: 0 }} variant="light">"{item.description[router.locale]}"</Alert>
+                                        <Alert style={{ margin: 0 }} variant="light">{item.description[router.locale]}</Alert>
                                     </Col>
                                 </Row>
                             ))

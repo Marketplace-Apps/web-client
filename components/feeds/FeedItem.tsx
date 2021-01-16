@@ -10,7 +10,7 @@ export type FeedItem = {
 export const FeedItem = ({ feed, onClick }: FeedItem) => {
     const { locale } = useRouter()
     return (
-        <Card style={{  borderRadius: '20px 20px 0 0' }} onClick={onClick as any}>
+        <Card style={{  borderRadius: '10px 10px 0 0' }} onClick={onClick as any}>
             <Card.Header
                 className="p-2 d-flex justify-content-between align-items-center"
                 style={{ borderRadius: '20px 20px 0 0' }}

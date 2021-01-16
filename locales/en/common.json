@@ -82,5 +82,6 @@
         "apply_for_all_servers": "Apply for all servers",
         "only_apply_for_server": "Only apply for server",
         "expired_in": "Expired in"
-    }
+    },
+    "Internal server error":"Internal server error"
 }

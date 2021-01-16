@@ -7,7 +7,7 @@ import { I18N } from "./types"
 import { IconType } from "react-icons/lib"
 import { useRouter } from "next/router"
 import { useAuth } from "firebase-easy-hooks"
-import { FcAdvertising, FcApproval, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign } from "react-icons/fc"
+import { FcAdvertising, FcApproval, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign, FcStumbleupon } from "react-icons/fc"
 import { MdCall } from 'react-icons/md'
 import { FiAward } from 'react-icons/fi'
 
@@ -61,7 +61,7 @@ export const AppRouteList: AppRouteList = {
     },
     Transactions: {
         icon: FaHistory,
-        name: { en: 'Transactions', vi: 'Lịch sử' },
+        name: { en: 'History', vi: 'Lịch sử' },
         href: '/transactions',
         visible: { guest: false }
     },
@@ -80,9 +80,8 @@ export const AppRouteList: AppRouteList = {
             Report: {
                 icon: FcComboChart,
                 name: { en: 'Reports', vi: 'Báo cáo' },
-                href: '/me/reports',
-                admin: true
-            }, 
+                href: '/me/reports'
+            },
             FeedManager: {
                 icon: FcAdvertising,
                 name: { en: 'Manage feeds', vi: 'Quản lý tin tức' },
@@ -95,7 +94,12 @@ export const AppRouteList: AppRouteList = {
                 href: '/vouchers?edit=true',
                 admin: true
             },
-
+            VoucherList: {
+                icon: FcStumbleupon,
+                name: { en: 'Vouchers', vi: 'Khuyến mại' },
+                href: '/vouchers',
+                visible: { pc: false } 
+            },
             UserManager: {
                 icon: FcBusinessman,
                 name: { en: 'Manage users', vi: 'Quản lý tài khoản' },
@@ -127,7 +131,7 @@ export const AppRouteList: AppRouteList = {
 
             Contact: {
                 icon: FcBusinessContact,
-                name: { en: 'Admin', vi: 'Liên hệ admin' },
+                name: { en: 'Admin', vi: 'Liên hệ' },
                 href: '/admin-contact'
             },
             Logout: {
@@ -142,7 +146,7 @@ export const AppRouteList: AppRouteList = {
     },
     Contact: {
         icon: MdCall,
-        name: { en: 'Admin', vi: 'Liên hệ admin' },
+        name: { en: 'Contact', vi: 'Liên hệ' },
         href: '/admin-contact',
         visible: { mobile: true, logged: false }
     },

@@ -17,21 +17,21 @@ export const MobileHeader = () => {
 
 	return (
 		<Row style={{ background: 'linear-gradient(90deg,#f64f59,#c471ed,#12c2e9)', padding: 10 }}>
-			<Col className="p-0">
+			<Col className="p-0 d-flex justify-content-start align-items-center">
 				<img src={domain?.icon} style={{ width: 40 }} />
 				<span style={{ marginLeft: 10, color: 'white', fontSize: 25 }}>{domain?.name}</span>
 			</Col>
-			<Col xs="auto" className="d-flex justify-content-between align-items-center">
+			<Col className="d-flex justify-content-end align-items-center">
 				<Button
-					size="sm"
-					className="mr-2"
+					size="sm" 
 					variant="outline-light"
 					onClick={() => router.push(firebase_user ? '/me' : 'auth/sign-in')}
+					style={{ borderRadius: 20 }}
 				>
 					<img src={firebase_user?.photoURL || DEFAULT_AVATAR} width={20} style={{ borderRadius: '100%', marginRight: 5 }} />
 					<span>{user?.balance.toLocaleString() || 0} đ</span>
 				</Button>
-				<ChangeLanguage />
+				{/* <ChangeLanguage /> */}
 			</Col>
 		</Row>
 	)

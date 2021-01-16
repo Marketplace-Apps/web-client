@@ -1,13 +1,10 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { Fragment, useState } from "react";
 import { Alert, Button, Card, Col, Modal, Row, Tab, Tabs } from "react-bootstrap";
-import { FcBusinessman, FcClock, FcCloth, FcMoneyTransfer, FcPositiveDynamic, FcTimeline, FcVoicemail } from "react-icons/fc";
-import { ImPriceTag } from "react-icons/im";
-import { useAction } from "react-livequery-hooks";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { FcBusinessman, FcClock, FcCloth, FcMoneyTransfer, FcPositiveDynamic, FcTimeline, FcVoicemail } from "react-icons/fc"; 
+import { AppRouteList } from "../../AppRouteList";
 import { useDomain } from "../../hooks/useDomain";
 import { User } from "../../types";
-import { IconButton } from "../common/IconButton";
 import { SendMoney } from "./SendMoney";
 import { SettingPrice } from "./SettingPrice";
 
@@ -19,7 +16,7 @@ export type UserDetailModal = {
 export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
 
     const domain = useDomain()
-    const { t } = useTranslation('common')
+    const { t, lang } = useTranslation('common')
 
     const UserInformationReports = [
         { name: t('fullname'), value: user.name, icon: FcBusinessman },
@@ -38,7 +35,7 @@ export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
             <Modal show={true} onHide={onHide}>
 
                 <Modal.Header closeButton>
-                    <Modal.Title>User detail</Modal.Title>
+                    <Modal.Title>{AppRouteList.Me.children.UserManager.name[lang]}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="text-center">

@@ -6,16 +6,19 @@ import { TiGroup } from 'react-icons/ti'
 import { FaRegMoneyBillAlt } from "react-icons/fa"
 import { AiFillClockCircle } from "react-icons/ai"
 import { Line } from 'react-chartjs-2'
+import { useCurrentUser } from "../../hooks/useCurrentUser"
 
 
 const xxx = new Array(100).fill(0).map((_, index) => index)
 
 const ReportPage = () => {
 
+    const user = useCurrentUser()
+
     const reports = [
-        { Icon: FaRegMoneyBillAlt, name: 'Số dư', value: 123456, background: 'linear-gradient(to right, #11998e, #38ef7d)' },
-        { Icon: AiFillClockCircle, name: 'Tổng đã nạp', value: 123456, background: 'linear-gradient(to right, #4e54c8, #8f94fb)' },
-        { Icon: TiGroup, name: 'Tổng tiền CTV & đại lý ', value: 123456, background: 'linear-gradient(to right, #f46b45, #eea849)' },
+        { Icon: FaRegMoneyBillAlt, name: 'Số dư', value: user?.balance, background: 'linear-gradient(to right, #11998e, #38ef7d)' },
+        { Icon: AiFillClockCircle, name: 'Tổng đã nạp', value: user?.total_deposit, background: 'linear-gradient(to right, #4e54c8, #8f94fb)' },
+        // { Icon: TiGroup, name: 'Tổng tiền CTV & đại lý ', value: 123456, background: 'linear-gradient(to right, #f46b45, #eea849)' },
 
     ]
 
@@ -32,7 +35,7 @@ const ReportPage = () => {
                                 </Col>
                                 <Col xs={9} className="p-1">
                                     <div style={{ fontSize: 16 }}>{name}</div>
-                                    <div style={{ fontSize: 30, fontWeight: 'bold' }}>{value.toLocaleString()} đ</div>
+                                    <div style={{ fontSize: 30, fontWeight: 'bold' }}>{value?.toLocaleString()} đ</div>
                                 </Col>
 
                             </Row>
@@ -40,7 +43,7 @@ const ReportPage = () => {
                     ))
                 }
             </Row>
-            <Row>
+            <Row className="mt-3">
                 <Col xs={12}>
                     <Line data={{
                         labels: xxx,
