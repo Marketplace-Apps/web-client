@@ -44,12 +44,16 @@ export const SettingPrice = (props: SettingPrice) => {
         return {
             domain_service,
             servers: Object.keys(domain_service.prices || {}).map(server => {
+
                 return {
                     server,
                     price_types: price_types.map(type => {
-                        const import_price = user?.prices?.[domain_service.id][server][type] ?? mother_domain_prices.get(domain_service.id)?.prices?.[server][type]
+                        const a = user?.prices?.[domain_service.id][server]
+                        const b = mother_domain_prices.get(domain_service.id)?.prices?.[server]
+                        const c = member?.prices?.[domain_service.id][server]
+                        const import_price = a?.[type] ?? b?.[type]
                         const default_price = domain_prices.get(domain_service.id)?.prices?.[server][type]
-                        const last_price = member?.prices?.[domain_service.id][server][type] || default_price
+                        const last_price = c?.[type] || default_price
 
                         return { type, import_price, default_price, last_price }
                     })
@@ -88,7 +92,7 @@ export const SettingPrice = (props: SettingPrice) => {
                     {props.user_id && <Button onClick={toggle_show_user_price as any} variant={show_user_price ? 'danger' : 'outline-danger'}>{t('pricing.private')}</Button>}
                     <Button onClick={toggle_show_percent as any} variant={show_percent ? 'dark' : 'outline-dark'}>{t('show')} %</Button>
                 </ButtonGroup>
-                <Button className="ml-2" onClick={toggle_show_edit as any} variant={show_edit ? 'danger' : 'outline-danger'}>{t('edit')}</Button>
+                {user && (user.id != props.user_id) && <Button className="ml-2" onClick={toggle_show_edit as any} variant={show_edit ? 'danger' : 'outline-danger'}>{t('edit')}</Button>}
             </Col></Row>
             <FormProvider {...form}>
                 <Form onSubmit={form.handleSubmit(prices => update({ prices }))}>
