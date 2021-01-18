@@ -44,8 +44,8 @@
     "prices": "Prices",
     "contact": "Contact",
     "note": "Note",
-    "apply":"Apply",
-    "check":"Check",
+    "apply": "Apply",
+    "check": "Check",
     "pricing": {
         "basic": "Basic price",
         "guarantee": "Guarantee price",
@@ -83,7 +83,8 @@
         "limit_per_user": "Limit per user",
         "apply_for_all_servers": "Apply for all servers",
         "only_apply_for_server": "Only apply for server",
-        "expired_in": "Expired in"
+        "expired_in": "Expired in",
+        "invalid": "Invalid voucher"
     },
     "server_errors": {
         "Internal server error": "Internal server error",
@@ -91,7 +92,7 @@
         "INVAILD_RECEIVER": "Invaild receiver",
         "OUT_OF_BALANCE": "Out of balance",
         "RECEIVER_NOT_FOUND": "Receiver not found",
-        "RPC_OFFLINE":"Server problem",
-        "INVAILD_URL":"Invaild URL"
+        "RPC_OFFLINE": "Server problem",
+        "INVAILD_URL": "Invaild URL"
     }
 }

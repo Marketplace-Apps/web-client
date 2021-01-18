@@ -8,8 +8,8 @@ export function caculate_voucher(
     server: number = 1
 ) {
     if (!voucher) return 0
-    const user_price = user.prices[domain_service.id] && user.prices[domain_service.id][server]
-    const domain_price = domain_service.prices[server]
+    const user_price = user.prices?.[domain_service.id] && user.prices?.[domain_service.id]?.[server]
+    const domain_price = domain_service.prices?.[server]
     const has_private_price = (
         (user_price?.basic && user_price.basic != domain_price.basic)
         || (user_price?.guarantee && user_price.guarantee != domain_price.guarantee)

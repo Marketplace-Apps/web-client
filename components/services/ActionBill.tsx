@@ -5,7 +5,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser"
 import { DomainService, DomainServicePrice, Order, User } from "../../types"
 import { Bill } from "./Bill"
 import useTranslation from 'next-translate/useTranslation'
-import { Button, FormControl, InputGroup } from "react-bootstrap"
+import { Alert, Button, FormControl, InputGroup } from "react-bootstrap"
 import { useAction } from "react-livequery-hooks"
 import { caculate_voucher } from "../../helpers/caculate_voucher"
 
@@ -34,7 +34,7 @@ export const ActionBill = (props: ActionBill) => {
     const { t } = useTranslation('common')
 
     const server = props.order?.server || payload.server || 1
-    const prices = user?.prices?.[props.domain_service.id]?.[`SV${server}`] || props.domain_service?.prices[`SV${server}`]
+    const prices = user?.prices?.[props.domain_service.id]?.[`SV${server}`] || props.domain_service?.prices?.[`SV${server}`]
 
     const ctx: PriceFunctionParams<any> = { ...props, user, payload, prices }
 
@@ -86,6 +86,8 @@ export const ActionBill = (props: ActionBill) => {
 
                 />
             )}
+
+            {((data && !voucher) || (voucher && discount == 0)) && <Alert variant="danger">{t('vouchers.invalid')}</Alert>}
 
             <Bill
                 total={total_bill - discount}
