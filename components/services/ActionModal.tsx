@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { Alert, Button, Col, Form, Modal } from "react-bootstrap"
+import { Fragment, useEffect, useState } from "react"
+import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap"
 import { FormProvider, useForm } from "react-hook-form"
 import { FaCheck } from "react-icons/fa"
 import { useAction, useDocumentData } from "react-livequery-hooks"
@@ -11,6 +11,7 @@ import { useDomain } from "../../hooks/useDomain"
 import { GenericInput } from "./inputs/GenericInput"
 import { ActionBill } from "./ActionBill"
 import useTranslation from 'next-translate/useTranslation'
+import { TextInput } from "./inputs/TextInput"
 
 export type ActionModal = {
     domain_service: DomainService
@@ -23,7 +24,6 @@ export const ActionModal = (props: ActionModal) => {
 
     const { domain_service, order, action } = props
     const domain = useDomain()
-    const router = useRouter()
     const { t } = useTranslation('common')
 
     const getDefaultValues = (data = {}) => Object.keys(action?.form || {}).reduce((p, c, index) => {
@@ -34,6 +34,13 @@ export const ActionModal = (props: ActionModal) => {
         return p
     }, {})
 
+    const form = useForm<any>({
+        defaultValues: getDefaultValues({
+            ...order?.metadata || {},
+            ...order || {}
+        })
+    })
+
     const {
         error,
         excute,
@@ -43,16 +50,12 @@ export const ActionModal = (props: ActionModal) => {
         'POST',
         async (data, error) => {
             if (error) return
+            form.reset()
             props.onSuccess && props.onSuccess()
         }
     )
 
-    const form = useForm<any>({
-        defaultValues: getDefaultValues({
-            ...order?.metadata || {},
-            ...order || {}
-        })
-    })
+
 
     useEffect(() => {
         const default_values = getDefaultValues(form.watch())
@@ -65,16 +68,16 @@ export const ActionModal = (props: ActionModal) => {
 
         <FormProvider {...form}>
             <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
+                {Object.keys(action?.form).map(name => <GenericInput key={name} {... (action?.form[name])} />)}
+                {error?.message && <Alert variant="danger">{t('server_errors.'+error.message)}</Alert>}
                 {
-                    Object.keys(action?.form).map(name => <GenericInput key={name} {... (action?.form[name])} />)
+                    action && domain_service && <ActionBill
+                        fn={action.price}
+                        order={order}
+                        domain_service={domain_service}
+                        can_use_voucher={action.can_use_voucher}
+                    />
                 }
-                {error?.message && <Alert variant="danger">{error.message}</Alert>}
-                <ActionBill
-                    action={action}
-                    order={order}
-                    domain={domain}
-                    domain_service={domain_service}
-                />
 
                 <Form.Row >
                     <Col
@@ -104,7 +107,7 @@ export const useActionModal = (
     const router = useRouter()
     const [{ action, order }, set_action_id] = useState<{ action?: ServiceProviderAction, order?: Order }>({})
     const { t } = useTranslation('common')
-    
+
     return {
         showActionModal: set_action_id,
         ActionModal: action && domain_service && (

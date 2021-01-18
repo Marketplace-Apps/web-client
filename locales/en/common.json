@@ -44,6 +44,8 @@
     "prices": "Prices",
     "contact": "Contact",
     "note": "Note",
+    "apply":"Apply",
+    "check":"Check",
     "pricing": {
         "basic": "Basic price",
         "guarantee": "Guarantee price",
@@ -88,6 +90,8 @@
         "TOO_SMALL": "Too small",
         "INVAILD_RECEIVER": "Invaild receiver",
         "OUT_OF_BALANCE": "Out of balance",
-        "RECEIVER_NOT_FOUND": "Receiver not found"
+        "RECEIVER_NOT_FOUND": "Receiver not found",
+        "RPC_OFFLINE":"Server problem",
+        "INVAILD_URL":"Invaild URL"
     }
 }

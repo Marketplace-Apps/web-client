@@ -1,42 +1,98 @@
 import { Fragment, useMemo } from "react"
-import { useFormContext } from "react-hook-form"
+import { Controller, useFormContext } from "react-hook-form"
 import { SanboxJS } from "../../helpers/sandboxjs"
 import { useCurrentUser } from "../../hooks/useCurrentUser"
-import { Domain, DomainService, Order, ServiceProvider, ServiceProviderAction, User } from "../../types"
+import { DomainService, DomainServicePrice, Order, User } from "../../types"
 import { Bill } from "./Bill"
 import useTranslation from 'next-translate/useTranslation'
+import { Button, FormControl, InputGroup } from "react-bootstrap"
+import { useAction } from "react-livequery-hooks"
+import { caculate_voucher } from "../../helpers/caculate_voucher"
 
-export interface PriceFunctionContext { 
-    domain: Domain,
+
+
+export type ActionBill = {
     domain_service: DomainService,
-    action: ServiceProviderAction
-    user: User,
     order?: Order,
-    payload?: any
+    fn: string,
+    can_use_voucher?: boolean
 }
 
-export type ActionBill = Omit<PriceFunctionContext, "user" | "payload">
+export type PriceFunctionParams<T> = {
+    domain_service: DomainService,
+    user: User,
+    order?: Order,
+    payload?: T,
+    prices: DomainServicePrice
+}
 
 export const ActionBill = (props: ActionBill) => {
 
     const form = useFormContext()
     const user = useCurrentUser()
     const payload = form.watch()
-    const ctx: PriceFunctionContext = { ...props, user, payload }
-    const action = props.action
     const { t } = useTranslation('common')
 
+    const server = props.order?.server || payload.server || 1
+    const prices = user?.prices[props.domain_service.id][`SV${server}`] || props.domain_service?.prices[`SV${server}`]
+
+    const ctx: PriceFunctionParams<any> = { ...props, user, payload, prices }
+
+
     const total_bill = useMemo<number>(() => {
+        if (!user || !prices) return 0
         try {
-            return action?.price ? SanboxJS.eval(action?.price, ctx) : 0
+            return SanboxJS.eval(props.fn, ctx)
         } catch (e) {
+            console.error(e)
             return 0
         }
-    }, [props])
+    }, [ctx])
+
+    const { data, loading, excute, clear } = useAction(user && `domains/${user.domain_id}/vouchers`, 'GET')
+    const voucher = (data?.data?.items || [])[0]
+
+    function check_voucher() {
+        const code = (document.querySelector('#voucher-input') as any).value.trim()
+        excute({}, { code })
+    }
+
+    const discount = caculate_voucher(voucher, props.domain_service, user, total_bill, server)
 
     return total_bill != 0 && (
         <Fragment>
-            <Bill total={total_bill} text={t('order_total')} />
+
+            {props.can_use_voucher && (
+                <Controller
+                    name="voucher"
+                    control={form.control}
+                    render={({ onChange, value }) => (
+                        <InputGroup className="mb-3">
+                            <FormControl
+                                placeholder="Voucher"
+                                id="voucher-input"
+                                ref={form.register}
+                                disabled={voucher}
+                            />
+                            <InputGroup.Append>
+                                <Button
+                                    variant="outline-primary"
+                                    onClick={voucher ? clear : check_voucher}
+                                    disabled={loading}
+                                >{voucher ? t('edit') : t('check')}</Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    )}
+
+                />
+            )}
+
+            <Bill
+                total={total_bill - discount}
+                text={t('order_total')}
+                old_value={discount}
+            />
+
             <Bill
                 total={user?.balance}
                 text={t('my_balance')}

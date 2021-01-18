@@ -11,6 +11,7 @@ import { MdAssignmentReturn, MdDone } from "react-icons/md";
 import { ImPause2 } from "react-icons/im";
 import { useActionModal } from "./ActionModal";
 import { useCollectionData, ne } from "react-livequery-hooks";
+import useTranslation from "next-translate/useTranslation";
 
 
 
@@ -25,13 +26,14 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
     const router = useRouter()
 
     const { ActionModal, showActionModal } = useActionModal(props.domain_service)
+    const { t } = useTranslation('common')
     const { items: actions } = useCollectionData<ServiceProviderAction>(`services/${props.domain_service.id}/actions`, {
         where: {
             id: ne('create'),
             hidden: ne(true),
             active: ne(false)
         }
-    }) 
+    })
 
     return (
         <Fragment>
@@ -48,7 +50,7 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                 <Col xs={10}>
                                     <img src={props.domain_service?.icon} width={30} className="mr-3 mb-1" />
                                     <span style={{ fontWeight: 'bold' }}>{props.domain_service.name[router.locale]}</span>
-                                </Col> 
+                                </Col>
                             </Row>
 
 
@@ -170,7 +172,7 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                             size="sm"
                                             onClick={() => showActionModal({ action, order: props.order })}
                                         >
-                                            <span>{action.label[router.locale]}</span>
+                                            <span>{action.name[router.locale]}</span>
                                         </Button>
                                     ))
                                 }
@@ -179,9 +181,7 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
 
                         <Modal.Footer>
 
-                            <Button variant="secondary" size="sm" onClick={props.onHide as any}>
-                                Close
-                      </Button>
+                            <Button variant="secondary" size="sm" onClick={props.onHide as any}>{t('close')} </Button>
                         </Modal.Footer>
                     </Modal >
                 )

@@ -45,6 +45,8 @@
     "prices": "Giá cả",
     "contact": "Liên hệ",
     "note": "Ghi chú",
+    "apply":"Áp dụng",
+    "check":"Kiểm tra",
     "pricing": {
         "basic": "Giá cơ bản",
         "guarantee": "Giá bảo hành",
@@ -89,7 +91,8 @@
         "TOO_SMALL": "Số tiền quá nhỏ",
         "INVAILD_RECEIVER": "Người nhận không hợp lệ",
         "OUT_OF_BALANCE": "Số dư của bạn không đủ",
-        "RECEIVER_NOT_FOUND": "Không tìm thấy người nhận"
-        
+        "RECEIVER_NOT_FOUND": "Không tìm thấy người nhận",
+        "RPC_OFFLINE":"Máy chủ gặp vấn đề",
+        "INVAILD_URL":"URL không hợp lệ"
     }
 }

@@ -43,7 +43,7 @@ export const FormItemRow = (props: FormItemRow) => {
                 form.errors[props.id] && (
                     <Col xs={12} className="mt-2">
                         <Alert variant="danger">
-                            {form.errors[props.id].message}
+                            {form.errors[props.id].type == 'required' && t('require')} {form.errors[props.id].message}
                         </Alert>
                     </Col>
                 )

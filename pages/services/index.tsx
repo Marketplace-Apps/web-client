@@ -13,7 +13,7 @@ const ServicePage = () => {
 	const router = useRouter()
 	const domain = useDomain('page services')
 	const { items, error } = useCollectionData<DomainService>(domain && `domains/${domain.id}/services`, { cache: { update: true, use: true } })
-	const services = groupBy2Key(items, 'category', 'root_id')
+	const services = groupBy2Key(items, 'category', 'id')
 
 	const facebook_services = [...services.get('facebook')?.values() || []]
 
@@ -33,7 +33,7 @@ const ServicePage = () => {
 						xs={4}
 						md={3}
 						lg={1}
-						onClick={() => router.push(`services/${service.root_id}`)} style={{ cursor: 'pointer' }}
+						onClick={() => router.push(`services/${service.id}`)} style={{ cursor: 'pointer' }}
 					>
 						<div
 							className="d-flex flex-column justify-content-start align-items-center align-content-center"

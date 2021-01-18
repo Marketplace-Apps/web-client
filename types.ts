@@ -25,7 +25,6 @@ export declare type DomainServicePrice = {
 };
 export declare class DomainService extends BaseEntity {
     domain_id: string;
-    root_id: string;
     maintain?: boolean;
     promote_price: number;
     prices: {
@@ -52,7 +51,7 @@ export declare class I18N {
     tl?: string;
     cn?: string;
 }
-export declare const LanguageList: readonly ["vi", "en", "tl", "cn"];
+export declare const LanguageList: readonly ["vi-VN", "en-US"];
 
 
 export declare type OrderStatus = 'created' | 'running' | 'error' | 'error-refunded' | 'done' | 'deleted';
@@ -71,6 +70,7 @@ export declare class Order<T = any> extends BaseEntity {
     done?: boolean;
     deleted?: boolean;
     total: number;
+    server?: number;
     note: string;
     amount: number;
     end_time?: number;
@@ -144,6 +144,7 @@ export declare class ServiceProvider<T> extends BaseEntity {
 }
 
 
+
 export declare class ServiceProviderItemOption {
     label?: I18N;
     value: any;
@@ -177,6 +178,8 @@ export declare class ServiceProviderActionFormItem extends BaseEntity {
 export declare type ServiceProviderActionForm = {
     [name: string]: ServiceProviderActionFormItem;
 };
+
+
 export declare class ServiceProviderAction extends BaseEntity {
     service_id: string;
     active: boolean;
@@ -186,10 +189,11 @@ export declare class ServiceProviderAction extends BaseEntity {
     form: ServiceProviderActionForm;
     validator?: string;
     color?: string;
+    can_use_voucher?: boolean;
     payment_note: string;
-    name: string;
-    label: I18N;
+    name: I18N;
 }
+export { };
 
 
 export declare class User extends BaseEntity {
@@ -215,7 +219,6 @@ export declare class Voucher extends BaseEntity {
     max: number;
     min_require?: number;
     limit: number;
-    limit_per_user: any;
     used: number;
     service: string;
     server: number;

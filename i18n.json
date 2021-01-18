@@ -3,6 +3,7 @@
         "en",
         "vi" 
     ],
+    "localeDetection": false,
     "defaultLocale": "vi",
     "pages": {
         "*": [

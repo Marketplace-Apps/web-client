@@ -49,12 +49,7 @@ export const VoucherItem = ({ voucher, onClick, service_name }: VoucherItem) => 
                     <Badge variant="info" className="mr-1"> {voucher.used}</Badge>/
                     <Badge variant="primary" className="ml-1">{voucher.limit}</Badge>
                     <span className="ml-1">{t('vouchers.used')}</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                    <FcInfo className="mr-1" size={25} />
-                    <span>{t('vouchers.limit_per_user')}</span>
-                    <Badge variant="primary" className="ml-1">{voucher.limit_per_user}</Badge>
-                </ListGroup.Item>
+                </ListGroup.Item> 
             </ListGroup>
         </Card>
     )

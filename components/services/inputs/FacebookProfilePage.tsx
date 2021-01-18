@@ -7,10 +7,12 @@ import { useAction } from "react-livequery-hooks";
 import { ServiceProviderActionFormItem } from "../../../types";
 import { CenteredSpinner } from "../../../components/common/CenteredSpinner";
 import { FormItemRow } from "./FormItemRow";
+import useTranslation from "next-translate/useTranslation";
 
 export const FacebookProfilePage = (props: ServiceProviderActionFormItem) => {
 
     const form = useFormContext()
+    const { t } = useTranslation('common')
 
     const { data, excute, loading, error } = useAction(`utils/facebook-profile-page`, 'GET', (data, error) => {
         console.error(error)
@@ -28,7 +30,7 @@ export const FacebookProfilePage = (props: ServiceProviderActionFormItem) => {
             {error && (
                 <Form.Row><Col xs={12} className="d-flex justify-content-start align-items-top">
                     <Alert variant="danger" style={{ width: '100%' }}>
-                        {error.message}
+                       {t('server_errors.' + error.message)}
                     </Alert>
                 </Col></Form.Row>
             )}
@@ -73,7 +75,7 @@ export const FacebookProfilePage = (props: ServiceProviderActionFormItem) => {
         >
             <Form.Control
                 name={props.id}
-                ref={form.register()}
+                ref={form.register({ required: props.require })}
                 onBlur={onBlur}
             />
         </FormItemRow>

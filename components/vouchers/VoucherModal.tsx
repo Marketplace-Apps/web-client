@@ -35,8 +35,7 @@ export const VoucherModal = (props: VoucherModal) => {
             min_require: 0,
             percent: 0,
             max: 0,
-            used: 0,
-            limit_per_user: 0,
+            used: 0, 
             service: 'all',
             server: 0,
             allow_private_price: false

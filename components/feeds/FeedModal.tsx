@@ -62,8 +62,7 @@ async function UploadImages(files: File[]): Promise<UploadImagesResult> {
             url: await ref.getDownloadURL(),
             name: metadata.name,
             size: `${metadata.size}`
-        }
-        console.log(rs)
+        } 
         return rs
     }))
 
