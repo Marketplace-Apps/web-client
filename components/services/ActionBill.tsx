@@ -34,7 +34,7 @@ export const ActionBill = (props: ActionBill) => {
     const { t } = useTranslation('common')
 
     const server = props.order?.server || payload.server || 1
-    const prices = user?.prices[props.domain_service.id][`SV${server}`] || props.domain_service?.prices[`SV${server}`]
+    const prices = user?.prices?.[props.domain_service.id]?.[`SV${server}`] || props.domain_service?.prices[`SV${server}`]
 
     const ctx: PriceFunctionParams<any> = { ...props, user, payload, prices }
 
