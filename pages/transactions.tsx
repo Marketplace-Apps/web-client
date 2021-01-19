@@ -117,7 +117,7 @@ const TransactionPage = () => {
                                     </Col>
                                     <Col xs={2} >
                                         <Badge variant="primary" className="mr-1">{(item.balance_after - item.total).toLocaleString()}</Badge>
-                                        <Badge variant={item.total > 0 ? "success" : 'danger'} className="mr-1">{item.total > 0 ? "+" : '-'} {item.total.toLocaleString()}</Badge>
+                                        <Badge variant={item.total > 0 ? "success" : 'danger'} className="mr-1">{item.total > 0 ? "+" : '-'} {Math.abs(item.total).toLocaleString()}</Badge>
                                         <Badge variant="dark" className="mr-1">= {item.balance_after.toLocaleString()}</Badge>
                                     </Col>
                                     <Col md={12} className="d-md-none d-sm-block">
