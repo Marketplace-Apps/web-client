@@ -1,7 +1,10 @@
 import useTranslation from "next-translate/useTranslation"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useForm } from "react-hook-form"
+import { BiCheck } from "react-icons/bi"
+import { useUpdateAction } from "react-livequery-hooks"
 import { AppRouteList } from "../../AppRouteList"
+import { IconButton } from "../../components/common/IconButton"
 import { useDomain } from "../../hooks/useDomain"
 import { MainLayout } from "../../layouts/MainLayout"
 
@@ -15,16 +18,18 @@ const SiteConfigPage = () => {
 
     const { t } = useTranslation('common')
 
+    const { update, updating } = useUpdateAction(domain && `domains/${domain.id}`)
+
     return (
         <MainLayout title={AppRouteList.Me.children.SiteConfig.name}>
-            <Form>
+            <Form onSubmit={form.handleSubmit(data => update(data))}>
                 <Form.Group as={Row} >
                     <Form.Label column sm="2"> {t('title')} </Form.Label>
                     <Col sm="10"><Form.Control
                         defaultValue={domain?.name}
                         placeholder="SSM services"
                         ref={form.register()}
-                        name="icon"
+                        name="name"
                     />
                     </Col>
                 </Form.Group>
@@ -41,7 +46,13 @@ const SiteConfigPage = () => {
                     </Col>
                 </Form.Group>
 
-                <Button variant="primary" type="submit"> {t('submit')} </Button>
+                <IconButton
+                    variant="primary"
+                    icon={BiCheck}
+                    type="submit"
+                    disabled={updating}
+                    loading={updating}
+                > {t('submit')} </IconButton>
             </Form>
         </MainLayout>
     )

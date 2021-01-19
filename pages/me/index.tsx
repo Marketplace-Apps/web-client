@@ -74,15 +74,6 @@ const MePage = () => {
 			</Row>
 
 			<Row>
-				{user?.email == 'duongvanba.com@gmail.com' && (
-					<Col xs={12} sm={6} md={4} lg={3}>
-						<LinkCard
-							icon={FcOrganization}
-							name={{ en: 'Agency manager', vi: 'Quản lý đại lý' }}
-							color="orange"
-						/>
-					</Col>
-				)}
 				{
 					Object
 						.values({

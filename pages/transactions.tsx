@@ -95,7 +95,7 @@ const TransactionPage = () => {
                             </Col>
                         </Row>
                         {
-                            list.map((item, index) => (
+                            list.sort((a, b) => b.created_at - a.created_at).map((item, index) => (
                                 <Row noGutters key={item.id} style={{ borderBottom: index < list.length - 1 && '1px dotted gray', padding: '10px 0 0px 0 ' }} >
                                     <Col xs={2} className="d-flex justify-content-center align-items-center" >
                                         <img src={services.get(item.service_id)?.icon} style={{ width: 50 }} />

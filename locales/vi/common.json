@@ -3,7 +3,7 @@
     "yes": "Có",
     "no": "Không",
     "logo": "Logo",
-    "title": "Xin chào",
+    "title": "Tiêu đề",
     "balance": "Số dư",
     "deposited": "Đã nạp",
     "used": "Đã sử dụng",
@@ -47,6 +47,7 @@
     "note": "Ghi chú",
     "apply":"Áp dụng",
     "check":"Kiểm tra",
+    "load_more": "Xem thêm",
     "pricing": {
         "basic": "Giá cơ bản",
         "guarantee": "Giá bảo hành",

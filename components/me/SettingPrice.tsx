@@ -48,9 +48,9 @@ export const SettingPrice = (props: SettingPrice) => {
                 return {
                     server,
                     price_types: price_types.map(type => { 
-                        const import_price = user?.prices?.[domain_service.id][server]?.[type] ?? mother_domain_prices.get(domain_service.id)?.prices?.[server]?.[type]
+                        const import_price = user?.prices?.[domain_service.id]?.[server]?.[type] ?? mother_domain_prices.get(domain_service.id)?.prices?.[server]?.[type]
                         const default_price = domain_prices.get(domain_service.id)?.prices?.[server][type]
-                        const last_price = member?.prices?.[domain_service.id][server]?.[type] || default_price
+                        const last_price = member?.prices?.[domain_service.id]?.[server]?.[type] || default_price
 
                         return { type, import_price, default_price, last_price }
                     })
