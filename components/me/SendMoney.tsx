@@ -24,7 +24,7 @@ export const SendMoney = (props: { user: User }) => {
             amount: 0
         }
     })
-    const { data, error, excute, loading } = useAction(domain && `domains/${domain.id}/users/me/~send-money`, undefined, () => {
+    const { data, error, excute, loading } = useAction(domain && `domains/${domain.id}/users/~send-money`, undefined, () => {
         form.reset()
     })
 
