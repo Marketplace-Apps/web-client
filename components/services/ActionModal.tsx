@@ -69,7 +69,7 @@ export const ActionModal = (props: ActionModal) => {
         <FormProvider {...form}>
             <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
                 {Object.keys(action?.form).map(name => <GenericInput key={name} {... (action?.form[name])} />)}
-                {error?.message && <Alert variant="danger">{t('server_errors.'+error.message)}</Alert>}
+
                 {
                     action && domain_service && <ActionBill
                         fn={action.price}
@@ -78,7 +78,7 @@ export const ActionModal = (props: ActionModal) => {
                         can_use_voucher={action.can_use_voucher}
                     />
                 }
-
+                {error?.message && <Alert variant="danger">{t('server_errors.' + error.message)}</Alert>}
                 <Form.Row >
                     <Col
                         xs={12}

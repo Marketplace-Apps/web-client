@@ -8,6 +8,7 @@ import { DomainService } from '../../types'
 import { useRouter } from 'next/router'
 import { MainLayout } from '../../layouts/MainLayout'
 import { AppRouteList } from '../../AppRouteList'
+import { ServiceItem } from '../../components/services/ServiceItem'
 
 const ServicePage = () => {
 	const router = useRouter()
@@ -30,30 +31,16 @@ const ServicePage = () => {
 				{facebook_services.map(service => (
 					<Col
 						key={service.id}
-						xs={4}
+						xs={6}
 						md={3}
-						lg={1}
-						onClick={() => router.push(`services/${service.id}`)} style={{ cursor: 'pointer' }}
+						xl={2}
+						lg={3}
+
 					>
-						<div
-							className="d-flex flex-column justify-content-start align-items-center align-content-center"
-						>
-							<div className="d-flex justify-content-center align-items-start" style={{ width: 80 }}>
-								<img
-									src={service.icon}
-									width={40}
-									height={40}
-								/>
-								<Badge
-									pill
-									variant="danger"
-									style={{ position: 'absolute', top: 0, marginLeft: 40 }}
-								>{service.promote_price} đ </Badge>
-							</div>
-							<div className="text-center" style={{ fontSize: 17, color: '#0a6cab' }}>
-								{service.name[router.locale]}
-							</div>
-						</div>
+						<ServiceItem
+							onClick={() => router.push(`services/${service.id}`)} style={{ cursor: 'pointer' }}
+							service={service}
+						/>
 					</Col>
 				))}
 			</Row>
