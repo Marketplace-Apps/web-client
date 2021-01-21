@@ -38,7 +38,7 @@ const ServicePage = () => {
 
 					>
 						<ServiceItem
-							onClick={() => router.push(`services/${service.id}`)} style={{ cursor: 'pointer' }}
+							onClick={() => router.push(`services/${service.id}`)} 
 							service={service}
 						/>
 					</Col>
