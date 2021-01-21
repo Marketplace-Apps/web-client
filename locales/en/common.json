@@ -47,6 +47,7 @@
     "apply": "Apply",
     "check": "Check",
     "load_more": "Load more",
+    "cancel": "Cancel",
     "pricing": {
         "basic": "Basic price",
         "guarantee": "Guarantee price",
@@ -95,5 +96,25 @@
         "RECEIVER_NOT_FOUND": "Receiver not found",
         "RPC_OFFLINE": "Server problem",
         "INVAILD_URL": "Invaild URL"
-    }
+    },
+    "orders": {
+        "amount": "Amount",
+        "total": "Bill total",
+        "status": {
+            "created": "Created",
+            "pased": "Paused",
+            "running": "Running",
+            "error": "Error",
+            "refunded": "Refunded",
+            "done": "done"
+        },
+        "discount": "Giảm giá"
+    },
+    "payments": {
+        "balance": "Balance",
+        "add": "Received amount",
+        "sub": "Subtracted amount",
+        "balance_after": "Dinal balance"
+    },
+    "empty_data": "Nothing here, empty"
 }

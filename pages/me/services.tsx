@@ -7,7 +7,7 @@ import { MainLayout } from "../../layouts/MainLayout"
 
 export const ServiceConfigPage = () => {
     return (
-        <MainLayout title={AppRouteList.Me.children.ServiceManager.name}>
+        <MainLayout showHeaderTitle title={AppRouteList.Me.children.ServiceManager.name}>
             <SettingPrice />
         </MainLayout>
     )

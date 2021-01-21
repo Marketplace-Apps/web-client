@@ -58,7 +58,7 @@ const HomePage = () => {
 			}
 			{loading && <CenteredSpinner />}
 			{empty && (
-				<p className="text-center">Chưa có thông báo</p>
+				<p className="text-center">{t('empty_data')}</p>
 			)}
 			{ selected_feed_index == -1 && <FeedModal onHide={() => set_selected_feed_index(-2)} />}
 			{ selected_feed_index >= 0 && <FeedModal

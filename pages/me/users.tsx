@@ -25,16 +25,13 @@ const UserManagerPage = () => {
 
     const [active_user, set_active_user] = useState<number>(-1)
     return (
-        <MainLayout title={AppRouteList.Me.children.UserManager.name}>
+        <MainLayout title={AppRouteList.Me.children.UserManager.name} showHeaderTitle>
             {active_user >= 0 && users[active_user] && (
                 <UserDetailModal
                     onHide={() => set_active_user(-1)}
                     user={users[active_user]}
                 />
-            )}
-            <Row className="mb-2 ml-1">
-                <h5>{AppRouteList.Me.children.UserManager.name[locale]}</h5>
-            </Row>
+            )} 
             <Row>
                 <Col xs={12}>
                     <Form.Control

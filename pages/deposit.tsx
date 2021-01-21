@@ -10,6 +10,7 @@ import { useAuth } from 'firebase-easy-hooks'
 import { PaymentMethodItem } from '../components/deposit/PaymentMethodItem'
 import { PaymentMethodModal } from '../components/deposit/PaymentMethodModal'
 import useTranslation from 'next-translate/useTranslation'
+import { CenteredSpinner } from '../components/common/CenteredSpinner'
 
 
 
@@ -28,7 +29,7 @@ const DepositPage = () => {
 	
 
 	return (
-		<MainLayout title={AppRouteList.Deposit.name}>
+		<MainLayout title={AppRouteList.Deposit.name} showHeaderTitle>
 			{
 				selected_payment_method_index >= 0 && (
 					<PaymentMethodModal
@@ -56,6 +57,8 @@ const DepositPage = () => {
 					</Row>
 				)
 			}
+			{empty && <div className="text-center">{t('empty_data')}</div>}
+            {loading && <CenteredSpinner />}
 			<Row style={{ color: '#1678db', padding: 0 }}>
 				{
 					payment_methods.map((payment_method, index) => <Col

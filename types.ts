@@ -10,6 +10,10 @@ export declare class Domain extends BaseEntity {
     ref: string;
     refs: String[];
     icon: string;
+    phone_number: string  
+    zalo: string 
+    facebook: string 
+    telegram: string
 }
 
 

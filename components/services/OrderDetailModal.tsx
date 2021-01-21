@@ -66,35 +66,35 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                             <div className="d-flex justify-content-around align-items-center mt-4">
                                 <OrderStatusBadge
                                     icon={BsClockFill}
-                                    text='Đã tạo'
+                                    text={t('orders.status.created')}
                                     has_previous={false}
                                 />
                                 <OrderStatusBadge
                                     icon={ImPause2}
                                     color="#fd8e2d"
-                                    text='Đang dừng'
+                                    text={t('orders.status.paused')}
                                     visible={props.order.active == false}
                                 />
                                 <OrderStatusBadge
                                     icon={<Spinner animation="border" variant="primary" />}
-                                    text='Đang chạy'
+                                    text={t('orders.status.running')}
                                     visible={props.order.running}
                                 />
                                 <OrderStatusBadge
                                     icon={VscError}
-                                    text='Lỗi'
+                                    text={t('orders.status.error')}
                                     color="red"
                                     visible={props.order.error}
                                 />
                                 <OrderStatusBadge
                                     icon={MdAssignmentReturn}
-                                    text='Đã hoàn tiền'
+                                    text={t('orders.status.refunded')}
                                     color="orange"
                                     visible={props.order.refunded}
                                 />
                                 <OrderStatusBadge
                                     icon={MdDone}
-                                    text='Xong'
+                                    text={t('orders.status.done')}
                                     color="green"
                                     visible={props.order.done}
                                 />
@@ -109,48 +109,48 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                 </Col>
                                 <Col xs={5} className="d-flex justify-content-start align-items-center">
                                     <FcClock size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">Đã tạo </span>
+                                    <span className="mr-1 ml-2 font-weight-bold">{t('create_at')} </span>
                                 </Col>
                                 <Col xs={7}>
                                     <h4> <Badge variant="info">{dayjs(props.order.created_at).format('DD/MM/YYYY H:m')}</Badge></h4>
                                 </Col>
 
-                                <Col xs={5} className="d-flex justify-content-start align-items-center">
+                                {/* <Col xs={5} className="d-flex justify-content-start align-items-center">
                                     <FcFlowChart size={30} />
                                     <span className="mr-1 ml-2 font-weight-bold">Số lượng ban đầu </span>
                                 </Col>
                                 <Col xs={7}>
                                     <h4> <Badge variant="warning">{props.order.amount}</Badge></h4>
-                                </Col>
+                                </Col> */}
 
                                 <Col xs={5} className="d-flex justify-content-start align-items-center">
                                     <FcFlowChart size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">Số lượng mua </span>
+                                    <span className="mr-1 ml-2 font-weight-bold" >{t('orders.amount')}</span>
                                 </Col>
                                 <Col xs={7}>
                                     <h4> <Badge variant="warning">{props.order.amount}</Badge></h4>
                                 </Col>
 
-                                <Col xs={5} className="d-flex justify-content-start align-items-center">
+                                {/* <Col xs={5} className="d-flex justify-content-start align-items-center">
                                     <FcFlowChart size={30} />
                                     <span className="mr-1 ml-2 font-weight-bold">Số lượng hiện tại </span>
                                 </Col>
                                 <Col xs={7}>
                                     <h4> <Badge variant="warning">{props.order.amount}</Badge></h4>
-                                </Col>
+                                </Col> */}
 
 
-                                <Col xs={5} className="d-flex justify-content-start align-items-center">
+                                {/* <Col xs={5} className="d-flex justify-content-start align-items-center">
                                     <FcHeatMap size={30} />
                                     <span className="mr-1 ml-2 font-weight-bold">Còn lại</span>
                                 </Col>
                                 <Col xs={7}>
                                     <h4> <Badge variant="warning">{props.order.amount}</Badge></h4>
-                                </Col>
+                                </Col> */}
 
                                 <Col xs={5} className="d-flex justify-content-start align-items-center">
                                     <FcRating size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">Tổng tiền </span>
+                                    <span className="mr-1 ml-2 font-weight-bold">{t('orders.total')} </span>
                                 </Col>
                                 <Col xs={7}>
                                     <h4> <Badge variant="success">{props.order.total.toLocaleString()}</Badge></h4>

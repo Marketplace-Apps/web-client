@@ -48,6 +48,7 @@
     "apply":"Áp dụng",
     "check":"Kiểm tra",
     "load_more": "Xem thêm",
+    "cancel":"Hủy bỏ",
     "pricing": {
         "basic": "Giá cơ bản",
         "guarantee": "Giá bảo hành",
@@ -96,5 +97,25 @@
         "RECEIVER_NOT_FOUND": "Không tìm thấy người nhận",
         "RPC_OFFLINE":"Máy chủ gặp vấn đề",
         "INVAILD_URL":"URL không hợp lệ"
-    }
+    },
+    "orders":{
+        "amount":"Số lượng",
+        "total":"Tổng tiền",
+        "status":{
+            "created":"Đã tạo",
+            "pased":"Đã dừng",
+            "running":"Đang chạy",
+            "error":"Lỗi",
+            "refunded":"Đã hoàn tiền",
+            "done":"Đã xong"
+        },
+        "discount":"Giảm giá"
+    },
+    "payments":{
+        "balance":"Số dư ban đầu",
+        "add":"Tiền cộng",
+        "sub":"Tiền trừ",
+        "balance_after":"Số dư cuối"
+    },
+    "empty_data":"Trống rỗng, chưa có dữ liệu"
 }

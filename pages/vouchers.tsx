@@ -9,6 +9,7 @@ import { BiEdit } from "react-icons/bi"
 import { FcAlarmClock, FcCancel, FcClock, FcCopyleft, FcGenealogy } from "react-icons/fc"
 import { useCollectionData } from "react-livequery-hooks"
 import { AppRouteList } from "../AppRouteList"
+import { CenteredSpinner } from "../components/common/CenteredSpinner"
 import { VoucherItem } from "../components/vouchers/VoucherItem"
 import { VoucherModal } from "../components/vouchers/VoucherModal"
 import { groupByKey } from "../helpers/group"
@@ -22,7 +23,7 @@ import { Voucher } from "../types"
 const VoucherManagerPage = () => {
 
     const domain = useDomain()
-    const { items: vouchers } = useCollectionData<Voucher>(domain && `domains/${domain.id}/vouchers`)
+    const { items: vouchers, loading, empty } = useCollectionData<Voucher>(domain && `domains/${domain.id}/vouchers`)
     const { user } = useAuth()
     const [show_create_modal, set_show_create_modal] = useState<boolean>(false)
     const [selected_voucher_index, set_selected_voucher_index] = useState<number>(-1)
@@ -34,7 +35,7 @@ const VoucherManagerPage = () => {
 
 
     return (
-        <MainLayout title={AppRouteList.Me.children.SiteConfig.name}>
+        <MainLayout title={AppRouteList.Me.children.VoucherList.name} showHeaderTitle>
             {show_create_modal && <VoucherModal onHide={() => set_show_create_modal(false)} />}
             {
                 selected_voucher_index >= 0 && (
@@ -55,6 +56,8 @@ const VoucherManagerPage = () => {
                     </Row>
                 )
             }
+            {empty && <div className="text-center">{t('empty_data')}</div>}
+            {loading && <CenteredSpinner />}
             <Row className="mt-3">
                 {
                     vouchers

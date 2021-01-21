@@ -14,8 +14,9 @@ import { IconButton } from '../../components/common/IconButton'
 export type MainLayout = {
 	children?: ReactNode
 	title?: I18N
+	showHeaderTitle?: boolean
 }
-export const MainLayout = ({ children, title }: MainLayout) => {
+export const MainLayout = ({ children, title, showHeaderTitle }: MainLayout) => {
 
 	const { locale } = useRouter()
 
@@ -60,7 +61,8 @@ export const MainLayout = ({ children, title }: MainLayout) => {
 							minHeight: 'calc(100vh - 30px)'
 						}}
 						className="flex-grow-1"
-					> 
+					>
+						{showHeaderTitle && <h5>{title[locale]}</h5>}
 						{children}
 					</Col>
 					<Col

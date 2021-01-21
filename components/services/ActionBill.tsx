@@ -73,6 +73,7 @@ export const ActionBill = (props: ActionBill) => {
                                 id="voucher-input"
                                 ref={form.register}
                                 disabled={voucher}
+                                name="voucher"
                             />
                             <InputGroup.Append>
                                 <Button
@@ -80,6 +81,10 @@ export const ActionBill = (props: ActionBill) => {
                                     onClick={voucher ? clear : check_voucher}
                                     disabled={loading}
                                 >{voucher ? t('edit') : t('check')}</Button>
+                                <Button
+                                    variant="outline-danger"
+                                    onClick={() => { clear(), form.setValue('voucher', '') }}
+                                >{t('cancel')}</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     )}
@@ -89,10 +94,17 @@ export const ActionBill = (props: ActionBill) => {
 
             {((data && !voucher) || (voucher && discount == 0)) && <Alert variant="danger">{t('vouchers.invalid')}</Alert>}
 
+            {
+                discount > 0 && <Bill
+                    total={-discount}
+                    text={t('orders.discount')}
+                />
+            }
+
             <Bill
                 total={total_bill - discount}
                 text={t('order_total')}
-                old_value={discount}
+                old_value={discount > 0 && total_bill}
             />
 
             <Bill

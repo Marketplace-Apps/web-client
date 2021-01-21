@@ -15,6 +15,8 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { get_ms_end_day } from '../helpers/time'
 import useTranslation from 'next-translate/useTranslation'
+import { ListTransactionsItem } from '../components/transactions/TransactionItem'
+import { CenteredSpinner } from '../components/common/CenteredSpinner'
 
 const TransactionPage = () => {
 
@@ -55,7 +57,7 @@ const TransactionPage = () => {
     useInfinityScroll(() => has_more && fetch_more())
 
     return (
-        <MainLayout title={AppRouteList.Transactions.name}>
+        <MainLayout title={AppRouteList.Transactions.name} showHeaderTitle>
             <Row>
                 <Col xs={6}>
                     <DatePickerWrapper onChange={d => filter({ ...filters, created_at: lt(get_ms_end_day(d)) })}>
@@ -85,6 +87,14 @@ const TransactionPage = () => {
                 </Col>
             </Row>
             <div className="mt-5" />
+            {empty && <div className="text-center">{t('empty_data')}</div>}
+            {loading && <CenteredSpinner />}
+            <div className="d-flex justify-content-end">
+                <Badge variant="primary" className="mr-1">{t('payments.balance')}</Badge>
+                <Badge variant="success" className="mr-1">{t('payments.add')}</Badge>
+                <Badge variant="danger" className="mr-1">{t('payments.sub')}</Badge>
+                <Badge variant="dark" className="mr-1">{t('payments.balance_after')}</Badge>
+            </div>
             {
                 payments.map(({ day, list }) => (
                     <Fragment key={day}>
@@ -96,34 +106,15 @@ const TransactionPage = () => {
                         </Row>
                         {
                             list.sort((a, b) => b.created_at - a.created_at).map((item, index) => (
-                                <Row noGutters key={item.id} style={{ borderBottom: index < list.length - 1 && '1px dotted gray', padding: '10px 0 0px 0 ' }} >
-                                    <Col xs={2} className="d-flex justify-content-center align-items-center" >
-                                        <img src={services.get(item.service_id)?.icon} style={{ width: 50 }} />
-                                    </Col>
-                                    <Col xs={6} md={3} className="d-flex justify-content-start align-items-center ">
-                                        <div>
-                                            <div style={{ fontWeight: 'bold', color: '#2b69b7' }}>{services.get(item.service_id)?.name[router.locale]}</div>
-                                            <div style={{ fontSize: 12 }}>{dayjs(new Date(item.created_at)).locale('vi').format('H:m')}</div>
-                                        </div>
-                                    </Col>
-                                    <Col md={3} className="d-none d-md-block">
-                                        <Alert variant="light">{item.description[router.locale]}</Alert>
-                                    </Col>
-                                    <Col xs={2} className="d-flex justify-content-center align-items-center" >
-                                        <div >
-                                            <Badge variant="info">9</Badge>
-                                            <Badge variant="light">x200</Badge>
-                                        </div>
-                                    </Col>
-                                    <Col xs={2} >
-                                        <Badge variant="primary" className="mr-1">{(item.balance_after - item.total).toLocaleString()}</Badge>
-                                        <Badge variant={item.total > 0 ? "success" : 'danger'} className="mr-1">{item.total > 0 ? "+" : '-'} {Math.abs(item.total).toLocaleString()}</Badge>
-                                        <Badge variant="dark" className="mr-1">= {item.balance_after.toLocaleString()}</Badge>
-                                    </Col>
-                                    <Col md={12} className="d-md-none d-sm-block">
-                                        <Alert style={{ margin: 0 }} variant="light">{item.description[router.locale]}</Alert>
-                                    </Col>
-                                </Row>
+                                <ListTransactionsItem
+                                    style={{
+                                        borderBottom: index < list.length - 1 && '1px dotted gray',
+                                        padding: '10px 0 0px 0 '
+                                    }}
+                                    icon={services.get(item.service_id)?.icon}
+                                    service_name={services.get(item.service_id)?.name[router.locale]}
+                                    item={item}
+                                />
                             ))
                         }
                     </Fragment>

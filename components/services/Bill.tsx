@@ -20,7 +20,7 @@ export const Bill = (props: Bill) => (
             className="d-flex justify-content-end align-items-center strike"
             style={{ fontSize: 25 }}
         >
-            {props.old_value != 0 && <span style={{ textDecoration: 'line-through', marginRight: 20 }}> {props.old_value?.toLocaleString()}   </span>}
+            {props.old_value != 0 && <span style={{ textDecoration: 'line-through', marginRight: 10 }}> {props.old_value?.toLocaleString()}   </span>}
             {props.total?.toLocaleString()}
         </Col>
     </Form.Row>
