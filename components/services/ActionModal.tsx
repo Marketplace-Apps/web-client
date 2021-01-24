@@ -27,8 +27,8 @@ export const ActionModal = (props: ActionModal) => {
     const { t } = useTranslation('common')
 
     const getDefaultValues = (data = {}) => Object.keys(action?.form || {}).reduce((p, c, index) => {
-        const item = action?.form[c] as ServiceProviderActionFormItem
-        if (!item.default_value) return p
+        const item = action?.form?.[c] as ServiceProviderActionFormItem
+        if (!item?.default_value) return p
         const value = SanboxJS.eval(item.default_value, data)
         if (value !== undefined) p[item.id] = value
         return p
@@ -68,7 +68,7 @@ export const ActionModal = (props: ActionModal) => {
 
         <FormProvider {...form}>
             <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
-                {Object.keys(action?.form).map(name => <GenericInput key={name} {... (action?.form[name])} />)}
+                {Object.keys(action?.form || {}).map(name => <GenericInput key={name} {... (action?.form[name])} />)}
 
                 {
                     action && domain_service && <ActionBill
