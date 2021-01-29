@@ -1,6 +1,3 @@
 const nextTranslate = require('next-translate')
 
-module.exports = {
-    ...nextTranslate(),
-    target: 'experimental-serverless-trace'
-}
+module.exports = nextTranslate()  

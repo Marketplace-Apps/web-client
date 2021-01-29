@@ -4,12 +4,15 @@ import React, { useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 import { useAuth } from 'firebase-easy-hooks'
 import { toast } from 'react-toastify'
+import useTranslation from 'next-translate/useTranslation'
 
 const SignInPage = () => {
 
 	const router = useRouter()
 
 	const { user } = useAuth()
+
+	const { t } = useTranslation('common')
 
 	useEffect(() => {
 		if (user) router.replace('/')

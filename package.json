@@ -4,8 +4,7 @@
 	"scripts": {
 		"dev": "next",
 		"build": "next build",
-		"start": "next start",
-		"postbuild": "next-on-netlify"
+		"start": "next start" 
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^0.1.1",
