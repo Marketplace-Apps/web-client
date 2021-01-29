@@ -13,9 +13,10 @@ import { useDomain } from "../../hooks/useDomain"
 import { PaymentHistory, User } from "../../types"
 import { IconButton } from "../common/IconButton"
 import { NumberFormatInput } from "../common/NumberFormatInput"
+import { TransactionList } from "../transactions/TransactionList"
 
 
-export const SendMoney = (props: { user: User }) => {
+export const SendMoney = ({ user }: { user: User }) => {
 
     const domain = useDomain()
 
@@ -30,18 +31,11 @@ export const SendMoney = (props: { user: User }) => {
 
     const { t, lang } = useTranslation('common')
 
-    const { items, fetch_more, has_more, empty, loading: loading_histories } = useCollectionData<
-        PaymentHistory
-    >(
-        domain && props.user && `domains/${domain?.id}/users/${props.user.id}/payment-histories`, { limit: 2 }
-    )
-
-    const payments = groupByCreatedTime(items)
 
     return (
         <FormProvider {...form}>
             <Form onSubmit={form.handleSubmit(data => excute(data))} >
-                <input type="hidden" name="to" value={props.user.id} ref={form.register()} />
+                <input type="hidden" name="to" value={user.id} ref={form.register()} />
                 <Row>
                     <Col xs={12} className="mb-2 font-weight-bold">{t('send_money.send_money')}</Col>
                     <Col xs={12} className="mb-2">
@@ -71,40 +65,11 @@ export const SendMoney = (props: { user: User }) => {
                     <Col xs={12} className="text-right"><IconButton icon={BiSend} size="sm" disabled={loading} loading={loading} type="submit">OK</IconButton></Col>
                     <Col xs={12} className="mt-4 font-weight-bold">{t('send_money.history')}</Col>
                     <Col xs={12} className="mt-2">
-                        <Row>
-                            {
-                                payments.map(({ day, list }) => (
-                                    <Fragment>
-                                        <Col xs={12} className="mt-2"> <FcCalendar size={26} className="mr-1" />{day}</Col>
-                                        <Col xs={12}>
-                                            {
-                                                list.map((payment, index) => (
-                                                    <Row style={{ borderBottom: index < list.length - 1 && '1px solid #d6d4d4', padding: 10 }}>
-                                                        <Col xs={2} className="d-flex align-items-center">{dayjs(payment.created_at).format('H:m')}</Col>
-                                                        <Col xs={5} style={{ fontSize: 15, wordBreak: 'break-all' }}>{payment.description[lang]}</Col>
-                                                        <Col xs={5} className="d-flex align-items-center">
-                                                            {payment.amount > 0 && <Badge variant="success">+{payment.amount.toLocaleString()}</Badge>}
-                                                            {payment.amount < 0 && <Badge variant="success">{payment.amount.toLocaleString()}</Badge>}
-                                                            <Badge variant="info" className="ml-1">= {payment.balance_after.toLocaleString()}</Badge>
-                                                        </Col>
-                                                    </Row>
-                                                ))
-                                            }
-                                        </Col>
-                                    </Fragment>
-                                ))
-                            }
-                            <Col className="d-flex justify-content-center align-items-center">
-                                {has_more && <IconButton
-                                    size="sm"
-                                    className="mt-2"
-                                    variant="outline-info"
-                                    onClick={fetch_more}
-                                    loading={loading_histories}
-                                    disabled={loading_histories}
-                                >{t('load_more')}</IconButton>}
-                            </Col>
-                        </Row>
+                        {user && <TransactionList
+                            user_id={user.id}
+                            show_loadmore_button={true}
+                            default_service_id="RECEIVE_MONEY"
+                        />}
                     </Col>
                 </Row>
             </Form>
