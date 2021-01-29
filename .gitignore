@@ -38,3 +38,4 @@ out_publish
 public
 yarn*
 netlify*
+node_modules
