@@ -12,6 +12,7 @@ import { GenericInput } from "./inputs/GenericInput"
 import { ActionBill } from "./ActionBill"
 import useTranslation from 'next-translate/useTranslation'
 import { TextInput } from "./inputs/TextInput"
+import { useAuth } from "firebase-easy-hooks"
 
 export type ActionModal = {
     domain_service: DomainService
@@ -25,6 +26,7 @@ export const ActionModal = (props: ActionModal) => {
     const { domain_service, order, action } = props
     const domain = useDomain()
     const { t } = useTranslation('common')
+    const { user } = useAuth()
 
     const getDefaultValues = (data = {}) => Object.keys(action?.form || {}).reduce((p, c, index) => {
         const item = action?.form?.[c] as ServiceProviderActionFormItem
@@ -46,7 +48,7 @@ export const ActionModal = (props: ActionModal) => {
         excute,
         loading
     } = useAction(
-        domain && props.domain_service && `domains/${domain.id}/services/${props.domain_service.id}/orders${props.order ? `/${props.order.id}/~trigger-action` : ''}`,
+        domain && props.domain_service && user && `domains/${domain.id}/users/${user.uid}/services/${props.domain_service.id}/orders${props.order ? `/${props.order.id}/~trigger-action` : ''}`,
         'POST',
         async (data, error) => {
             if (error) return
