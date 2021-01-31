@@ -35,12 +35,7 @@ export const ServiceItem = ({ service, onClick }: ServiceItem) => {
                     width={40}
                     height={40}
                     style={service.maintain ? { filter: 'grayscale(1.0)' } : {}}
-                />
-                <Badge
-                    pill
-                    variant={service.maintain ? 'dark' : "danger"}
-                    style={{ position: 'absolute', top: 15, marginLeft: 40 }}
-                >{service.promote_price} đ </Badge>
+                /> 
             </div>
             <div className="text-center" style={{ fontSize: 17, color: '#0a6cab' }}>
                 {service.name[router.locale]}
