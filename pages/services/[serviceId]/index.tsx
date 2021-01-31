@@ -38,7 +38,10 @@ const ServiceDetailPage = () => {
 							{
 								create_action && <ActionModal
 									domain_service={domain_service}
-									onSuccess={() => { }}
+									onSuccess={() => {
+										(document.querySelector(`a[data-rb-event-key="history"]`) as any).click();
+										setTimeout(() => window.scroll(0,0), 1000)
+									}}
 									action={create_action}
 								/>
 							}

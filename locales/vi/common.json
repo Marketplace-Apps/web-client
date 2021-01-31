@@ -45,10 +45,10 @@
     "prices": "Giá cả",
     "contact": "Liên hệ",
     "note": "Ghi chú",
-    "apply":"Áp dụng",
-    "check":"Kiểm tra",
+    "apply": "Áp dụng",
+    "check": "Kiểm tra",
     "load_more": "Xem thêm",
-    "cancel":"Hủy bỏ",
+    "cancel": "Hủy bỏ",
     "pricing": {
         "basic": "Giá cơ bản",
         "guarantee": "Giá bảo hành",
@@ -89,33 +89,43 @@
         "expired_in": "Hết hạn vào",
         "invalid": "Voucher không hợp lệ"
     },
-    "server_errors":{
+    "server_errors": {
         "Internal server error": "Lỗi server bạn báo admin nhé",
         "TOO_SMALL": "Số tiền quá nhỏ",
         "INVAILD_RECEIVER": "Người nhận không hợp lệ",
         "OUT_OF_BALANCE": "Số dư không đủ",
         "RECEIVER_NOT_FOUND": "Không tìm thấy người nhận",
-        "RPC_OFFLINE":"Máy chủ gặp vấn đề",
-        "INVAILD_URL":"URL không hợp lệ"
+        "RPC_OFFLINE": "Máy chủ gặp vấn đề",
+        "INVAILD_URL": "URL không hợp lệ"
     },
-    "orders":{
-        "amount":"Số lượng",
-        "total":"Tổng tiền",
-        "status":{
-            "created":"Đã tạo",
-            "pased":"Đã dừng",
-            "running":"Đang chạy",
-            "error":"Lỗi",
-            "refunded":"Đã hoàn tiền",
-            "done":"Đã xong"
+    "orders": {
+        "detail":"Chi tiết đơn hàng",
+        "amount": "Số lượng",
+        "total": "Tổng tiền",
+        "status": {
+            "created": "Đã tạo",
+            "pased": "Đã dừng",
+            "running": "Đang chạy",
+            "error": "Lỗi",
+            "refunded": "Đã hoàn tiền",
+            "done": "Đã xong"
         },
-        "discount":"Giảm giá"
+        "discount": "Giảm giá"
     },
-    "payments":{
-        "balance":"Số dư ban đầu",
-        "add":"Tiền cộng",
-        "sub":"Tiền trừ",
-        "balance_after":"Số dư cuối"
+    "payments": {
+        "balance": "Số dư ban đầu",
+        "add": "Tiền cộng",
+        "sub": "Tiền trừ",
+        "balance_after": "Số dư cuối"
     },
-    "empty_data":"Trống rỗng, chưa có dữ liệu"
+    "empty_data": "Trống rỗng, chưa có dữ liệu",
+    "login": {
+        "username": "Email",
+        "password": "Mật khẩu",
+        "submit": "Đăng nhập",
+        "has_username_and_password":"Bạn có tên đăng nhập và mật khẩu ?",
+        "auth/user-not-found":"Không tìm thấy người dùng",
+        "auth/wrong-password":"Sai mật khẩu",
+        "auth/invalid-email":"Sai định dạng email"
+    }
 }

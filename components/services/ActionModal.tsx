@@ -118,12 +118,15 @@ export const useActionModal = (
                 <Modal.Header closeButton>
                     <Modal.Title
                         style={{ fontSize: 20, fontWeight: 'bold' }}
-                    >{domain_service.name[router.locale]}</Modal.Title>
+                    >{action.name[router.locale]}</Modal.Title>
 
                 </Modal.Header>
                 <ActionModal
                     domain_service={domain_service}
-                    onSuccess={onSuccess}
+                    onSuccess={() => {
+                        onSuccess && onSuccess()
+                        set_action_id({})
+                    }}
                     action={action}
                     order={order}
                 />

@@ -42,7 +42,7 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                 !ActionModal && props.order && (
                     <Modal show={true} onHide={props.onHide} >
                         <Modal.Header closeButton>
-                            <Modal.Title>Order detail</Modal.Title>
+                            <Modal.Title>{t('orders.detail')}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
 
