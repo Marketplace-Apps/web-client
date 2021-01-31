@@ -48,6 +48,7 @@
     "check": "Check",
     "load_more": "Load more",
     "cancel": "Cancel",
+    "maintain":"Maintain",
     "pricing": {
         "basic": "Basic price",
         "guarantee": "Guarantee price",
