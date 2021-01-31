@@ -20,23 +20,20 @@ import useTranslation from 'next-translate/useTranslation'
 import { AiOutlineClear } from 'react-icons/ai'
 import { get_ms_end_day } from '../../helpers/time'
 import { OrderStatusClear, OrderStatusList } from '../../const'
+import { useAuth } from 'firebase-easy-hooks'
 
 export const ServiceOrderHistory = () => {
 
     const domain = useDomain()
+    const { user } = useAuth()
     const router = useRouter()
     const { t } = useTranslation('common')
 
     const { serviceId } = router.query
 
-    const { items, reload, filter, filters } = useCollectionData<Order>(domain && `domains/${domain.id}/services/${serviceId}/orders`, { limit: 10 })
+    const { items, empty, filter, filters } = useCollectionData<Order>(domain && user && `domains/${domain.id}/users/${user.uid}/services/${serviceId}/orders`, { limit: 10 })
     const { item: domain_service } = useDocumentData<DomainService>(domain && serviceId && `domains/${domain.id}/services/${serviceId}`)
-    // const { item: service } = useDocumentData<ServiceProvider<any>>(serviceId && `services/${serviceId}`)
-    const { item: create_action } = useDocumentData<ServiceProviderAction>(serviceId && `services/${serviceId}/actions/create`)
-
     const orders = groupByCreatedTime<Order>(items)
-
-    const { showActionModal, ActionModal } = useActionModal(domain_service, reload)
 
     const [active_order, set_active_order] = useState<string>()
 
@@ -54,7 +51,7 @@ export const ServiceOrderHistory = () => {
                 )
             }
             <Row style={{ marginTop: 10, marginBottom: 15 }}>
- 
+
                 <Col xs={12} >
                     <InputGroup className="mb-3">
                         <DatePickerWrapper onChange={d => filter({ ...filters, created_at: lt(get_ms_end_day(d)) })}>
@@ -92,6 +89,11 @@ export const ServiceOrderHistory = () => {
                 </Col>
 
             </Row>
+            <Row>
+                <Col>
+                    {empty && <div className="text-center">{t('empty_data')}</div>}
+                </Col>
+            </Row>
             {orders.map(({ list, day }, index) => (
                 <Fragment key={day}>
                     <Row style={{ paddingLeft: 10, marginTop: 20 }}  >
@@ -103,6 +105,7 @@ export const ServiceOrderHistory = () => {
                         </Col>
                     </Row>
                     <Row noGutters>
+
                         {list.map(order => (
                             <Col xs={12} md={6} lg={4} xl={3} key={order.id}>
                                 <OrderItem
