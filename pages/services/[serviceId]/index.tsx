@@ -9,6 +9,8 @@ import { MainLayout } from '../../../layouts/MainLayout'
 import { ActionModal } from '../../../components/services/ActionModal'
 import useTranslation from 'next-translate/useTranslation'
 import { ServiceOrderHistory } from '../../../components/services/ServiceOrderHistory'
+import { ActionApiDocument } from '../../../components/services/ApiDocument'
+import { ApiDocumentTab } from '../../../components/services/ApiDocumentList'
 
 const ServiceDetailPage = () => {
 
@@ -40,7 +42,7 @@ const ServiceDetailPage = () => {
 									domain_service={domain_service}
 									onSuccess={() => {
 										(document.querySelector(`a[data-rb-event-key="history"]`) as any).click();
-										setTimeout(() => window.scroll(0,0), 1000)
+										setTimeout(() => window.scroll(0, 0), 1000)
 									}}
 									action={create_action}
 								/>
@@ -50,8 +52,8 @@ const ServiceDetailPage = () => {
 							<ServiceOrderHistory />
 						</Tab>
 
-						<Tab eventKey="api" title="API" disabled>
-
+						<Tab eventKey="api" title="API">
+							<ApiDocumentTab service_id={serviceId as string} />
 						</Tab>
 					</Tabs>
 				</Col>

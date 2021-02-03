@@ -1,4 +1,4 @@
-import { AiFillHome } from "react-icons/ai"
+import { AiFillHome, AiOutlineApi } from "react-icons/ai"
 import { CgMenuGridO } from "react-icons/cg"
 import { FaDollarSign, FaHistory, FaShoppingCart, FaToolbox } from "react-icons/fa"
 import firebase from 'firebase'
@@ -7,7 +7,7 @@ import { I18N } from "./types"
 import { IconType } from "react-icons/lib"
 import { useRouter } from "next/router"
 import { useAuth } from "firebase-easy-hooks"
-import { FcAdvertising, FcApproval, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign, FcStumbleupon } from "react-icons/fc"
+import { FcAdvertising, FcApproval, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign, FcServices, FcStumbleupon } from "react-icons/fc"
 import { MdCall } from 'react-icons/md'
 import { FiAward } from 'react-icons/fi'
 
@@ -128,11 +128,15 @@ export const AppRouteList: AppRouteList = {
                 href: '/me/site-config',
                 admin: true
             },
-
             Contact: {
                 icon: FcBusinessContact,
                 name: { en: 'Admin', vi: 'Liên hệ' },
                 href: '/admin-contact'
+            },
+            ApikeyManager: {
+                icon: FcServices,
+                name: { en: 'API', vi: 'API' },
+                href: '/api' 
             },
             Logout: {
                 icon: RiLogoutCircleRLine,

@@ -28,7 +28,7 @@ export const MainLayout = ({ children, title, showHeaderTitle }: MainLayout) => 
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			</Head>
 			<Container fluid>
-				<Row>
+				<Row  >
 					<Col xs={12} className="d-md-none d-sm-block">
 						<MobileHeader />
 					</Col>
@@ -66,7 +66,7 @@ export const MainLayout = ({ children, title, showHeaderTitle }: MainLayout) => 
 						{children}
 					</Col>
 					<Col
-						xs="auto"
+						md="auto"
 						className="d-none d-md-block"
 						style={{ width: 15, margin: 0, padding: 0 }}
 					></Col>

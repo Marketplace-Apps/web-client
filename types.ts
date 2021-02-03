@@ -178,6 +178,7 @@ export declare class ServiceProviderActionFormItem extends BaseEntity {
     is_number?: boolean;
     input_mask: 'text' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page';
     options: ServiceProviderItemOption[];
+    type?:string
 }
 export declare type ServiceProviderActionForm = {
     [name: string]: ServiceProviderActionFormItem;
