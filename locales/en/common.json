@@ -127,5 +127,12 @@
         "auth/user-not-found":"User not found",
         "auth/wrong-password":"Wrong password",
         "auth/invalid-email":"Invalid-email"
+    },
+    "copy":"Copy",
+    "copied":"Copied",
+    "api":{
+        "alert_developers_only":"This is for developers only",
+        "overwrite_old_api_key":"This will delete your old api key",
+        "change":"Change"
     }
 }

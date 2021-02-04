@@ -128,5 +128,12 @@
         "auth/user-not-found":"Không tìm thấy người dùng",
         "auth/wrong-password":"Sai mật khẩu",
         "auth/invalid-email":"Sai định dạng email"
+    },
+    "copy":"Sao chép",
+    "copied":"Đã sao chép",
+    "api":{
+        "alert_developers_only":"Mục này dành riêng cho nhà phát triển",
+        "overwrite_old_api_key":"Khóa API cũ sẽ bị vô hiệu hóa",
+        "change":"Thay đổi"
     }
 }

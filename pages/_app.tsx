@@ -37,7 +37,8 @@ const NO_PROTECTED_ROUTES = [
 ]
 
 function get_api_base_url() {
-	if (process.env.NODE_ENV == 'development') return 'https://api.ongmatmedia.com/livequery/'
+	if (process.env.NODE_ENV == 'development') return 'http://localhost/livequery/'
+	//return 'https://api.ongmatmedia.com/livequery/'
 	if (typeof location == 'undefined') return ''
 	return `https://api.${location.hostname.split('.').slice(1).join('.')}/livequery/`
 }

@@ -136,7 +136,7 @@ export const AppRouteList: AppRouteList = {
             ApikeyManager: {
                 icon: FcServices,
                 name: { en: 'API', vi: 'API' },
-                href: '/api' 
+                href: '/me/api' 
             },
             Logout: {
                 icon: RiLogoutCircleRLine,
