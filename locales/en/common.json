@@ -114,9 +114,9 @@
     },
     "payments": {
         "balance": "Balance",
-        "add": "Received amount",
-        "sub": "Subtracted amount",
-        "balance_after": "Dinal balance"
+        "add": "Received",
+        "sub": "Subtracted",
+        "balance_after": "Final balance"
     },
     "empty_data": "Nothing here, empty",
     "login": {

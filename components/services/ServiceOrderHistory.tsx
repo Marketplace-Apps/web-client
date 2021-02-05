@@ -29,10 +29,10 @@ export const ServiceOrderHistory = () => {
     const router = useRouter()
     const { t } = useTranslation('common')
 
-    const { serviceId } = router.query
+    const { service_id } = router.query
 
-    const { items, empty, filter, filters } = useCollectionData<Order>(domain && user && `domains/${domain.id}/users/${user.uid}/services/${serviceId}/orders`, { limit: 10 })
-    const { item: domain_service } = useDocumentData<DomainService>(domain && serviceId && `domains/${domain.id}/services/${serviceId}`)
+    const { items, empty, filter, filters } = useCollectionData<Order>(domain && user && `domains/${domain.id}/users/${user.uid}/services/${service_id}/orders`, { limit: 10 })
+    const { item: domain_service } = useDocumentData<DomainService>(domain && service_id && `domains/${domain.id}/services/${service_id}`)
     const orders = groupByCreatedTime<Order>(items)
 
     const [active_order, set_active_order] = useState<string>()
