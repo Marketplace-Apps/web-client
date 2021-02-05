@@ -17,14 +17,14 @@ import { ApiDocumentTab } from '../../../components/services/ApiDocumentList'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ServiceNav } from '../../../components/services/ServiceNav'
 
-const ServiceOrdersPage = () => {
+const ServiceOrdersPage = ({ service }: { service: ServiceProvider<any> }) => {
 
 
     return (
         <MainLayout title={{ en: 'Order', vi: 'Order' }}>
 
             <Row style={{ marginTop: 10, marginBottom: 15 }}>
-                <Col xs={12}> <ServiceNav /> </Col>
+                <Col xs={12}> <ServiceNav service={service} /> </Col>
                 <Col xs={12}>
                     <ServiceOrderHistory />
                 </Col>
@@ -45,7 +45,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps<{}> = async ctx => {
-    return { props: {} }
+    const { service_id } = ctx.params
+    const service = await fetch(`https://api.ongmatmedia.com/livequery/services/${service_id}`).then(r => r.json()) as ServiceProvider<any>
+    return { props: { service } }
 }
 
 

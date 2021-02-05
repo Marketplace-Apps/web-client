@@ -13,9 +13,10 @@ import { ServiceNav } from '../../../components/services/ServiceNav'
 
 export type ServiceCreateOrderPage = {
 	create_action: ServiceProviderAction
+	service: ServiceProvider<any>
 }
 
-const ServiceCreateOrderPage = ({ create_action }: ServiceCreateOrderPage) => {
+const ServiceCreateOrderPage = ({ create_action, service }: ServiceCreateOrderPage) => {
 
 	const domain = useDomain()
 	const router = useRouter()
@@ -27,11 +28,8 @@ const ServiceCreateOrderPage = ({ create_action }: ServiceCreateOrderPage) => {
 		<MainLayout title={domain_service?.name || { en: 'Services', vi: 'Dịch vụ' }}>
 
 			<Row style={{ marginTop: 10, marginBottom: 15 }}>
-				<Col xs={12} lg={6} className="d-flex justify-content-start align-items-center">
-					<img src={domain_service?.icon} width={30} height={30} />
-					<div style={{ marginLeft: 10, fontWeight: 'bold' }}>{domain_service?.name[router.locale]}</div>
-				</Col>
-				<Col xs={12}><ServiceNav />	</Col>
+
+				<Col xs={12}><ServiceNav service={service} />	</Col>
 				<Col xs={12}>
 					<ActionModal
 						domain_service={domain_service}
@@ -60,8 +58,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<{}> = async ctx => {
 	const { service_id } = ctx.params
+	const service = await fetch(`https://api.ongmatmedia.com/livequery/services/${service_id}`).then(r => r.json()) as ServiceProvider<any>
 	const create_action = await fetch(`https://api.ongmatmedia.com/livequery/services/${service_id}/actions/create`).then(r => r.json()) as ServiceProviderAction
-	return { props: { create_action } }
+	return { props: { create_action, service } }
 }
 
 

@@ -11,9 +11,11 @@ export const UserInfo = () => {
     const { user } = useAuth()
     const domain = useDomain()
     const { t } = useTranslation('common')
-    const { item } = useDocumentData<User>(domain && user && `domains/${domain.id}/users/${user.uid}`)
+    const { item } = useDocumentData<User>(domain && user && `domains/${domain.id}/users/${user.uid}`, {
+        cache: { update: true, use: true }
+    })
 
-
+    console.log({item})
 
     return (
         <Row>
