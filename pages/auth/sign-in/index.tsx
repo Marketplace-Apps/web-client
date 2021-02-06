@@ -41,7 +41,6 @@ const SignInPage = () => {
 
 	async function loginWithUsernameAndPassword() {
 		const values = form.watch()
-		console.log(values)
 		set_loading(true)
 		try {
 			await firebase.auth().signInWithEmailAndPassword(values.username, values.password)
