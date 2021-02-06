@@ -8,6 +8,7 @@ import { DEFAULT_AVATAR } from '../../const'
 import { ChangeLanguage } from './ChangeLanguage'
 import { useCurrentUser } from '../../hooks/useCurrentUser'
 import { useAuth } from 'firebase-easy-hooks'
+import { Credit } from './Credit'
 
 export const MobileHeader = () => {
 	const domain = useDomain()
@@ -23,13 +24,13 @@ export const MobileHeader = () => {
 			</Col>
 			<Col className="d-flex justify-content-end align-items-center">
 				<Button
-					size="sm" 
+					size="sm"
 					variant="outline-light"
 					onClick={() => router.push(firebase_user ? '/me' : 'auth/sign-in')}
 					style={{ borderRadius: 20 }}
 				>
 					<img src={firebase_user?.photoURL || DEFAULT_AVATAR} width={20} style={{ borderRadius: '100%', marginRight: 5 }} />
-					<span>{user?.balance.toLocaleString() || 0} đ</span>
+					<span><Credit value={user?.balance} /></span>
 				</Button>
 				{/* <ChangeLanguage /> */}
 			</Col>

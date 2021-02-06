@@ -5,6 +5,7 @@ import { useDomain } from "../../hooks/useDomain"
 import { User } from "../../types"
 import useTranslation from 'next-translate/useTranslation'
 import { DEFAULT_AVATAR } from "../../const"
+import { Credit } from "./Credit"
 
 export const UserInfo = () => {
 
@@ -14,8 +15,6 @@ export const UserInfo = () => {
     const { item } = useDocumentData<User>(domain && user && `domains/${domain.id}/users/${user.uid}`, {
         cache: { update: true, use: true }
     })
-
-    console.log({item})
 
     return (
         <Row>
@@ -28,7 +27,7 @@ export const UserInfo = () => {
             <Col className="flex-grow-1 text-left" style={{ paddingLeft: 0 }}>
                 <div style={{ fontWeight: 'bold' }}>{user?.displayName || t('guest')}</div>
                 <div style={{ fontWeight: 'bold', color: 'orange' }}>
-                    {item?.balance.toLocaleString() || 0}
+                    <Credit value={item?.balance} />
                 </div>
             </Col>
         </Row>

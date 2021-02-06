@@ -1,4 +1,5 @@
 import { User } from "../../types"
+import { Credit } from "../common/Credit"
 
 export type UserItem = {
     user: User
@@ -29,7 +30,7 @@ export const UserItem = (props: UserItem) => (
             <div style={{ color: '#1ebdea' }}>{props.user.email}</div>
             <div  >
                 <span className="font-weight-bold" style={{ color: 'orange' }}>
-                    {props.user.balance.toLocaleString()}
+                    <Credit value={props.user?.balance} />
                 </span>
             </div>
         </div>

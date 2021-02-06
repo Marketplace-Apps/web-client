@@ -5,6 +5,7 @@ import { propTypes } from "react-bootstrap/esm/Image"
 import dayjs from "dayjs"
 import { useRouter } from "next/router"
 import { CSSProperties } from "react"
+import { Credit } from "../common/Credit"
 
 
 export type ListTransactionsItem = {
@@ -29,9 +30,21 @@ export const ListTransactionsItem = ({ icon, item, service_name, style }: ListTr
 
 			<Col xs={7} md={4} className="d-flex justify-content-end align-items-center ">
 				<div className="text-right" >
-					{item.balance_after && <Badge variant="primary" className="mr-1">{(item.balance_after - item.total).toLocaleString()}</Badge>}
-					<Badge variant={item.total > 0 ? "success" : 'danger'} className="mr-1">{item.total > 0 ? "+" : '-'} {Math.abs(item.total).toLocaleString()}</Badge>
-					{item.balance_after && <Badge variant="dark" className="mr-1">= {item.balance_after.toLocaleString()}</Badge>}
+					{item.balance_after && <Badge
+						variant="primary"
+						className="mr-1">
+						<Credit value={item.balance_after - item.total} />
+					</Badge>}
+					<Badge
+						variant={item.total > 0 ? "success" : 'danger'}
+						className="mr-1"
+					>{item.total > 0 ? "+" : '-'}
+						<Credit value={Math.abs(item.total)} />
+					</Badge>
+					{item.balance_after && <Badge
+						variant="dark"
+						className="mr-1"
+					>= <Credit value={item.balance_after} /></Badge>}
 				</div>
 			</Col>
 			<Col xs={12} md={4} style={{ wordBreak: 'break-all' }}>

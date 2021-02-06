@@ -1,11 +1,9 @@
-import { useAuth } from "firebase-easy-hooks"
 import useTranslation from "next-translate/useTranslation"
 import { useRouter } from "next/router"
 import { Col, Row } from "react-bootstrap"
-import { FcOrganization } from "react-icons/fc"
 import { AppRouteList } from "../../AppRouteList"
+import { Credit } from "../../components/common/Credit"
 import { LinkCard } from "../../components/common/LinkCard"
-import { UserInfo } from "../../components/common/UserInfo"
 import { useCurrentUser } from "../../hooks/useCurrentUser"
 import { useDomain } from "../../hooks/useDomain"
 import { LanguageList } from "../../LanguageList"
@@ -43,7 +41,7 @@ const MePage = () => {
 							<div style={{ fontSize: 20, fontWeight: 'bold', color: '#1ebce9' }}>{user?.name || t('guest')}</div>
 							<div style={{ fontSize: 15, color: '#cf6acc' }}>{user?.email}</div>
 							<div style={{ fontSize: 15, color: '#e2500b' }}>
-								{user?.balance.toLocaleString() || 0}
+								<Credit value={user?.balance} />
 							</div>
 						</div>
 					</Col>
