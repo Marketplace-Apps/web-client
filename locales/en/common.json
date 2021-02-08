@@ -96,7 +96,9 @@
         "OUT_OF_BALANCE": "Out of balance",
         "RECEIVER_NOT_FOUND": "Receiver not found",
         "RPC_OFFLINE": "Server problem",
-        "INVAILD_URL": "Invaild URL"
+        "INVAILD_URL": "Invaild URL",
+        "OVERLOAD":"Server overloaded, try another server",
+        "VIDEO_NOT_LIVE":"Livestream ended, please check !"
     },
     "orders": {
         "detail":"Oredr detail",

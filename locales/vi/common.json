@@ -97,7 +97,9 @@
         "OUT_OF_BALANCE": "Số dư không đủ",
         "RECEIVER_NOT_FOUND": "Không tìm thấy người nhận",
         "RPC_OFFLINE": "Máy chủ gặp vấn đề",
-        "INVAILD_URL": "URL không hợp lệ"
+        "INVAILD_URL": "URL không hợp lệ",
+        "OVERLOAD":"Máy chủ quá tải, bạn chọn thử server khác nha",
+        "VIDEO_NOT_LIVE":"Livestream đã kết thúc"
     },
     "orders": {
         "detail":"Chi tiết đơn hàng",
