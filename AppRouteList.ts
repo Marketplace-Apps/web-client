@@ -7,7 +7,7 @@ import { I18N } from "./types"
 import { IconType } from "react-icons/lib"
 import { useRouter } from "next/router"
 import { useAuth } from "firebase-easy-hooks"
-import { FcAdvertising, FcApproval, FcAutomatic, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign, FcServices, FcStumbleupon } from "react-icons/fc"
+import { FcAdvertising, FcApproval, FcAutomatic, FcBullish, FcBusiness, FcBusinessContact, FcBusinessman, FcComboChart, FcConferenceCall, FcCurrencyExchange, FcElectricalSensor, FcElectricity, FcGenealogy, FcLineChart, FcNfcSign, FcServices, FcStumbleupon } from "react-icons/fc"
 import { MdCall } from 'react-icons/md'
 import { FiAward } from 'react-icons/fi'
 
@@ -81,6 +81,11 @@ export const AppRouteList: AppRouteList = {
                 icon: FcComboChart,
                 name: { en: 'Reports', vi: 'Báo cáo' },
                 href: '/me/reports'
+            },
+            Prices: {
+                icon: FcBullish,
+                name: { en: 'Prices', vi: 'Giá cả' },
+                href: '/me/prices'
             },
             FeedManager: {
                 icon: FcAdvertising,

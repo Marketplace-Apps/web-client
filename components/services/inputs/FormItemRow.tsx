@@ -25,7 +25,7 @@ export const FormItemRow = (props: FormItemRow) => {
                 style={{ fontSize: 15, fontWeight: 'bold' }}
                 className="d-flex justify-content-start mb-1"
             >
-                <div>{props.label[locale]}</div>
+                <div>{props.label?.[locale] || props.label?.en || props.id}</div>
                 {props.require && <div><Badge variant="danger" className="ml-1" pill>{t('require')}</Badge></div>}
             </Col>
 

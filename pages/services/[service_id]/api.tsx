@@ -24,7 +24,7 @@ const ServiceApiPage = ({ actions = [], service }: ServiceApiPage) => {
 
             <Row style={{ marginTop: 10, marginBottom: 15 }}>
 
-                <Col xs={12}> <ServiceNav service={service} />     </Col>
+                <Col xs={12} > <ServiceNav service={service} />     </Col>
                 <Col xs={12}>
                     <Row noGutters >
                         <Col xs={12}>

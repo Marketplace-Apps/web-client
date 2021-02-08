@@ -24,7 +24,7 @@ const ServiceOrdersPage = ({ service }: { service: ServiceProvider<any> }) => {
         <MainLayout title={{ en: 'Order', vi: 'Order' }}>
 
             <Row style={{ marginTop: 10, marginBottom: 15 }}>
-                <Col xs={12}> <ServiceNav service={service} /> </Col>
+                <Col xs={12}  > <ServiceNav service={service} /> </Col>
                 <Col xs={12}>
                     <ServiceOrderHistory />
                 </Col>

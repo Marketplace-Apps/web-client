@@ -14,10 +14,15 @@ export const ServiceNav = ({ service }: { service: ServiceProvider<any> }) => {
     return (
         <Row>
             <Col xs={12} lg={6} className="d-flex justify-content-start align-items-center">
-                <img src={service?.icon} width={30} height={30} />
+                <img
+                    src={service?.icon}
+                    width={30}
+                    height={30}
+                    style={{ borderRadius: '100%' }}
+                />
                 <div style={{ marginLeft: 10, fontWeight: 'bold' }}>{service?.name[router.locale]}</div>
             </Col>
-            <Col xs={12}>
+            <Col xs={12} className="mt-2">
                 <Nav variant="tabs">
                     {
                         navs.map(({ href, name }) => (

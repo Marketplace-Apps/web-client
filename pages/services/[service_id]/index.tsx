@@ -29,7 +29,7 @@ const ServiceCreateOrderPage = ({ create_action, service }: ServiceCreateOrderPa
 
 			<Row style={{ marginTop: 10, marginBottom: 15 }}>
 
-				<Col xs={12}><ServiceNav service={service} />	</Col>
+				<Col xs={12} ><ServiceNav service={service} />	</Col>
 				<Col xs={12}>
 					<ActionModal
 						domain_service={domain_service}

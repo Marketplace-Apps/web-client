@@ -34,8 +34,11 @@ export const ServiceItem = ({ service, onClick }: ServiceItem) => {
                     src={service.icon}
                     width={40}
                     height={40}
-                    style={service.maintain ? { filter: 'grayscale(1.0)' } : {}}
-                /> 
+                    style={{
+                        ...service.maintain ? { filter: 'grayscale(1.0)' } : {},
+                        borderRadius: '100%'
+                    }}
+                />
             </div>
             <div className="text-center" style={{ fontSize: 17, color: '#0a6cab' }}>
                 {service.name[router.locale]}

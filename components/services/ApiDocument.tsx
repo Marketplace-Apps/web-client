@@ -7,6 +7,7 @@ import { useCollectionData } from "react-livequery-hooks"
 import { useCopy } from "../../hooks/useCopy"
 import { useDomain } from "../../hooks/useDomain"
 import { ServiceProviderAction } from "../../types"
+import { ApiDocumentField } from "./ApiDocumentField"
 
 export type ActionApiDocument = {
     action: ServiceProviderAction
@@ -66,25 +67,14 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.entries(action?.form || {}).map(([name, {
-                                    is_number,
-                                    label,
-                                    require,
-                                    type,
-                                    options
-                                }]) => (
-                                        <tr key={name}>
-                                            <td>
-                                                {name}
-                                                {require && <Badge className="ml-1" variant="danger">{t('require')}</Badge>}
-                                            </td>
-                                            <td style={{ wordBreak: 'break-all' }}>
-                                                {(is_number || type == 'number') ? 'number' : 'string'} &nbsp;
-                                                {options && JSON.stringify(options.map(el => el.value))}
-                                            </td>
-                                            <td>{label[lang]}</td>
-                                        </tr>
-                                    ))}
+                                {
+                                    Object
+                                        .entries(action?.form || {})
+                                        .map(([name, field]) => <ApiDocumentField
+                                            field={field}
+                                            name={name}
+                                        />)
+                                }
                             </tbody>
                         </Table>
                     </Col>
