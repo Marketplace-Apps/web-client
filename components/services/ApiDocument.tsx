@@ -20,7 +20,7 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
     const domain = useDomain()
     const { user } = useAuth()
 
-    const base_url = `https://r1i47kgkp2.execute-api.us-east-1.amazonaws.com/domains/${domain?.id}/users/${user?.uid}/services/${router.query.service_id}/orders`
+    const base_url = `https://r1i47kgkp2.execute-api.us-east-1.amazonaws.com/livequery/domains/${domain?.id}/users/${user?.uid}/services/${router.query.service_id}/orders`
     const endpoint = `${base_url}/${action.id == 'create' ? '' : `[order_id]/~trigger-action?action=${action.id}`}`
 
 
