@@ -23,7 +23,7 @@ const ServiceList = [
 	{
 		id: 'tiktok',
 		icon: SiTiktok,
-		color: '#027bcd',
+		color: '#b70053',
 		name: 'Tiktok'
 	}
 ]
@@ -40,13 +40,13 @@ const ServicePage = () => {
 			{
 				ServiceList.map(({ color, icon: Icon, id, name }) => (
 					<Fragment key={id}>
-						<Row className="mt-3">
+						<Row className="pt-4">
 							<Col className="d-flex justify-content-start align-items-center">
 								<Icon size={25} color={color} />
 								<div style={{ marginLeft: 10, fontSize: 20, color }}>{name}</div>
 							</Col>
 						</Row>
-						<Row style={{ marginTop: 20 }}>
+						<Row  >
 							{[...services.get(id)?.values() || []].map(service => (
 								<Col
 									key={service.id}
@@ -54,7 +54,7 @@ const ServicePage = () => {
 									md={3}
 									xl={2}
 									lg={3}
-									className="pt-4"
+									className="pt-2"
 								>
 									<ServiceItem
 										onClick={() => router.push(`services/${service.id}`)}

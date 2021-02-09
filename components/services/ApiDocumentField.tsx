@@ -9,25 +9,31 @@ export type ApiDocumentField = {
     name: string
 }
 
+
+export function getFieldType(field: ServiceProviderActionFormItem) {
+    if (field.options) {
+        if (field.options.every(item => typeof item.value == 'boolean')) return 'boolean'
+        if (field.options.every(item => typeof item.value == 'number')) return 'number'
+        return 'string'
+    }
+
+    if (field.input_mask == 'number' || field.type == 'integer' || field.type == 'number') return 'number'
+    if (field.input_mask == 'switch') return 'boolean'
+    return 'string'
+
+}
+
 export const ApiDocumentField = (props: ApiDocumentField) => {
 
     const { t, lang } = useTranslation('common')
 
     const { name, field: {
-        is_number,
         label,
-        require,
-        type,
         options,
-        input_mask
+        require
     } } = props
 
-    const field_type = useMemo(() => {
-        if ((is_number || type == 'number' || input_mask == 'number')) return 'number'
-        if (options && options.every(el => typeof el.value == 'number')) return 'number'
-        if (options && options.every(el => typeof el.value == 'boolean')) return 'boolean'
-        return 'string'
-    }, [props.field])
+    const field_type = useMemo(() => getFieldType(props.field), [props.field])
 
     return (
         <tr key={name}>

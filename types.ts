@@ -1,20 +1,21 @@
 export declare class BaseEntity {
     id: string;
     created_at: number;
+    ref: string;
 }
 
 export declare class Domain extends BaseEntity {
     owner_id: string;
     domains: string[];
     name: string;
-    ref: string;
     refs: String[];
     icon: string;
-    phone_number: string  
-    zalo: string 
-    facebook: string 
-    telegram: string
+    phone_number: string;
+    zalo: string;
+    facebook: string;
+    telegram: string;
 }
+
 
 
 export declare class DomainServiceTag {
@@ -30,30 +31,26 @@ export declare type DomainServicePrice = {
 export declare class DomainService extends BaseEntity {
     domain_id: string;
     maintain?: boolean;
-    promote_price: number;
     prices: {
         [server: string]: DomainServicePrice;
     };
     name: I18N;
     icon: string;
-    allow_lost_profit?: boolean;
-    category: 'facebook' | 'instagram' | 'shopee';
-    ref: string;
+    category: ServiceCategory;
 }
 
 export declare class Feed extends BaseEntity {
     domain_id: string;
     language: string;
     content: string;
-    ref: string;
     payment_tab: boolean;
     home_tab: boolean;
 }
 export declare class I18N {
-    en: string;
-    vi?: string;
-    tl?: string;
-    cn?: string;
+    en: string | number;
+    vi?: string | number;
+    tl?: string | number;
+    cn?: string | number;
 }
 export declare const LanguageList: readonly ["vi-VN", "en-US"];
 
@@ -86,7 +83,6 @@ export declare class Order<T = any> extends BaseEntity {
         message: I18N;
         admin: boolean;
     }>;
-    ref: string;
     start_count?: number;
     last_count?: number;
 }
@@ -106,7 +102,6 @@ export declare class PaymentHistory extends BaseEntity {
     domain_id: string;
     description?: I18N;
     service_id: string;
-    amount: number;
     total: number;
     balance_after: number;
     voucher?: {
@@ -114,7 +109,6 @@ export declare class PaymentHistory extends BaseEntity {
         percent?: number;
         amount?: number;
     };
-    ref: string;
 }
 
 export declare class PaymentMethod extends BaseEntity {
@@ -124,28 +118,14 @@ export declare class PaymentMethod extends BaseEntity {
     account_name: string;
     account_number: string;
     secret_key?: string;
-    ref: string;
 }
 export declare class SendMoneyPayload {
     to: string;
     amount: number;
+    voucher_apply?: boolean;
     note: string;
 }
-
-
-export declare class ServiceProvider<T> extends BaseEntity {
-    user_id?: string;
-    maintain?: boolean;
-    name: I18N;
-    type: 'one-time' | 'duration' | 'times';
-    category: 'facebook' | 'instagram' | 'shopee';
-    icon: string;
-    crons: Array<{
-        delay: number;
-        script: string;
-    }>;
-    number_of_servers: number;
-}
+export declare type ServiceCategory = 'facebook' | 'instagram' | 'shopee' | 'tiktok';
 
 
 
@@ -167,18 +147,17 @@ export declare class ServiceProviderFormItemAlert<T> {
     url?: I18N;
     urlText?: I18N;
 }
+declare type InputMask = 'text' | 'number' | 'switch' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page' | 'image' | 'price';
 export declare class ServiceProviderActionFormItem extends BaseEntity {
     alerts?: Array<ServiceProviderFormItemAlert<any>>;
-    require: boolean;
     placeholder: I18N;
     label: I18N;
     default_value?: string;
-    required?: boolean;
+    require?: boolean;
     optional?: boolean;
-    is_number?: boolean;
-    input_mask: 'text' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page' | 'number' | 'price';
+    type: string;
+    input_mask: InputMask;
     options: ServiceProviderItemOption[];
-    type?:string
 }
 export declare type ServiceProviderActionForm = {
     [name: string]: ServiceProviderActionFormItem;
@@ -201,6 +180,26 @@ export declare class ServiceProviderAction extends BaseEntity {
 export { };
 
 
+
+export declare class ServiceProvider<T> extends BaseEntity {
+    user_id?: string;
+    maintain?: boolean;
+    name: I18N;
+    type: 'one-time' | 'duration' | 'times';
+    category: ServiceCategory;
+    icon: string;
+    config?: T;
+    number_of_servers: number;
+}
+
+
+export declare class ServiceStatic extends BaseEntity {
+    label: I18N;
+    service_id: string;
+    value: string;
+}
+
+
 export declare class User extends BaseEntity {
     balance: number;
     name: string;
@@ -213,6 +212,7 @@ export declare class User extends BaseEntity {
     total_used: number;
     ref: string;
     avatar: string;
+    api_key: string;
 }
 
 export declare class Voucher extends BaseEntity {

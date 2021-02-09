@@ -1,13 +1,15 @@
 import { useAuth } from "firebase-easy-hooks"
 import useTranslation from "next-translate/useTranslation"
 import { useRouter } from "next/router"
+import { useMemo } from "react"
 import { Badge, Button, Col, Row, Table } from "react-bootstrap"
 import ReactJson from "react-json-view"
 import { useCollectionData } from "react-livequery-hooks"
+import { SanboxJS } from "../../helpers/sandboxjs"
 import { useCopy } from "../../hooks/useCopy"
 import { useDomain } from "../../hooks/useDomain"
 import { ServiceProviderAction } from "../../types"
-import { ApiDocumentField } from "./ApiDocumentField"
+import { ApiDocumentField, getFieldType } from "./ApiDocumentField"
 
 export type ActionApiDocument = {
     action: ServiceProviderAction
@@ -24,6 +26,36 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
     const base_url = `https://r1i47kgkp2.execute-api.us-east-1.amazonaws.com/livequery/domains/${domain?.id}/users/${user?.uid}/services/${router.query.service_id}/orders`
     const endpoint = `${base_url}/${action.id == 'create' ? '' : `[order_id]/~trigger-action?action=${action.id}`}`
 
+    const example_json = useMemo(
+        () => Object
+            .keys(action.form)
+            .reduce((p, c) => {
+
+                if (action.form[c].options?.[0].value) return {
+                    ...p,
+                    [c]: action.form[c].options?.[0].value
+                }
+
+                if (action.form[c].placeholder) return {
+                    ...p,
+                    [c]: action.form[c].placeholder[lang] ?? action.form[c].placeholder.en
+                }
+
+
+                if (action.form[c].default_value) return {
+                    ...p,
+                    [c]: SanboxJS.eval(action.form[c].default_value, {})
+                }
+
+                const type = getFieldType(action.form[c])
+                if (type == 'number') return { ...p, [c]: 1 }
+                if (type == 'boolean') return { ...p, [c]: false }
+                return { ...p, [c]: '...' }
+            }, {})
+        ,
+        [action.form])
+
+    console.log({ form: action?.form })
 
     return (
         <Row noGutters className="mt-5">
@@ -83,10 +115,7 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
             {action.form && (
                 <Col xs={12}>
                     <ReactJson
-                        src={Object.keys(action.form).reduce((p, c) => ({
-                            ...p,
-                            [c]: action.form[c].options?.[0].value ?? action.form[c].placeholder?.[lang] ?? action.form[c].placeholder?.en ?? ''
-                        }), {})}
+                        src={example_json}
                         theme="monokai"
                         collapsed={false}
                         enableClipboard={false}
