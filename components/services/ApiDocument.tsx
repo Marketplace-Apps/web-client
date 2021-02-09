@@ -85,7 +85,7 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
                     <ReactJson
                         src={Object.keys(action.form).reduce((p, c) => ({
                             ...p,
-                            [c]: action.form[c].options?.[0].value ?? action.form[c].placeholder?.[lang] ?? ''
+                            [c]: action.form[c].options?.[0].value ?? action.form[c].placeholder?.[lang] ?? action.form[c].placeholder?.en ?? ''
                         }), {})}
                         theme="monokai"
                         collapsed={false}
