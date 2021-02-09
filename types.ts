@@ -47,10 +47,8 @@ export declare class Feed extends BaseEntity {
     home_tab: boolean;
 }
 export declare class I18N {
-    en: string | number;
-    vi?: string | number;
-    tl?: string | number;
-    cn?: string | number;
+    en: string
+    vi?: string
 }
 export declare const LanguageList: readonly ["vi-VN", "en-US"];
 
