@@ -11,6 +11,7 @@ import { MainLayout } from '../../layouts/MainLayout'
 import { AppRouteList } from '../../AppRouteList'
 import { ServiceItem } from '../../components/services/ServiceItem'
 import { Fragment } from 'react'
+import { FaInstagram } from 'react-icons/fa'
 
 
 const ServiceList = [
@@ -25,7 +26,14 @@ const ServiceList = [
 		icon: SiTiktok,
 		color: '#b70053',
 		name: 'Tiktok'
-	}
+	},
+	{
+		id: 'instagram',
+		icon: FaInstagram,
+		color: 'orange',
+		name: 'Instagram'
+	},
+	
 ]
 
 const ServicePage = () => {
