@@ -100,7 +100,6 @@ export const TransactionList = ({ user_id, show_loadmore_button, default_service
                 </Col>
             </Row>
             <div className="mt-5" />
-            {loading && <CenteredSpinner />}
             {!empty && (
                 <Fragment>
                     <div className="d-flex justify-content-end">
@@ -112,6 +111,7 @@ export const TransactionList = ({ user_id, show_loadmore_button, default_service
                 </Fragment>
             )}
             {empty && <div className="text-center">{t('empty_data')}</div>}
+            {loading && <CenteredSpinner />}
             {
                 payments.map(({ day, list }) => (
                     <Fragment key={day}>

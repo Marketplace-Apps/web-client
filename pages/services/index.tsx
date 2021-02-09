@@ -54,7 +54,7 @@ const ServicePage = () => {
 									md={3}
 									xl={2}
 									lg={3}
-									className="pt-2"
+									className="pt-3"
 								>
 									<ServiceItem
 										onClick={() => router.push(`services/${service.id}`)}
