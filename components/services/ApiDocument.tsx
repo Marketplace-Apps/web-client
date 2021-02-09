@@ -28,7 +28,7 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
 
     const example_json = useMemo(
         () => Object
-            .keys(action.form)
+            .keys(action?.form || {})
             .reduce((p, c) => {
 
                 if (action.form[c].options?.[0].value) return {
