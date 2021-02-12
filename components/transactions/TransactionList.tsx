@@ -99,7 +99,7 @@ export const TransactionList = ({ user_id, show_loadmore_button, default_service
                     </Dropdown>
                 </Col>
             </Row>
-            <div className="mt-5" />
+            <div className="mt-3" />
             {!empty && (
                 <Fragment>
                     <div className="d-flex justify-content-end">

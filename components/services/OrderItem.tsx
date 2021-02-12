@@ -33,7 +33,7 @@ export const OrderItem = (props: OrderItem) => {
 		}} >
 			<Row onClick={props.onClick as any} style={{ color: 'white' }}>
 				<Col xs={3} style={{
-					backgroundImage: `url("${props.order.thumbnail}")`,
+					backgroundImage: `url("${props.order.thumbnail}"), url("https://miro.medium.com/max/7584/1*fSS-6OZLzIzchvvDK6v1gg.jpeg")`,
 					backgroundRepeat: 'no-repeat',
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',

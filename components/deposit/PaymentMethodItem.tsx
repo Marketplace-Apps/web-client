@@ -3,14 +3,16 @@
 import React from 'react'
 import { PaymentMethod } from '../../types'
 import { Alert, Badge, Button, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
-import { copy } from '../../helpers/copy'
 import { toast } from 'react-toastify'
+import { useCopy } from '../../hooks/useCopy'
+import useTranslation from 'next-translate/useTranslation'
 
 
 export const PaymentMethodItem = (props: { payment_method: PaymentMethod, onClick?: Function }) => {
 
 	const { icon, account_name, account_number, id, name } = props.payment_method
-
+	const { t } = useTranslation('common')
+	const { copied, copy } = useCopy()
 
 	return (
 		<Row
@@ -33,12 +35,9 @@ export const PaymentMethodItem = (props: { payment_method: PaymentMethod, onClic
 					<Button
 						size="sm"
 						variant="outline-primary"
-						onClick={() => {
-							copy(account_number)
-							toast.success('Copied')
-						}}
+						onClick={() => copy(account_number)}
 						className="mt-2"
-					>Copy</Button>
+					>{copied ? t('copied') : t('copy')}</Button>
 				</div>
 			</Col>
 		</Row>

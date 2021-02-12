@@ -56,7 +56,14 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
 
                             <Row className="mt-3">
                                 <Col xs={5}>
-                                    <img src={props.order.thumbnail} style={{ width: '100%' }} />
+                                    <img
+                                        src={props.order.thumbnail}
+                                        onError={(e: any) => {
+                                            e.target.onerror = null;
+                                            e.target.src = "https://miro.medium.com/max/7584/1*fSS-6OZLzIzchvvDK6v1gg.jpeg"
+                                        }}
+                                        style={{ width: '100%' }}
+                                    />
                                 </Col>
                                 <Col xs={7}>
                                     <div style={{ fontWeight: 'bold' }} > {props.order.title} </div>

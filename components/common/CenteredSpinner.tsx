@@ -1,7 +1,12 @@
-import { Spinner } from "react-bootstrap";
+import { Col, Row, Spinner, SpinnerProps } from "react-bootstrap";
 
-export const CenteredSpinner = () => (
-	<div className="text-center mt-2">
-		<Spinner animation="border" variant="primary" />
-	</div>
+export const CenteredSpinner = (props: Partial<SpinnerProps> = {}) => (
+	<Row>
+		<Col xs={12} className="text-center mt-2">
+			<Spinner
+				animation="border"
+				variant="primary"
+				{...props} />
+		</Col>
+	</Row>
 )

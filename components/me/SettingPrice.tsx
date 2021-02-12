@@ -41,6 +41,7 @@ export const SettingPrice = (props: SettingPrice) => {
     const price_types = ['basic', 'guarantee']
 
     const { item: member } = useDocumentData<User>(props.user_id && domain && `domains/${domain.id}/users/${props.user_id}`)
+    const is_super_admin = props.user_id == 'qWaArilaFUZqsq2vQ7lg5OkUnt32'
 
     const prices = domain_services.map(domain_service => {
         return {
@@ -77,10 +78,11 @@ export const SettingPrice = (props: SettingPrice) => {
     }
 
 
-    const { update, update_error, data, updating } = useUpdateAction(`domains/${domain?.id}/${props.user_id ? `users/${props.user_id}` : ''}`, true, (data, error) => {
+    const { update, updating } = useUpdateAction(`domains/${domain?.id}/${props.user_id ? `users/${props.user_id}` : ''}`, true, (data, error) => {
         if (error) return
         toggle_show_edit()
     })
+
 
     return (
         <Fragment>
@@ -93,7 +95,7 @@ export const SettingPrice = (props: SettingPrice) => {
                             {props.user_id && <Button onClick={toggle_show_user_price as any} variant={show_user_price ? 'danger' : 'outline-danger'}>{t('pricing.private')}</Button>}
                             <Button onClick={toggle_show_percent as any} variant={show_percent ? 'dark' : 'outline-dark'}>{t('show')} %</Button>
                         </ButtonGroup>
-                        {user && (user.id != props.user_id) && <Button className="ml-2" onClick={toggle_show_edit as any} variant={show_edit ? 'danger' : 'outline-danger'}>{t('edit')}</Button>}
+                        {user && (user.id != props.user_id || is_super_admin) && <Button className="ml-2" onClick={toggle_show_edit as any} variant={show_edit ? 'danger' : 'outline-danger'}>{t('edit')}</Button>}
                     </Col></Row>
                 )
             }

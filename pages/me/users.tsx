@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useCollectionData } from "react-livequery-hooks"
 import { AppRouteList } from "../../AppRouteList"
+import { CenteredSpinner } from "../../components/common/CenteredSpinner"
 import { UserDetailModal } from "../../components/me/UserDetailModal"
 import { UserItem } from "../../components/me/UserItem"
 import { useDomain } from "../../hooks/useDomain"
@@ -21,7 +22,7 @@ const UserManagerPage = () => {
 
     const [search, set_search] = useState('')
     const { t } = useTranslation('common')
-    const { items: users } = useCollectionData<User>(domain && `domains/${domain.id}/users`)
+    const { items: users, loading } = useCollectionData<User>(domain && `domains/${domain.id}/users`)
 
     const [active_user, set_active_user] = useState<number>(-1)
     return (
@@ -31,7 +32,7 @@ const UserManagerPage = () => {
                     onHide={() => set_active_user(-1)}
                     user={users[active_user]}
                 />
-            )} 
+            )}
             <Row>
                 <Col xs={12}>
                     <Form.Control
@@ -42,6 +43,7 @@ const UserManagerPage = () => {
                     />
                 </Col>
             </Row>
+            {loading && <CenteredSpinner />}
             <Row className="mt-3">
                 {
                     users

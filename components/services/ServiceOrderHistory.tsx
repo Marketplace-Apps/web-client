@@ -21,6 +21,7 @@ import { AiOutlineClear } from 'react-icons/ai'
 import { get_ms_end_day } from '../../helpers/time'
 import { OrderStatusClear, OrderStatusList } from '../../const'
 import { useAuth } from 'firebase-easy-hooks'
+import { CenteredSpinner } from '../common/CenteredSpinner'
 
 export const ServiceOrderHistory = () => {
 
@@ -31,7 +32,7 @@ export const ServiceOrderHistory = () => {
 
     const { service_id } = router.query
 
-    const { items, empty, filter, filters } = useCollectionData<Order>(domain && user && `domains/${domain.id}/users/${user.uid}/services/${service_id}/orders`, { limit: 10 })
+    const { items, empty, filter, filters, loading } = useCollectionData<Order>(domain && user && `domains/${domain.id}/users/${user.uid}/services/${service_id}/orders`, { limit: 10 })
     const { item: domain_service } = useDocumentData<DomainService>(domain && service_id && `domains/${domain.id}/services/${service_id}`)
     const orders = groupByCreatedTime<Order>(items)
 
@@ -89,37 +90,40 @@ export const ServiceOrderHistory = () => {
                 </Col>
 
             </Row>
-            <Row>
+            {loading && <CenteredSpinner />}
+            {empty && <Row>
                 <Col>
-                    {empty && <div className="text-center">{t('empty_data')}</div>}
+                    <div className="text-center">{t('empty_data')}</div>
                 </Col>
-            </Row>
-            {orders.map(({ list, day }, index) => (
-                <Fragment key={day}>
-                    <Row style={{ paddingLeft: 10, marginTop: 20 }}  >
-                        <Col className="d-flex justify-content-start align-items-center">
-                            <ImCalendar size={20} color="#71a7f9" />
-                            <span style={{ color: '#71a7f9', marginLeft: 5, fontWeight: 'bold' }}>
-                                {day}
-                            </span>
-                        </Col>
-                    </Row>
-                    <Row noGutters>
-
-                        {list.map(order => (
-                            <Col xs={12} md={6} lg={4} xl={3} key={order.id}>
-                                <OrderItem
-                                    key={order.id}
-                                    order={order}
-                                    onClick={() => set_active_order(order.id)}
-                                />
+            </Row>}
+            {
+                orders.map(({ list, day }, index) => (
+                    <Fragment key={day}>
+                        <Row style={{ paddingLeft: 10, marginTop: 20 }}  >
+                            <Col className="d-flex justify-content-start align-items-center">
+                                <ImCalendar size={20} color="#71a7f9" />
+                                <span style={{ color: '#71a7f9', marginLeft: 5, fontWeight: 'bold' }}>
+                                    {day}
+                                </span>
                             </Col>
-                        ))}
-                    </Row>
-                </Fragment>
-            ))}
+                        </Row>
+                        <Row noGutters>
 
-        </Fragment>
+                            {list.map(order => (
+                                <Col xs={12} md={6} lg={4} xl={3} key={order.id}>
+                                    <OrderItem
+                                        key={order.id}
+                                        order={order}
+                                        onClick={() => set_active_order(order.id)}
+                                    />
+                                </Col>
+                            ))}
+                        </Row>
+                    </Fragment>
+                ))
+            }
+
+        </Fragment >
 
     )
 } 

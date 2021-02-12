@@ -12,34 +12,16 @@ import { AppRouteList } from '../../AppRouteList'
 import { ServiceItem } from '../../components/services/ServiceItem'
 import { Fragment } from 'react'
 import { FaInstagram } from 'react-icons/fa'
+import { CenteredSpinner } from '../../components/common/CenteredSpinner'
+import { ServiceList } from '../../const'
 
 
-const ServiceList = [
-	{
-		id: 'facebook',
-		icon: ImFacebook2,
-		color: '#027bcd',
-		name: 'Facebook'
-	},
-	{
-		id: 'tiktok',
-		icon: SiTiktok,
-		color: '#b70053',
-		name: 'Tiktok'
-	},
-	{
-		id: 'instagram',
-		icon: FaInstagram,
-		color: 'orange',
-		name: 'Instagram'
-	},
-	
-]
+
 
 const ServicePage = () => {
 	const router = useRouter()
 	const domain = useDomain()
-	const { items, error } = useCollectionData<DomainService>(domain && `domains/${domain.id}/services`, { cache: { update: true, use: true } })
+	const { items, loading } = useCollectionData<DomainService>(domain && `domains/${domain.id}/services`, { cache: { update: true, use: true } })
 	const services = groupBy2Key(items, 'category', 'id')
 
 	return (
@@ -54,7 +36,8 @@ const ServicePage = () => {
 								<div style={{ marginLeft: 10, fontSize: 20, color }}>{name}</div>
 							</Col>
 						</Row>
-						<Row  >
+						<Row>
+							{loading && <Col xs={12}><CenteredSpinner variant="info" size="sm" animation="grow" /></Col>}
 							{[...services.get(id)?.values() || []].map(service => (
 								<Col
 									key={service.id}
