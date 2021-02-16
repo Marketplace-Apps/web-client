@@ -7,6 +7,7 @@ import { useDomain } from "../../hooks/useDomain";
 import { User } from "../../types";
 import { SendMoney } from "./SendMoney";
 import { SettingPrice } from "./SettingPrice";
+import { UpdateUserLevel } from "./UpdateUserLevel";
 
 
 export type UserDetailModal = {
@@ -88,7 +89,7 @@ export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
                         </Tab>
                         <Tab eventKey="prices" title={t('prices')}>
                             <div className="p-3" style={{ border: '1px solid #dee2e6 ', borderRadius: '0 0 10px 10px' }}>
-                                <SettingPrice user_id={user.id} />
+                                <UpdateUserLevel /> 
                             </div>
                         </Tab>
                     </Tabs>
