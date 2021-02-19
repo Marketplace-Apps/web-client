@@ -5,8 +5,7 @@ import { FcBusinessman, FcClock, FcCloth, FcMoneyTransfer, FcPositiveDynamic, Fc
 import { AppRouteList } from "../../AppRouteList";
 import { useDomain } from "../../hooks/useDomain";
 import { User } from "../../types";
-import { SendMoney } from "./SendMoney";
-import { SettingPrice } from "./SettingPrice";
+import { SendMoney } from "./SendMoney"; 
 import { UpdateUserLevel } from "./UpdateUserLevel";
 
 
@@ -87,9 +86,9 @@ export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
                                 {domain && user && (domain.owner_id == user.id ? <Alert variant="danger">{t('contact')} admin</Alert> : <SendMoney user={user} />)}
                             </div>
                         </Tab>
-                        <Tab eventKey="prices" title={t('prices')}>
+                        <Tab eventKey="prices" title={t('price')}>
                             <div className="p-3" style={{ border: '1px solid #dee2e6 ', borderRadius: '0 0 10px 10px' }}>
-                                <UpdateUserLevel /> 
+                                <UpdateUserLevel user={user} /> 
                             </div>
                         </Tab>
                     </Tabs>

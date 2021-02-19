@@ -4,8 +4,7 @@ import { useDomain } from '../../hooks/useDomain'
 import { groupBy2Key } from '../../helpers/group'
 import { ImFacebook2 } from 'react-icons/im'
 import { SiTiktok } from 'react-icons/si'
-import { useCollectionData } from 'react-livequery-hooks'
-import { DomainService } from '../../types'
+import { useCollectionData } from 'react-livequery-hooks' 
 import { useRouter } from 'next/router'
 import { MainLayout } from '../../layouts/MainLayout'
 import { AppRouteList } from '../../AppRouteList'
@@ -14,14 +13,14 @@ import { Fragment } from 'react'
 import { FaInstagram } from 'react-icons/fa'
 import { CenteredSpinner } from '../../components/common/CenteredSpinner'
 import { ServiceList } from '../../const'
+import { ServiceProvider } from '../../types'
 
 
 
 
 const ServicePage = () => {
 	const router = useRouter()
-	const domain = useDomain()
-	const { items, loading } = useCollectionData<DomainService>(domain && `domains/${domain.id}/services`, { cache: { update: true, use: true } })
+	const { items, loading } = useCollectionData<ServiceProvider>('services', { cache: { update: true, use: true } })
 	const services = groupBy2Key(items, 'category', 'id')
 
 	return (

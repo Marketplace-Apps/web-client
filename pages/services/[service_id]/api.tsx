@@ -7,10 +7,11 @@ import { MainLayout } from '../../../layouts/MainLayout'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ActionApiDocument } from '../../../components/services/ApiDocument'
 import { ServiceNav } from '../../../components/services/ServiceNav'
+import { BASE_URL } from '../../../const'
 
 
 export type ServiceApiPage = {
-    service: ServiceProvider<any>
+    service: ServiceProvider
     actions: ServiceProviderAction[]
 }
 
@@ -49,7 +50,7 @@ const ServiceApiPage = ({ actions = [], service }: ServiceApiPage) => {
 
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const services = await fetch(`https://api.ongmatmedia.com/livequery/services`).then(r => r.json()) as Response<ServiceProvider<any>>
+    const services = await fetch(`${BASE_URL}services`).then(r => r.json()) as Response<ServiceProvider>
     return {
         fallback: true,
         paths: services.data.items.map(s => `/services/${s.id}/api`)
@@ -57,12 +58,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps<ServiceApiPage> = async ctx => {
-
     const { service_id } = ctx.params
-    const service = await fetch(`https://api.ongmatmedia.com/livequery/services/${service_id}`).then(r => r.json()) as ServiceProvider<any>
-    const { data: { items: actions } } = await fetch(`https://api.ongmatmedia.com/livequery/services/${service_id}/actions`)
+    const service = await fetch(`${BASE_URL}services/${service_id}`).then(r => r.json()) as ServiceProvider
+    const { data: { items: actions } } = await fetch(`${BASE_URL}services/${service_id}/actions`)
         .then(r => r.json()) as Response<ServiceProviderAction>
-
     return { props: { service, actions } }
 }
 

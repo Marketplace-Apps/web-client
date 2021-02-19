@@ -2,11 +2,11 @@ import useTranslation from "next-translate/useTranslation"
 import { useRouter } from "next/router"
 import { Badge } from "react-bootstrap"
 import { useHover } from "../../hooks/useHover"
-import { DomainService } from "../../types"
+import { ServiceProvider } from "../../types"
 
 
 type ServiceItem = {
-    service: DomainService
+    service: ServiceProvider
     onClick?: Function
 }
 

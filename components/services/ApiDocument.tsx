@@ -55,8 +55,6 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
         ,
         [action.form])
 
-    console.log({ form: action?.form })
-
     return (
         <Row noGutters className="mt-5">
             <Col xs={12}>

@@ -17,8 +17,7 @@ import { User } from "../../types"
 
 const UserManagerPage = () => {
 
-    const domain = useDomain()
-    const { locale } = useRouter()
+    const domain = useDomain() 
 
     const [search, set_search] = useState('')
     const { t } = useTranslation('common')

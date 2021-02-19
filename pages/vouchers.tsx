@@ -61,7 +61,7 @@ const VoucherManagerPage = () => {
                         .map((voucher, index) =>
                             <Col sm={12} md={12} xl={3} lg={4} className="p-3">
                                 <VoucherItem
-                                    service_name={services.get(voucher.service)?.name[locale]}
+                                    service_name={services.get(voucher.service_id)?.name[locale]}
                                     voucher={voucher}
                                     onClick={is_edit_mode ? () => set_selected_voucher_index(index) : null}
                                 />

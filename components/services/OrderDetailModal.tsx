@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React, { Fragment, useState } from "react";
 import { Alert, Badge, Button, Col, Modal, Row, Spinner } from "react-bootstrap";
 import { BsClockFill } from "react-icons/bs";
-import { DomainService, Order, ServiceProviderAction } from "../../types";
+import {  Order, ServiceProvider, ServiceProviderAction } from "../../types";
 import { VscError } from 'react-icons/vsc'
 import { FcBusinessman, FcClock, FcFlowChart, FcHeatMap, FcRating, FcSettings } from "react-icons/fc";
 import { useRouter } from "next/router";
@@ -19,19 +19,17 @@ import useTranslation from "next-translate/useTranslation";
 export type OrderDetailModal = {
     order: Order
     onHide?: Function
-    domain_service: DomainService
+    service: ServiceProvider
 }
 export const OrderDetailModal = (props: OrderDetailModal) => {
 
     const router = useRouter()
 
-    const { ActionModal, showActionModal } = useActionModal(props.domain_service)
+    const { ActionModal, showActionModal } = useActionModal(props.service.id)
     const { t } = useTranslation('common')
-    const { items: actions } = useCollectionData<ServiceProviderAction>(`services/${props.domain_service.id}/actions`, {
+    const { items: actions } = useCollectionData<ServiceProviderAction>(`services/${props.service.id}/actions`, {
         where: {
-            id: ne('create'),
-            hidden: ne(true),
-            active: ne(false)
+            id: ne('create') 
         }
     })
 
@@ -48,8 +46,8 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
 
                             <Row>
                                 <Col xs={10}>
-                                    <img src={props.domain_service?.icon} width={30} className="mr-3 mb-1" />
-                                    <span style={{ fontWeight: 'bold' }}>{props.domain_service.name[router.locale]}</span>
+                                    <img src={props.service.icon} width={30} className="mr-3 mb-1" />
+                                    <span style={{ fontWeight: 'bold' }}>{props.service.name[router.locale]}</span>
                                 </Col>
                             </Row>
 

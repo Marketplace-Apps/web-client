@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { Col, Nav, Row } from "react-bootstrap"
 import { ServiceProvider } from "../../types"
 
-export const ServiceNav = ({ service }: { service: ServiceProvider<any> }) => {
+export const ServiceNav = ({ service }: { service: ServiceProvider }) => {
     const router = useRouter()
     const { service_id } = router.query
     const { asPath } = router

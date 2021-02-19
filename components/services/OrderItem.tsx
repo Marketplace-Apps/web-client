@@ -2,9 +2,8 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Badge, Col, Row } from 'react-bootstrap'
 import { BiBullseye, BiTimeFive } from 'react-icons/bi'
-import { Order } from '../../types'
-import { OrderStatus } from '../../constants'
-import { Router, useRouter } from 'next/router'
+import { Order } from '../../types' 
+import { Router, useRouter } from 'next/router' 
 import { OrderStatusList } from '../../const'
 
 export type OrderItem = { order: Order, onClick?: Function }

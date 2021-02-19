@@ -4,6 +4,40 @@ import { SiTiktok } from "react-icons/si"
 
 export const DEFAULT_AVATAR = 'https://api.time.com/wp-content/uploads/2019/04/mark-zuckerberg-time-100-2019.jpg?quality=85&zoom=2'
 
+
+
+export const BASE_URL = (() => {
+    if (process.env.NODE_ENV == 'development') {
+        return 'http://192.168.1.232/livequery/'
+        return 'https://api.ongmatmedia.com/livequery/'
+    }
+    if (typeof location == 'undefined') return 'http://192.168.1.232/livequery/'
+    return `https://api.${location.hostname.split('.').slice(1).join('.')}/livequery/`
+})()
+
+export const WS_URL = BASE_URL.replace('http', 'ws') + 'realtime-updates'
+
+export const FIREBASE_CONFIG = {
+    apiKey: 'AIzaSyATf0V5INt6D29LAE_nMmUJhlXhC8wzw40',
+    authDomain: 'ssm-marketplace.firebaseapp.com',
+    databaseURL: 'https://ssm-marketplace.firebaseio.com',
+    projectId: 'ssm-marketplace',
+    storageBucket: 'ssm-marketplace.appspot.com',
+    messagingSenderId: '900124795238',
+    appId: '1:900124795238:web:c4297a52569babba0928a7',
+    measurementId: 'G-B6JX8YET24',
+}
+
+export const NO_PROTECTED_ROUTES = [
+    '/auth/sign-in',
+    '/deposit',
+    '/services',
+    '/admin-contact',
+    '/vouchers',
+    '/'
+]
+
+
 export const OrderStatusList = {
     default: { color: 'linear-gradient(to right, #bbd2c5, #536976)' },
     deleted: { color: 'linear-gradient(to right, #232526, #414345)' },

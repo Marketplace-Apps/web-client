@@ -71,7 +71,7 @@ export const MainLayout = ({ children, title, showHeaderTitle }: MainLayout) => 
 						style={{ width: 15, margin: 0, padding: 0 }}
 					></Col>
 					<Col xs={12} style={{ height: 64 }} className="d-md-none d-sm-block"> </Col>
-					<Col xs={12} className="d-md-none d-sm-block"><MobileBottomMenu /></Col>
+					<Col xs={12} className="d-md-none d-sm-block" style={{zIndex:99}}><MobileBottomMenu /></Col>
 				</Row>
 			</Container>
 		</div>

@@ -4,7 +4,7 @@ import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap"
 import { FormProvider, useForm } from "react-hook-form"
 import { FaCheck } from "react-icons/fa"
 import { useAction, useDocumentData } from "react-livequery-hooks"
-import { DomainService, Order, ServiceProvider, ServiceProviderAction, ServiceProviderActionFormItem, User } from "../../types"
+import { Order, PricePackage, ServiceProvider, ServiceProviderAction, ServiceProviderActionFormItem, User } from "../../types"
 import { IconButton } from "../common/IconButton"
 import { SanboxJS } from "../../helpers/sandboxjs"
 import { useDomain } from "../../hooks/useDomain"
@@ -13,9 +13,11 @@ import { ActionBill } from "./ActionBill"
 import useTranslation from 'next-translate/useTranslation'
 import { TextInput } from "./inputs/TextInput"
 import { useAuth } from "firebase-easy-hooks"
+import { useCurrentUser } from "../../hooks/useCurrentUser"
+import { VisibleCheck } from "./inputs/VisibleCheck"
 
 export type ActionModal = {
-    domain_service: DomainService
+    service_id: string
     order?: Order
     action: ServiceProviderAction
     onSuccess?: Function
@@ -23,16 +25,18 @@ export type ActionModal = {
 
 export const ActionModal = (props: ActionModal) => {
 
-    const { domain_service, order, action } = props
+
+    const { service_id, order, action } = props
     const domain = useDomain()
     const { t } = useTranslation('common')
     const { user } = useAuth()
 
     const getDefaultValues = (data = {}) => Object.keys(action?.form || {}).reduce((p, c, index) => {
-        const item = action?.form?.[c] as ServiceProviderActionFormItem
+        const item = action?.form?.[c] as ServiceProviderActionFormItem<any>
         if (!item?.default_value) return p
         const value = SanboxJS.eval(item.default_value, data)
-        if (value !== undefined) p[item.id] = value
+        if (value !== undefined) p[c] = value
+
         return p
     }, {})
 
@@ -42,13 +46,12 @@ export const ActionModal = (props: ActionModal) => {
             ...order || {}
         })
     })
-
     const {
         error,
         excute,
         loading
     } = useAction(
-        domain && props.domain_service && user && `domains/${domain.id}/users/${user.uid}/services/${props.domain_service.id}/orders${props.order ? `/${props.order.id}/~trigger-action` : ''}`,
+        domain && service_id && user && `domains/${domain.id}/users/${user.uid}/services/${service_id}/orders${props.order ? `/${props.order.id}/~trigger-action` : ''}`,
         'POST',
         async (data, error) => {
             if (error) return
@@ -65,19 +68,21 @@ export const ActionModal = (props: ActionModal) => {
     }, [JSON.stringify(form.watch())])
 
 
-
     return (
 
         <FormProvider {...form}>
             <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
-                {Object.keys(action?.form || {}).map(name => <GenericInput key={name} {... (action?.form[name])} />)}
-
+                {Object.keys(action?.form || {}).map(name => (
+                    <VisibleCheck condition={action.form[name]?.visible_condition?.toString()}>
+                        <GenericInput key={name} {... (action?.form[name])} />
+                    </VisibleCheck>
+                ))}
                 {
-                    action && domain_service && <ActionBill
-                        fn={action.price}
+                    action && service_id && <ActionBill
+                        fn={action.price.toString()}
                         order={order}
-                        domain_service={domain_service}
                         can_use_voucher={action.can_use_voucher}
+                        service_id={service_id}
                     />
                 }
                 {error?.message && <Alert variant="danger">{t('server_errors.' + error.message)}</Alert>}
@@ -103,7 +108,7 @@ export const ActionModal = (props: ActionModal) => {
 }
 
 export const useActionModal = (
-    domain_service: DomainService,
+    service_id: string,
     onSuccess?: Function
 ) => {
     const router = useRouter()
@@ -112,7 +117,7 @@ export const useActionModal = (
 
     return {
         showActionModal: set_action_id,
-        ActionModal: action && domain_service && (
+        ActionModal: action && service_id && (
             <Modal
                 show={action}
                 onHide={() => set_action_id({})}
@@ -124,7 +129,7 @@ export const useActionModal = (
 
                 </Modal.Header>
                 <ActionModal
-                    domain_service={domain_service}
+                    service_id={service_id}
                     onSuccess={() => {
                         onSuccess && onSuccess()
                         set_action_id({})

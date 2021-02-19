@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { Controller, useFormContext } from "react-hook-form";
 import { ServiceProviderActionFormItem } from "../../../types";
 import { FormItemRow } from "./FormItemRow";
+import { VisibleCheck } from "./VisibleCheck";
 
 export const ButtonSelect = (props: ServiceProviderActionFormItem) => {
 
@@ -18,13 +19,14 @@ export const ButtonSelect = (props: ServiceProviderActionFormItem) => {
                     <Fragment>
                         {
                             props.options.map(option => (
-                                <Button
-                                    key={option.value}
-                                    className="mr-2 mb-2"
-                                    variant={value == option.value ? 'primary' : 'outline-primary'}
-                                    onClick={() => onChange(option.value)}
-                                    disabled={option.disabled}
-                                > {option.label.en}</Button>
+                                <VisibleCheck condition={option.visible_condition?.toString()}>
+                                    <Button
+                                        key={option.value}
+                                        className="mr-2 mb-2"
+                                        variant={value == option.value ? 'primary' : 'outline-primary'}
+                                        onClick={() => onChange(option.value)} 
+                                    > {option.label.en}</Button>
+                                </VisibleCheck>
                             ))
                         }
                     </Fragment>

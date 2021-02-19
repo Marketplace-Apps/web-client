@@ -35,10 +35,10 @@ export const VoucherModal = (props: VoucherModal) => {
             min_require: 0,
             percent: 0,
             max: 0,
-            used: 0, 
-            service: 'all',
+            used: 0,
+            service_id: 'all',
             server: 0,
-            allow_private_price: false
+            levels: ['default']
         },
 
     })
@@ -60,7 +60,7 @@ export const VoucherModal = (props: VoucherModal) => {
         }
     )
 
-    const selected_service_id = form.watch().service as string
+    const selected_service_id = form.watch().service_id  
     const selected_service = services.filter(s => s.id == selected_service_id)[0]
     const { t, lang } = useTranslation('common')
 
@@ -180,27 +180,7 @@ export const VoucherModal = (props: VoucherModal) => {
                                 </Row>
                             ) : null}
                         />
-
-                        <Row className="mb-3">
-                            <Col xs={12}><Form.Label>{t('vouchers.allow_prive_price')}</Form.Label></Col>
-                            <Col xs={12}>
-                                <Controller
-                                    control={form.control}
-                                    name="allow_private_price"
-                                    render={({ onChange, value }) => (
-                                        <Form.Control
-                                            as="select"
-                                            custom
-                                            value={value ? "1" : "0"}
-                                            onChange={e => onChange(e.target.value == "1")}
-                                        >
-                                            <option value="1">{t('yes')}</option>
-                                            <option value="0">{t('no')}</option>
-                                        </Form.Control>
-                                    )}
-                                />
-                            </Col>
-                        </Row>
+ 
 
                     </Modal.Body>
                     <Modal.Footer>

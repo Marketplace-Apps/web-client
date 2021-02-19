@@ -1,7 +1,14 @@
+type FirebaseUser = { uid: string, admin: true }
+
+
 export declare class BaseEntity {
     id: string;
     created_at: number;
     ref: string;
+}
+export declare class Config<T> {
+    id: string;
+    value: T;
 }
 
 export declare class Domain extends BaseEntity {
@@ -16,29 +23,6 @@ export declare class Domain extends BaseEntity {
     telegram: string;
 }
 
-
-
-export declare class DomainServiceTag {
-    title: string;
-    color?: string;
-    background_color: string;
-    border?: string;
-}
-export declare type DomainServicePrice = {
-    basic: number;
-    guarantee: number;
-};
-export declare class DomainService extends BaseEntity {
-    domain_id: string;
-    maintain?: boolean;
-    prices: {
-        [server: string]: DomainServicePrice;
-    };
-    name: I18N;
-    icon: string;
-    category: ServiceCategory;
-}
-
 export declare class Feed extends BaseEntity {
     domain_id: string;
     language: string;
@@ -47,8 +31,10 @@ export declare class Feed extends BaseEntity {
     home_tab: boolean;
 }
 export declare class I18N {
-    en: string
-    vi?: string
+    en: string;
+    vi?: string;
+    tl?: string;
+    cn?: string;
 }
 export declare const LanguageList: readonly ["vi-VN", "en-US"];
 
@@ -117,22 +103,59 @@ export declare class PaymentMethod extends BaseEntity {
     account_number: string;
     secret_key?: string;
 }
+
+
+export declare type Prices = {
+    [option_id: string]: {
+        basic: number;
+        guarantee: number;
+        label: I18N;
+    };
+};
+export declare type ServicePriceList = {
+    [service_id: string]: Prices;
+};
+export declare class PricePackage extends BaseEntity {
+    prices: ServicePriceList;
+    description?: string
+    name: string;
+    domain_id: string;
+}
 export declare class SendMoneyPayload {
     to: string;
     amount: number;
     voucher_apply?: boolean;
     note: string;
 }
-export declare type ServiceCategory = 'facebook' | 'instagram' | 'shopee' | 'tiktok';
+
+
+export declare class ServiceCategory extends BaseEntity {
+    name: I18N;
+    icon: string;
+}
+
+
+export declare class ServiceProvider extends BaseEntity {
+    user_id?: string;
+    maintain?: boolean;
+    name: I18N;
+    type: 'one-time' | 'duration' | 'times';
+    icon: string;
+    category: string;
+}
 
 
 
-export declare class ServiceProviderItemOption {
+
+
+
+
+export declare class ServiceProviderItemOption<T> {
     label?: I18N;
     value: any;
     icon?: string;
     color?: string;
-    disabled?: boolean;
+    visible_condition?: (data: T) => boolean;
 }
 export declare class ServiceProviderFormItemAlert<T> {
     content: {
@@ -145,9 +168,13 @@ export declare class ServiceProviderFormItemAlert<T> {
     url?: I18N;
     urlText?: I18N;
 }
-declare type InputMask = 'text' | 'number' | 'switch' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page' | 'image' | 'price';
-export declare class ServiceProviderActionFormItem extends BaseEntity {
-    alerts?: Array<ServiceProviderFormItemAlert<any>>;
+declare type InputMask = 'text' | 'number' | 'switch' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page' | 'image';
+export declare type ServiceProviderActionForm<T> = {
+    [name: string]: ServiceProviderActionFormItem<T>;
+};
+export interface ServiceProviderActionFormItem<T = any> {
+    id
+    alerts?: Array<ServiceProviderFormItemAlert<T>>;
     placeholder: I18N;
     label: I18N;
     default_value?: string;
@@ -155,40 +182,41 @@ export declare class ServiceProviderActionFormItem extends BaseEntity {
     optional?: boolean;
     type: string;
     input_mask: InputMask;
-    options: ServiceProviderItemOption[];
+    visible_condition: (data: T) => boolean;
+    options: ServiceProviderItemOption<any>[];
 }
-export declare type ServiceProviderActionForm = {
-    [name: string]: ServiceProviderActionFormItem;
+export declare type ActionMetadata<T = any> = {
+    requester: FirebaseUser;
+    user: User;
+    service: ServiceProvider;
+    action_id: string;
+    order?: Order;
+    payload: T;
+    total: number;
+    price: number;
+    min_price: number;
+    remote_prices: Prices;
 };
-
-
-export declare class ServiceProviderAction extends BaseEntity {
+export declare type PriceFunctionParams<T = any> = {
+    user: User;
+    order?: Order;
+    payload?: T;
+    package_prices: Prices;
+};
+export declare class ServiceProviderAction<T = any, Utils = any> extends BaseEntity {
     service_id: string;
-    active: boolean;
-    hidden: boolean;
-    price: string;
-    process: string;
-    form: ServiceProviderActionForm;
-    validator?: string;
-    color?: string;
+    price: (params: PriceFunctionParams<T>) => {
+        total: number;
+        price: number;
+        min_price: number;
+    };
+    process: (utils: Utils & ActionMetadata<T>) => Promise<void>;
+    form: ServiceProviderActionForm<T>;
+    visible_condition?: (order: Order) => boolean;
     can_use_voucher?: boolean;
-    payment_note: string;
     name: I18N;
 }
 export { };
-
-
-
-export declare class ServiceProvider<T> extends BaseEntity {
-    user_id?: string;
-    maintain?: boolean;
-    name: I18N;
-    type: 'one-time' | 'duration' | 'times';
-    category: ServiceCategory;
-    icon: string;
-    config?: T;
-    number_of_servers: number;
-}
 
 
 export declare class ServiceStatic extends BaseEntity {
@@ -197,18 +225,14 @@ export declare class ServiceStatic extends BaseEntity {
     value: string;
 }
 
-
 export declare class User extends BaseEntity {
     balance: number;
     name: string;
     domain_id: string;
     email: string;
-    prices?: {
-        [service: string]: DomainService['prices'];
-    };
+    level?: string;
     total_deposit: number;
     total_used: number;
-    ref: string;
     avatar: string;
     api_key: string;
 }
@@ -223,8 +247,7 @@ export declare class Voucher extends BaseEntity {
     min_require?: number;
     limit: number;
     used: number;
-    service: string;
+    service_id: string;
     server: number;
-    ref: string;
-    allow_private_price: boolean;
+    levels: String[];
 }

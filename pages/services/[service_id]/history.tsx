@@ -1,23 +1,14 @@
-
-
-
-
-import { useRouter } from 'next/router'
 import React from 'react'
-import { useDomain } from '../../../hooks/useDomain'
 import { Col, Nav, Row, Tab, Tabs } from 'react-bootstrap'
-import { useCollectionData, useDocumentData, Response } from 'react-livequery-hooks'
-import { DomainService, Order, ServiceProvider, ServiceProviderAction } from '../../../types'
+import { Response } from 'react-livequery-hooks'
+import { Order, ServiceProvider } from '../../../types'
 import { MainLayout } from '../../../layouts/MainLayout'
-import { ActionModal } from '../../../components/services/ActionModal'
-import useTranslation from 'next-translate/useTranslation'
 import { ServiceOrderHistory } from '../../../components/services/ServiceOrderHistory'
-import { ActionApiDocument } from '../../../components/services/ApiDocument'
-import { ApiDocumentTab } from '../../../components/services/ApiDocumentList'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ServiceNav } from '../../../components/services/ServiceNav'
+import { BASE_URL } from '../../../const'
 
-const ServiceOrdersPage = ({ service }: { service: ServiceProvider<any> }) => {
+const ServiceOrdersPage = ({ service }: { service: ServiceProvider }) => {
 
 
     return (
@@ -37,7 +28,7 @@ const ServiceOrdersPage = ({ service }: { service: ServiceProvider<any> }) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const services = await fetch(`https://api.ongmatmedia.com/livequery/services`).then(r => r.json()) as Response<ServiceProvider<any>>
+    const services = await fetch(`${BASE_URL}services`).then(r => r.json()) as Response<ServiceProvider>
     return {
         fallback: true,
         paths: services.data.items.map(s => `/services/${s.id}/history`)
@@ -46,7 +37,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<{}> = async ctx => {
     const { service_id } = ctx.params
-    const service = await fetch(`https://api.ongmatmedia.com/livequery/services/${service_id}`).then(r => r.json()) as ServiceProvider<any>
+    const service = await fetch(`${BASE_URL}services/${service_id}`).then(r => r.json()) as ServiceProvider
     return { props: { service } }
 }
 

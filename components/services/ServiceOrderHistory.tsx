@@ -4,7 +4,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { useDomain } from '../../hooks/useDomain'
 import { Button, Col, Dropdown, Form, FormControl, InputGroup, Row, Tab, Tabs } from 'react-bootstrap'
 import { lt, useCollectionData, useDocumentData } from 'react-livequery-hooks'
-import { DomainService, Order, ServiceProvider, ServiceProviderAction } from '../../types'
+import { Order, ServiceProvider, ServiceProviderAction } from '../../types'
 import { groupByCreatedTime } from '../../helpers/group'
 import { ImCalendar } from 'react-icons/im'
 import { IoIosAddCircle } from 'react-icons/io'
@@ -33,7 +33,7 @@ export const ServiceOrderHistory = () => {
     const { service_id } = router.query
 
     const { items, empty, filter, filters, loading } = useCollectionData<Order>(domain && user && `domains/${domain.id}/users/${user.uid}/services/${service_id}/orders`, { limit: 10 })
-    const { item: domain_service } = useDocumentData<DomainService>(domain && service_id && `domains/${domain.id}/services/${service_id}`)
+    const { item: service } = useDocumentData<ServiceProvider>(service_id && `services/${service_id}`)
     const orders = groupByCreatedTime<Order>(items)
 
     const [active_order, set_active_order] = useState<string>()
@@ -45,7 +45,7 @@ export const ServiceOrderHistory = () => {
             {
                 active_order && (
                     <OrderDetailModal
-                        domain_service={domain_service}
+                        service={service}
                         onHide={() => set_active_order(null)}
                         order={active_order && orders && items.filter(o => o.id == active_order)[0]}
                     />

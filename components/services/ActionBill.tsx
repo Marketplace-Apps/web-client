@@ -2,50 +2,43 @@ import { Fragment, useMemo } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { SanboxJS } from "../../helpers/sandboxjs"
 import { useCurrentUser } from "../../hooks/useCurrentUser"
-import { DomainService, DomainServicePrice, Order, User } from "../../types"
+import { Order, PriceFunctionParams, PricePackage, Prices, ServiceProviderAction, User } from "../../types"
 import { Bill } from "./Bill"
 import useTranslation from 'next-translate/useTranslation'
 import { Alert, Button, FormControl, InputGroup } from "react-bootstrap"
-import { useAction } from "react-livequery-hooks"
+import { useAction, useDocumentData } from "react-livequery-hooks"
 import { caculate_voucher } from "../../helpers/caculate_voucher"
+import { useDomain } from "../../hooks/useDomain"
 
 
 
 export type ActionBill = {
-    domain_service: DomainService,
     order?: Order,
     fn: string,
-    can_use_voucher?: boolean
+    can_use_voucher?: boolean,
+    service_id: string
 }
 
-export type PriceFunctionParams<T> = {
-    domain_service: DomainService,
-    user: User,
-    order?: Order,
-    payload?: T,
-    prices: DomainServicePrice
-}
 
 export const ActionBill = (props: ActionBill) => {
 
     const form = useFormContext()
     const user = useCurrentUser()
+    const domain = useDomain()
     const payload = form.watch()
     const { t } = useTranslation('common')
 
-    const server = props.order?.server || payload.server || 1
-    const prices = user?.prices?.[props.domain_service.id]?.[`SV${server}`] || props.domain_service?.prices?.[`SV${server}`]
+    const { item: package_prices } = useDocumentData<PricePackage>(domain && user && `domains/${domain.id}/packages/${user?.level || 'default'}`)
 
-    const ctx: PriceFunctionParams<any> = { ...props, user, payload, prices }
+    const ctx: PriceFunctionParams = { ...props, user, payload, package_prices: package_prices?.prices[props.service_id] }
 
-
-    const total_bill = useMemo<number>(() => {
-        if (!user || !prices) return 0
+    const total_bill = useMemo<ReturnType<ServiceProviderAction['price']>>(() => {
+        if (!user || !package_prices) return 0
         try {
             return SanboxJS.eval(props.fn, ctx)
         } catch (e) {
             console.error(e)
-            return 0
+            return null
         }
     }, [ctx])
 
@@ -57,9 +50,9 @@ export const ActionBill = (props: ActionBill) => {
         excute({}, { code })
     }
 
-    const discount = caculate_voucher(voucher, props.domain_service, user, total_bill, server)
+    const discount = 0//voucher ? caculate_voucher(voucher, props.service_id, user, total_bill.total, payload?.server || 1) : 0
 
-    return total_bill != 0 && (
+    return total_bill && (
         <Fragment>
 
             {props.can_use_voucher && (
@@ -102,9 +95,15 @@ export const ActionBill = (props: ActionBill) => {
             }
 
             <Bill
-                total={total_bill - discount}
+                total={total_bill.price}
+                text={t('price')}
+                background="linear-gradient(to right, #ff512f, #f09819)"
+            />
+
+            <Bill
+                total={total_bill.total - discount}
                 text={t('order_total')}
-                old_value={discount > 0 && total_bill}
+                old_value={discount > 0 && total_bill.total}
             />
 
             <Bill
