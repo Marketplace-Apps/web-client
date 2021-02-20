@@ -33,7 +33,7 @@ export const PricePackageManagerCategory = (props: PricePackageManagerCategory) 
                     <Col xs={10} className="d-flex justify-content-start align-items-center">
                         <Icon color={color} />
                         <span className="ml-1 font-weight-bold" style={{ color }}>{name}</span>
-                        {props.services.length > 0 && <Badge variant="light" style={{border:'1px solid gray'}} className="ml-1">{props.services.length}</Badge>}
+                        {props.services.length > 0 && <Badge variant="light" style={{ border: '1px solid gray' }} className="ml-1">{props.services.length}</Badge>}
                     </Col>
                     <Col xs={2} className="text-right">
                         {open ? <FaAngleDoubleUp color={color} /> : <FaAngleDoubleRight color={color} />}
@@ -46,6 +46,7 @@ export const PricePackageManagerCategory = (props: PricePackageManagerCategory) 
                         {
                             props.services.map(service => <PricePackageManagerService
                                 service={service}
+                                key={service.id}
                             />)
                         }
                     </Row>

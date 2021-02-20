@@ -69,7 +69,7 @@ export const ServiceOrderHistory = () => {
                                 })}>{t('all')}</Dropdown.Item>
                                 {
                                     Object.keys(OrderStatusList).slice(1).map(status => (
-                                        <Dropdown.Item onClick={() => filter({
+                                        <Dropdown.Item key={status} onClick={() => filter({
                                             ...filters,
                                             ...OrderStatusClear,
                                             [status]: true,

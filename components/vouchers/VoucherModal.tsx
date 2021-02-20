@@ -1,13 +1,14 @@
 import useTranslation from "next-translate/useTranslation"
 import { useRouter } from "next/router"
-import React from "react"
+import React, { useMemo } from "react"
 import { Button, Col, Form, Modal, Row } from "react-bootstrap"
-import { Controller, FormProvider, useForm } from "react-hook-form"
+import { Controller, ControllerRenderProps, FormProvider, useFieldArray, useForm } from "react-hook-form"
 import { FaCheck } from "react-icons/fa"
 import { MdDelete } from "react-icons/md"
 import { useAction, useDeleteAction } from "react-livequery-hooks"
 import { useDomain } from "../../hooks/useDomain"
 import { useServices } from "../../hooks/useServices"
+import { useUserLevels } from "../../hooks/useUserLevels"
 import { Voucher } from "../../types"
 import { DateHourPicker } from "../common/DateHourPicker"
 import { IconButton } from "../common/IconButton"
@@ -25,6 +26,8 @@ export const VoucherModal = (props: VoucherModal) => {
     const domain = useDomain()
     const services = useServices()
     const { locale } = useRouter()
+    const levels = useUserLevels()
+
 
     const form = useForm<Voucher>({
         defaultValues: props.voucher || {
@@ -38,7 +41,7 @@ export const VoucherModal = (props: VoucherModal) => {
             used: 0,
             service_id: 'all',
             server: 0,
-            levels: ['default']
+            levels: []
         },
 
     })
@@ -59,9 +62,8 @@ export const VoucherModal = (props: VoucherModal) => {
             props.onHide()
         }
     )
-
-    const selected_service_id = form.watch().service_id  
-    const selected_service = services.filter(s => s.id == selected_service_id)[0]
+ 
+    const selected_service = useMemo(() => services.filter(s => s.id == form.watch().service_id)[0], [form.watch().service_id])
     const { t, lang } = useTranslation('common')
 
     return (
@@ -115,13 +117,9 @@ export const VoucherModal = (props: VoucherModal) => {
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            <Col xs={6}><Form.Label>{t('vouchers.percent')}</Form.Label></Col>
-                            <Col xs={6}><Form.Label>{t('vouchers.limit_per_user')}</Form.Label></Col>
-                            <Col xs={6}>
-                                <NumberFormatInput name="percent" style={{ width: 60 }} />
-                            </Col>
-                            <Col xs={6}>
-                                <NumberFormatInput name="limit_per_user" />
+                            <Col xs={12}><Form.Label>{t('vouchers.percent')}</Form.Label></Col>
+                            <Col xs={12}>
+                                <NumberFormatInput name="percent" />
                             </Col>
                         </Row>
                         <Row className="mb-3">
@@ -138,7 +136,7 @@ export const VoucherModal = (props: VoucherModal) => {
                             <Col xs={12}>
                                 <Controller
                                     control={form.control}
-                                    name="service"
+                                    name="service_id"
                                     render={({ onChange, value }) => (
                                         <Form.Control
                                             as="select"
@@ -158,6 +156,7 @@ export const VoucherModal = (props: VoucherModal) => {
                         </Row>
 
 
+
                         <Controller
                             control={form.control}
                             name="server"
@@ -173,14 +172,43 @@ export const VoucherModal = (props: VoucherModal) => {
                                         >
                                             <option value={0}>All</option>
                                             {
-                                                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => <option value={i}>Server {i}</option>)
+                                                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => <option key={i} value={i}>Server {i}</option>)
                                             }
                                         </Form.Control>
                                     </Col>
                                 </Row>
                             ) : null}
                         />
- 
+
+
+                        <Row className="mb-3">
+                            <Col xs={12}><Form.Label>Levels</Form.Label></Col>
+
+                            <Controller
+                                control={form.control}
+                                name="levels"
+                                render={({ onChange, value }) => {
+                                    const selected = new Set<string>(value)
+                                    
+                                    return (
+                                        <Col xs={12}>
+                                            {levels.map(level => <Button
+                                                size="sm"
+                                                key={level.id}
+                                                onClick={() => {
+                                                    selected.has(level.id) ? selected.delete(level.id) : selected.add(level.id)
+                                                    onChange([...selected])
+                                                }}
+                                                className="ml-1"
+                                                variant={selected.has(level.id) ? 'primary' : 'outline-primary'}
+                                            >{level.name}</Button>)}
+                                        </Col>
+                                    )
+                                }}
+                            />
+
+                        </Row>
+
 
                     </Modal.Body>
                     <Modal.Footer>

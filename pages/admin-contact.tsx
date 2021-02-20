@@ -50,7 +50,7 @@ const AdminContact = () => {
 			<Row>
 				{
 					methods.map(method => (
-						<Col xs={12} sm={6} md={6} xl={3} lg={4}>
+						<Col xs={12} sm={6} md={6} xl={3} lg={4} key={method.id}>
 							<div className="p-2">
 								<Card
 									style={{ cursor: 'pointer', width: '100%' }}

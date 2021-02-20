@@ -53,6 +53,7 @@ const MePage = () => {
 					{
 						LanguageList.map(({ icon, id }) => (
 							<img
+								key={id}
 								src={icon}
 								width={60}
 								height={30}
@@ -80,7 +81,12 @@ const MePage = () => {
 						})
 						.filter(item => !item.admin || (item.admin && isAdmin))
 						.map(item => (
-							<Col xs={12} sm={6} md={4} lg={3} key={item.name.en}>
+							<Col
+								xs={12}
+								sm={6}
+								md={4}
+								lg={3}
+								key={item.name.en}>
 								<LinkCard {...item} />
 							</Col>
 						))

@@ -73,7 +73,10 @@ export const ActionModal = (props: ActionModal) => {
         <FormProvider {...form}>
             <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
                 {Object.keys(action?.form || {}).map(name => (
-                    <VisibleCheck condition={action.form[name]?.visible_condition?.toString()}>
+                    <VisibleCheck
+                        condition={action.form[name]?.visible_condition?.toString()}
+                        key={name}
+                    >
                         <GenericInput key={name} {... (action?.form[name])} />
                     </VisibleCheck>
                 ))}

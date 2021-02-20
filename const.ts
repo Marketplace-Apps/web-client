@@ -11,7 +11,7 @@ export const BASE_URL = (() => {
         return 'http://192.168.1.232/livequery/'
         return 'https://api.ongmatmedia.com/livequery/'
     }
-    if (typeof location == 'undefined') return 'http://192.168.1.232/livequery/'
+    if (typeof location == 'undefined' || location.hostname.includes('localhost') || location.hostname.includes('192.168')) return 'http://192.168.1.232/livequery/'
     return `https://api.${location.hostname.split('.').slice(1).join('.')}/livequery/`
 })()
 

@@ -28,7 +28,7 @@ export const PricePackageManagerService = ({ service }: PricePackageManagerServi
             <Col xs={4} className="text-center">{t('pricing.guarantee')}</Col>
             {
                 Object
-                    .entries(import_price.prices[service.id] || {})
+                    .entries(import_price?.prices?.[service.id] || {})
                     .map(([option_id, option]) => (
                         <PricePackageManagerServiceOption
                             option={{ ...option, id: option_id }}

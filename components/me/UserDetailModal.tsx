@@ -1,11 +1,12 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { Fragment, useState } from "react";
 import { Alert, Button, Card, Col, Modal, Row, Tab, Tabs } from "react-bootstrap";
-import { FcBusinessman, FcClock, FcCloth, FcMoneyTransfer, FcPositiveDynamic, FcTimeline, FcVoicemail } from "react-icons/fc"; 
+import { FcBusinessman, FcClock, FcCloth, FcMoneyTransfer, FcPositiveDynamic, FcTimeline, FcVoicemail } from "react-icons/fc";
 import { AppRouteList } from "../../AppRouteList";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useDomain } from "../../hooks/useDomain";
 import { User } from "../../types";
-import { SendMoney } from "./SendMoney"; 
+import { SendMoney } from "./SendMoney";
 import { UpdateUserLevel } from "./UpdateUserLevel";
 
 
@@ -17,6 +18,7 @@ export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
 
     const domain = useDomain()
     const { t, lang } = useTranslation('common')
+    const me = useCurrentUser()
 
     const UserInformationReports = [
         { name: t('fullname'), value: user.name, icon: FcBusinessman },
@@ -88,7 +90,7 @@ export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
                         </Tab>
                         <Tab eventKey="prices" title={t('price')}>
                             <div className="p-3" style={{ border: '1px solid #dee2e6 ', borderRadius: '0 0 10px 10px' }}>
-                                <UpdateUserLevel user={user} /> 
+                                {me && me.id == user.id ? <Alert variant="danger">{t('contact')} admin</Alert> : <UpdateUserLevel user={user} />}
                             </div>
                         </Tab>
                     </Tabs>

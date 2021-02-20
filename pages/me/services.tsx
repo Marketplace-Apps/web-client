@@ -33,7 +33,7 @@ export const ServiceConfigPage = () => {
                 </Col>
                 {
                     packages.map((price_package, index) => (
-                        <Col xs={12} md={6} xl={3} lg={4} className="p-2">
+                        <Col xs={12} md={6} xl={3} lg={4} className="p-2" key={price_package.id}>
                             <Card
                                 style={{ cursor: 'pointer' }}
                                 onClick={() => showPricePackageManagerModal(price_package)}

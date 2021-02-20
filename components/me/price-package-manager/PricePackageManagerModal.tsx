@@ -141,7 +141,7 @@ export const PricePackageManagerModal = ({ price_package, import_price, onHide }
                     </Col>
                     {
                         ServiceList.map(category => (
-                            <Col xs={12} className="pt-2 pl-4 pr-4 pb-2">
+                            <Col key={category.id} xs={12} className="pt-2 pl-4 pr-4 pb-2">
                                 <PricePackageManagerCategory
                                     category={category}
                                     services={[
@@ -198,9 +198,8 @@ export const usePricePackageManagerModal = () => {
     const me = useCurrentUser()
     const [visible, set_visible] = useState<boolean>()
     const [price_package, set_price_package] = useState<PricePackage>()
-    const default_level = me?.id == 'qWaArilaFUZqsq2vQ7lg5OkUnt32' ? 'root' : 'default'
-    const { item: import_price, loading } = useDocumentData<PricePackage>(domain && me && default_level && `domains/${domain.id}/packages/${me?.level || default_level}`)
-
+    const default_level = me?.id == 'qWaArilaFUZqsq2vQ7lg5OkUnt32' ? 'root' : (me?.level || 'default')
+    const { item: import_price, loading } = useDocumentData<PricePackage>(domain && me && default_level && `domains/${domain.id}/packages/${default_level}`)
 
     return {
         showPricePackageManagerModal: (price_package?: PricePackage) => {

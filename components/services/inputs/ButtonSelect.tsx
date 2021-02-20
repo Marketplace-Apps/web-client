@@ -18,13 +18,13 @@ export const ButtonSelect = (props: ServiceProviderActionFormItem) => {
                 render={({ value, onChange }) => (
                     <Fragment>
                         {
-                            props.options.map(option => (
-                                <VisibleCheck condition={option.visible_condition?.toString()}>
+                            props.options.map((option, i) => (
+                                <VisibleCheck key={`${option.value}|${i}`} condition={option.visible_condition?.toString()}>
                                     <Button
                                         key={option.value}
                                         className="mr-2 mb-2"
                                         variant={value == option.value ? 'primary' : 'outline-primary'}
-                                        onClick={() => onChange(option.value)} 
+                                        onClick={() => onChange(option.value)}
                                     > {option.label.en}</Button>
                                 </VisibleCheck>
                             ))

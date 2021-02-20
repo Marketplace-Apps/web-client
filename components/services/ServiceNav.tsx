@@ -28,7 +28,9 @@ export const ServiceNav = ({ service }: { service: ServiceProvider }) => {
                         navs.map(({ href, name }) => (
                             <Nav.Link
                                 style={{ textDecoration: 'none !important' }}
-                                active={asPath.endsWith(href)}>
+                                active={asPath.endsWith(href)}
+                                key={href}
+                            >
                                 <Link href={href} >{name == 'api' ? 'Api' : t(name)}</Link>
                             </Nav.Link>
                         ))

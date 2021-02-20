@@ -56,8 +56,7 @@ export const AppRouteList: AppRouteList = {
     Services: {
         icon: RiServiceFill,
         name: { en: 'Service', vi: 'Dịch vụ' },
-        href: '/services',
-        color: '#00bcc5'
+        href: '/services' 
     },
     Transactions: {
         icon: FaHistory,
@@ -77,11 +76,11 @@ export const AppRouteList: AppRouteList = {
         href: '/me',
         visible: { guest: false },
         children: {
-            Report: {
-                icon: FcComboChart,
-                name: { en: 'Reports', vi: 'Báo cáo' },
-                href: '/me/reports'
-            },
+            // Report: {
+            //     icon: FcComboChart,
+            //     name: { en: 'Reports', vi: 'Báo cáo' },
+            //     href: '/me/reports'
+            // },
             Prices: {
                 icon: FcBullish,
                 name: { en: 'Prices', vi: 'Giá cả' },

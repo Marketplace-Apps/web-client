@@ -103,6 +103,7 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
                                         .map(([name, field]) => <ApiDocumentField
                                             field={field}
                                             name={name}
+                                            key={field.id}
                                         />)
                                 }
                             </tbody>

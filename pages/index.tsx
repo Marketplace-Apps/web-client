@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Image, Row } from 'react-bootstrap'
 import { FcAssistant } from 'react-icons/fc'
 import { useAuth } from 'firebase-easy-hooks'
@@ -12,22 +12,33 @@ import { Feed } from '../types'
 import { FeedItem } from '../components/feeds/FeedItem'
 import { FeedModal } from '../components/feeds/FeedModal'
 import useTranslation from 'next-translate/useTranslation'
+import { useRouter } from 'next/router'
 
 
 const HomePage = () => {
 
 	const domain = useDomain()
 	const { user } = useAuth()
+	const { locale } = useRouter()
 
 	const {
 		items: feeds,
 		loading,
 		fetch_more,
 		has_more,
-		empty
+		empty,
+		filters,
+		filter
 	} = useCollectionData<Feed>(
 		domain && `domains/${domain.id}/feeds`,
+		{
+			where: { language: locale }
+		}
 	)
+
+	useEffect(() => {
+		filters.language.value != locale && filter({ language: locale })
+	}, [locale])
 
 	const is_owner = domain && (domain.owner_id == user?.uid)
 
@@ -69,7 +80,13 @@ const HomePage = () => {
 			<Row className="mt-1">
 				{
 					feeds.map((feed, i) => (
-						<Col xs={12} md={12} xl={6} className="p-2" >
+						<Col
+							xs={12}
+							md={12}
+							xl={6}
+							className="p-2"
+							key={feed.id}
+						>
 							<FeedItem
 								feed={feed}
 								onClick={() => clickFeed(i)}

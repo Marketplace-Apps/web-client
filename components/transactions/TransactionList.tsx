@@ -89,9 +89,10 @@ export const TransactionList = ({ user_id, show_loadmore_button, default_service
                                 filter(rest)
                             }}>{t('all')}</Dropdown.Item>
                             {
-                                Object.keys(service_types).map(service_id => service_id.includes('__') ? <Dropdown.Divider /> : (
+                                Object.keys(service_types).map(service_id => service_id.includes('__') ? <Dropdown.Divider key={service_id+'devider'} /> : (
                                     <Dropdown.Item
                                         onClick={() => filter({ ...filters, service_id })}
+                                        key={service_id}
                                     >{service_types[service_id]}</Dropdown.Item>
                                 ))
                             }
@@ -131,6 +132,7 @@ export const TransactionList = ({ user_id, show_loadmore_button, default_service
                                     icon={services.get(item.service_id)?.icon}
                                     service_name={services.get(item.service_id)?.name[router.locale]}
                                     item={item}
+                                    key={item.id}
                                 />
                             ))
                         }

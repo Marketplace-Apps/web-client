@@ -33,6 +33,7 @@ export const DateHourPicker = (props: { name: string, rules?: Exclude<RegisterOp
                             <option
                                 selected={hour == new Date(value).getHours()}
                                 value={hour}
+                                key={hour}
                             >{hour}h</option>
                         ))}
                     </Form.Control>
