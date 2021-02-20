@@ -3,19 +3,21 @@ import { useFormContext } from "react-hook-form";
 import { ServiceProviderActionFormItem } from "../../../types";
 import { FormItemRow } from "./FormItemRow";
 import { NumberFormatInput } from '../../common/NumberFormatInput'
+import { useRouter } from "next/router";
 
 
 export const NumberInput = (props: ServiceProviderActionFormItem) => {
 
-    const form = useFormContext()
+    const { locale } = useRouter()
 
     return (
         <FormItemRow {...props}>
             <NumberFormatInput
                 name={props.id}
-                placeholder={props.placeholder?.en}
+                placeholder={props.placeholder?.[locale]}
                 rules={{ required: true }}
                 decimalScale={5}
+                allowNegative={false}
             />
         </FormItemRow >
     )

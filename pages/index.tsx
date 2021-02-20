@@ -21,6 +21,9 @@ const HomePage = () => {
 	const { user } = useAuth()
 	const { locale } = useRouter()
 
+	const is_owner = domain && (domain.owner_id == user?.uid)
+	const is_edit_mode = is_owner && typeof location != 'undefined' && location.search.includes('edit=true')
+
 	const {
 		items: feeds,
 		loading,
@@ -31,7 +34,7 @@ const HomePage = () => {
 		filter
 	} = useCollectionData<Feed>(
 		domain && `domains/${domain.id}/feeds`,
-		{
+		!is_edit_mode && {
 			where: { language: locale }
 		}
 	)
@@ -39,10 +42,6 @@ const HomePage = () => {
 	useEffect(() => {
 		filters.language.value != locale && filter({ language: locale })
 	}, [locale])
-
-	const is_owner = domain && (domain.owner_id == user?.uid)
-
-	const is_edit_mode = is_owner && typeof location != 'undefined' && location.search.includes('edit=true')
 
 	const [selected_feed_index, set_selected_feed_index] = useState(-2)
 

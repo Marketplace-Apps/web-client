@@ -3,6 +3,8 @@ import { Badge, Button, Col, Form } from "react-bootstrap";
 import { useFormContext } from "react-hook-form";
 import { ServiceProviderFormItemAlert } from "../../../types";
 import { SanboxJS } from "../../../helpers/sandboxjs";
+import { VisibleCheck } from "./VisibleCheck";
+import { useRouter } from "next/router";
 
 const BackgroundMapper: { [key in ServiceProviderFormItemAlert<any>["level"]]: string } = {
     error: 'linear-gradient(to right, #ed213a, #93291e)',
@@ -14,34 +16,33 @@ const BackgroundMapper: { [key in ServiceProviderFormItemAlert<any>["level"]]: s
 export const FormAlert = (props: ServiceProviderFormItemAlert<any>) => {
 
     const form = useFormContext()
-
     const data = form.watch()
-    const { content, visible } = useMemo(() => ({
-        content: SanboxJS.eval(props.content.en, { data }),
-        visible: SanboxJS.eval(props.visible_condition, { data })
-    }), [data])
+    const { locale } = useRouter()
 
-    return visible && (
-        <Form.Row
-            className="mb-3 p-2 pl-3"
-            style={{
-                background: BackgroundMapper[props.level],
-                color: 'white',
-                borderRadius: 5
-            }}
+    return (
 
-        >
-            <Col style={{ wordBreak: 'break-all' }}>
-                {content}
-                {props.url && (
-                    <Badge
-                        pill
-                        variant="light"
-                        style={{ marginLeft: 5, cursor: 'pointer' }}
-                        onClick={() => window.open(props.url.en)}
-                    >{props.urlText.en || 'See more'}</Badge>
-                )}
-            </Col>
-        </Form.Row>
+        <VisibleCheck condition={props.visible_condition.toString()}>
+            <Form.Row
+                className="mb-3 p-2 pl-3"
+                style={{
+                    background: BackgroundMapper[props.level],
+                    color: 'white',
+                    borderRadius: 5
+                }}
+
+            >
+                <Col style={{ wordBreak: 'break-all' }}>
+                    {props.content[locale] && SanboxJS.eval(props.content[locale], { data })}
+                    {props.url && (
+                        <Badge
+                            pill
+                            variant="light"
+                            style={{ marginLeft: 5, cursor: 'pointer' }}
+                            onClick={() => window.open(props.url[locale])}
+                        >{props.urlText[locale] || 'See more'}</Badge>
+                    )}
+                </Col>
+            </Form.Row>
+        </VisibleCheck>
     )
 }

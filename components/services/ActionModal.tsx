@@ -72,38 +72,45 @@ export const ActionModal = (props: ActionModal) => {
 
         <FormProvider {...form}>
             <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
-                {Object.keys(action?.form || {}).map(name => (
-                    <VisibleCheck
-                        condition={action.form[name]?.visible_condition?.toString()}
-                        key={name}
-                    >
-                        <GenericInput key={name} {... (action?.form[name])} />
-                    </VisibleCheck>
-                ))}
-                {
-                    action && service_id && <ActionBill
-                        fn={action.price.toString()}
-                        order={order}
-                        can_use_voucher={action.can_use_voucher}
-                        service_id={service_id}
-                    />
-                }
-                {error?.message && <Alert variant="danger">{t('server_errors.' + error.message)}</Alert>}
-                <Form.Row >
-                    <Col
-                        xs={12}
-                        className="d-flex justify-content-center align-items-center"
-                    >
-                        <IconButton
-                            icon={FaCheck}
-                            variant="primary"
-                            loadingtext="Đang xử lí"
-                            loading={loading}
-                            type="submit"
-                            disabled={loading}
-                        >{t('submit')}</IconButton>
+                <Row>
+                    <Col xs={12} lg={6}>
+                        {Object.keys(action?.form || {}).map(name => (
+                            <VisibleCheck
+                                condition={action.form[name]?.visible_condition?.toString()}
+                                key={name}
+                            >
+                                <GenericInput key={name} {... (action?.form[name])} />
+                            </VisibleCheck>))}
                     </Col>
-                </Form.Row>
+                    <Col xs={12} lg={6}>
+
+
+                        {
+                            action?.price && service_id && <ActionBill
+                                fn={action.price.toString()}
+                                order={order}
+                                can_use_voucher={action.can_use_voucher}
+                                service_id={service_id}
+                            />
+                        }
+                        {error?.message && <Alert variant="danger">{t('server_errors.' + error.message)}</Alert>}
+                        <Form.Row >
+                            <Col
+                                xs={12}
+                                className="d-flex justify-content-center align-items-center"
+                            >
+                                <IconButton
+                                    icon={FaCheck}
+                                    variant="primary"
+                                    loadingtext="Đang xử lí"
+                                    loading={loading}
+                                    type="submit"
+                                    disabled={loading}
+                                >{t('submit')}</IconButton>
+                            </Col>
+                        </Form.Row>
+                    </Col>
+                </Row>
             </Form>
         </FormProvider>
 

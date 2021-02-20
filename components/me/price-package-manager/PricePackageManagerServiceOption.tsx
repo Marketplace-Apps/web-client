@@ -20,7 +20,7 @@ export const PricePackageManagerServiceOption = ({ option, service_id }: PricePa
     return (
         <Fragment>
             <Col xs={4}>
-                {option.label?.[lang]}
+                {option.id}
             </Col>
             {
                 ['basic', 'guarantee']

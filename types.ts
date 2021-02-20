@@ -1,6 +1,3 @@
-type FirebaseUser = { uid: string, admin: true }
-
-
 export declare class BaseEntity {
     id: string;
     created_at: number;
@@ -31,10 +28,10 @@ export declare class Feed extends BaseEntity {
     home_tab: boolean;
 }
 export declare class I18N {
-    en: string;
-    vi?: string;
-    tl?: string;
-    cn?: string;
+    en: string | number;
+    vi?: string | number;
+    tl?: string | number;
+    cn?: string | number;
 }
 export declare const LanguageList: readonly ["vi-VN", "en-US"];
 
@@ -104,12 +101,10 @@ export declare class PaymentMethod extends BaseEntity {
     secret_key?: string;
 }
 
-
 export declare type Prices = {
     [option_id: string]: {
         basic: number;
         guarantee: number;
-        label: I18N;
     };
 };
 export declare type ServicePriceList = {
@@ -117,8 +112,8 @@ export declare type ServicePriceList = {
 };
 export declare class PricePackage extends BaseEntity {
     prices: ServicePriceList;
-    description?: string
     name: string;
+    description: string;
     domain_id: string;
 }
 export declare class SendMoneyPayload {
@@ -126,12 +121,6 @@ export declare class SendMoneyPayload {
     amount: number;
     voucher_apply?: boolean;
     note: string;
-}
-
-
-export declare class ServiceCategory extends BaseEntity {
-    name: I18N;
-    icon: string;
 }
 
 
@@ -143,6 +132,7 @@ export declare class ServiceProvider extends BaseEntity {
     icon: string;
     category: string;
 }
+
 
 
 
@@ -173,7 +163,7 @@ export declare type ServiceProviderActionForm<T> = {
     [name: string]: ServiceProviderActionFormItem<T>;
 };
 export interface ServiceProviderActionFormItem<T = any> {
-    id
+    id: string;
     alerts?: Array<ServiceProviderFormItemAlert<T>>;
     placeholder: I18N;
     label: I18N;
@@ -185,33 +175,38 @@ export interface ServiceProviderActionFormItem<T = any> {
     visible_condition: (data: T) => boolean;
     options: ServiceProviderItemOption<any>[];
 }
-export declare type ActionMetadata<T = any> = {
-    requester: FirebaseUser;
-    user: User;
-    service: ServiceProvider;
-    action_id: string;
-    order?: Order;
-    payload: T;
-    total: number;
-    price: number;
-    min_price: number;
-    remote_prices: Prices;
-};
 export declare type PriceFunctionParams<T = any> = {
     user: User;
     order?: Order;
     payload?: T;
     package_prices: Prices;
 };
+export declare type PriceFunctionResponse = {
+    total: number;
+    price: number;
+    min_user_price: number;
+    price_option: string;
+};
+export declare type ActionMetadata<T = any> = {
+    requester: { uid: string, email: string };
+    user: User;
+    service: ServiceProvider;
+    action_id: string;
+    order?: Order;
+    payload: T;
+    prices?: PriceFunctionResponse & {
+        remote_prices: Prices;
+        remote_suggest_bid_price: number;
+        voucher?: Voucher;
+        voucher_discount?: number;
+        final_total: number;
+    };
+};
 export declare class ServiceProviderAction<T = any, Utils = any> extends BaseEntity {
     service_id: string;
-    price: (params: PriceFunctionParams<T>) => {
-        total: number;
-        price: number;
-        min_price: number;
-    };
+    price?: (params: PriceFunctionParams<T>) => PriceFunctionResponse;
     process: (utils: Utils & ActionMetadata<T>) => Promise<void>;
-    form: ServiceProviderActionForm<T>;
+    form?: ServiceProviderActionForm<T>;
     visible_condition?: (order: Order) => boolean;
     can_use_voucher?: boolean;
     name: I18N;

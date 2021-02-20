@@ -61,30 +61,53 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
                 <h4> <Badge variant="secondary">{action.name[lang]}</Badge> </h4>
             </Col>
 
-            <Col xs={2}>URL</Col>
-            <Col xs={10}>
-                <code style={{ wordBreak: 'break-all' }}> {endpoint}</code>
-                <Badge
-                    style={{ cursor: 'pointer', border: '1px solid grey' }}
-                    onClick={() => copy(endpoint)}
-                    className="m-1"
-                >{copied ? 'Copied' : 'Copy'}</Badge>
-            </Col>
-            <Col xs={2}>Method</Col>
-            <Col xs={10}><Badge variant="info" >POST</Badge></Col>
-            <Col xs={2}>Headers</Col>
-            <Col xs={10}>
-                <div><Badge variant="warning">api-key</Badge>
+            <Col xs={12} md={action.form ? 6 : 12}>
+                <Row>
+                    <Col xs={2}>URL</Col>
+                    <Col xs={10}>
+                        <code style={{ wordBreak: 'break-all' }}> {endpoint}</code>
+                        <Badge
+                            style={{ cursor: 'pointer', border: '1px solid grey' }}
+                            onClick={() => copy(endpoint)}
+                            className="m-1"
+                        >{copied ? 'Copied' : 'Copy'}</Badge>
+                    </Col>
+                    <Col xs={2}>Method</Col>
+                    <Col xs={10}><Badge variant="info" >POST</Badge></Col>
+                    <Col xs={2}>Headers</Col>
+                    <Col xs={10}>
+                        <div><Badge variant="warning">api-key</Badge>
                 Your api key
                 <Badge
-                        style={{ cursor: 'pointer', border: '1px solid grey' }}
-                        className="m-1"
-                        onClick={() => router.push('/me/api')}
-                    >Open api key manager</Badge>
-                </div>
-                {action.form && <div><Badge variant="warning">Content-Type</Badge> application/json</div>}
+                                style={{ cursor: 'pointer', border: '1px solid grey' }}
+                                className="m-1"
+                                onClick={() => router.push('/me/api')}
+                            >Open api key manager</Badge>
+                        </div>
+                        {action.form && <div><Badge variant="warning">Content-Type</Badge> application/json</div>}
+                    </Col>
+                </Row>
             </Col>
-            {action.form && <Col xs={2}>JSON body</Col>}
+
+            {action.form && (
+                <Col>
+                    <Row>
+                        <Col xs={12} className="p-3 mb-2 mt-2">
+                            <ReactJson
+                                src={example_json}
+                                theme="monokai"
+                                collapsed={false}
+                                enableClipboard={false}
+                                displayDataTypes={false}
+                                displayObjectSize={false}
+                                shouldCollapse={false}
+                                name={false}
+                            />
+                        </Col>
+                    </Row>
+
+                </Col>
+            )}
             {
                 action?.form && (
                     <Col xs={12}>
@@ -111,20 +134,7 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
                     </Col>
                 )
             }
-            {action.form && (
-                <Col xs={12}>
-                    <ReactJson
-                        src={example_json}
-                        theme="monokai"
-                        collapsed={false}
-                        enableClipboard={false}
-                        displayDataTypes={false}
-                        displayObjectSize={false}
-                        shouldCollapse={false}
-                        name={false}
-                    />
-                </Col>
-            )}
+
         </Row>
     )
 
