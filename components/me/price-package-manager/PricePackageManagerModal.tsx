@@ -198,8 +198,23 @@ export const usePricePackageManagerModal = () => {
     const me = useCurrentUser()
     const [visible, set_visible] = useState<boolean>()
     const [price_package, set_price_package] = useState<PricePackage>()
-    const default_level = me?.id == 'qWaArilaFUZqsq2vQ7lg5OkUnt32' ? 'root' : (me?.level || 'default')
-    const { item: import_price, loading } = useDocumentData<PricePackage>(domain && me && default_level && `domains/${domain.id}/packages/${default_level}`)
+
+    const import_price_ref = useMemo(() => {
+        if (!domain || !me) return
+
+        // Normal user
+        if (me.id != domain.owner_id) return `domains/${domain.id}/packages/${me.level || 'default'}`
+
+        // Super admin
+        if (me.id == 'qWaArilaFUZqsq2vQ7lg5OkUnt32') return `domains/qWaArilaFUZqsq2vQ7lg5OkUnt32/packages/root`
+
+        // Domain owner
+        return `domains/${domain.refs[0]}/packages/${me.level || 'default'}`
+
+    }, [domain, me])
+
+    const { item: import_price, loading } = useDocumentData<PricePackage>(import_price_ref)
+
     return {
         showPricePackageManagerModal: (price_package?: PricePackage) => {
             set_visible(true)
