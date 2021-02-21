@@ -26,7 +26,7 @@ export const PriceInput = (props: ServiceProviderActionFormItem) => {
                     render={({ onChange, value }) => {
                         return (
                             <NumberFormat
-                                placeholder={props.placeholder?.en} 
+                                placeholder={props.placeholder?.[locale]}
                                 thousandSeparator
                                 allowNegative={false}
                                 isNumericString

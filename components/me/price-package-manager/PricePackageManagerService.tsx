@@ -20,7 +20,7 @@ export const PricePackageManagerService = ({ service }: PricePackageManagerServi
         >
             <Col xs={12}>
                 <img src={service.icon} width={30} />
-                <span>{service.name.en}</span>
+                <span className="ml-1">{service.name[lang]}</span>
             </Col>
 
             <Col xs={4}> </Col>

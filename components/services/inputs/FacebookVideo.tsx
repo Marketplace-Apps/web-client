@@ -12,7 +12,7 @@ import useTranslation from "next-translate/useTranslation";
 export const FacebookVideo = (props: ServiceProviderActionFormItem) => {
 
     const form = useFormContext()
-    const { t } = useTranslation('common')
+    const { t, lang } = useTranslation('common')
 
     const { data, excute, loading, error, clear } = useAction(`utils/facebook-video`, 'GET', (data, error) => {
         console.error(error)
@@ -66,7 +66,7 @@ export const FacebookVideo = (props: ServiceProviderActionFormItem) => {
                 name={props.id}
                 ref={form.register({ required: props.require })}
                 onBlur={onBlur}
-                placeholder={props.placeholder?.en}
+                placeholder={props.placeholder?.[lang]}
             />
         </FormItemRow>
     )

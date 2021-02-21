@@ -200,7 +200,6 @@ export const usePricePackageManagerModal = () => {
     const [price_package, set_price_package] = useState<PricePackage>()
     const default_level = me?.id == 'qWaArilaFUZqsq2vQ7lg5OkUnt32' ? 'root' : (me?.level || 'default')
     const { item: import_price, loading } = useDocumentData<PricePackage>(domain && me && default_level && `domains/${domain.id}/packages/${default_level}`)
-
     return {
         showPricePackageManagerModal: (price_package?: PricePackage) => {
             set_visible(true)

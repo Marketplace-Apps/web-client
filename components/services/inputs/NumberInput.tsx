@@ -15,7 +15,7 @@ export const NumberInput = (props: ServiceProviderActionFormItem) => {
             <NumberFormatInput
                 name={props.id}
                 placeholder={props.placeholder?.[locale]}
-                rules={{ required: true }}
+                rules={{ required: props.require }}
                 decimalScale={5}
                 allowNegative={false}
             />

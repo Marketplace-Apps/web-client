@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import { Col, Form } from "react-bootstrap";
-import { useFormContext } from "react-hook-form"; 
+import { useFormContext } from "react-hook-form";
 import { ServiceProviderActionFormItem } from "../../../types";
 import { FormItemRow } from "./FormItemRow";
 
@@ -15,7 +15,7 @@ export const Textarea = (props: ServiceProviderActionFormItem) => {
             <Form.Control
                 name={props.id}
                 as="textarea"
-                ref={form.register()}
+                ref={form.register({ required: props.require })}
                 rows={4}
                 placeholder={props.placeholder && props.placeholder[locale]}
             />

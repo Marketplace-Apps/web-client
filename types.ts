@@ -158,7 +158,7 @@ export declare class ServiceProviderFormItemAlert<T> {
     url?: I18N;
     urlText?: I18N;
 }
-declare type InputMask = 'text' | 'number' | 'switch' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page' | 'image';
+declare type InputMask = 'text' | 'number' | 'switch' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page' | 'image' | 'facebook-post';
 export declare type ServiceProviderActionForm<T> = {
     [name: string]: ServiceProviderActionFormItem<T>;
 };

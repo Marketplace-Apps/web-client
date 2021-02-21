@@ -10,11 +10,12 @@ export const ButtonSelect = (props: ServiceProviderActionFormItem) => {
     const form = useFormContext()
 
     return (
-        <FormItemRow {...props}>
+        <FormItemRow {...props}> 
             <Controller
                 key={props.id}
                 name={props.id}
                 control={form.control}
+                rules={{required:props.require}}
                 render={({ value, onChange }) => (
                     <Fragment>
                         {

@@ -1,5 +1,7 @@
-import { FaInstagram } from "react-icons/fa"
+import { FaInstagram, FaTelegram, FaToolbox, FaYoutube } from "react-icons/fa"
+import { FcGoogle } from "react-icons/fc"
 import { ImFacebook2 } from "react-icons/im"
+import { RiShoppingBag3Fill } from "react-icons/ri"
 import { SiTiktok } from "react-icons/si"
 
 export const DEFAULT_AVATAR = 'https://api.time.com/wp-content/uploads/2019/04/mark-zuckerberg-time-100-2019.jpg?quality=85&zoom=2'
@@ -9,9 +11,10 @@ export const DEFAULT_AVATAR = 'https://api.time.com/wp-content/uploads/2019/04/m
 export const BASE_URL = (() => {
     if (process.env.NODE_ENV == 'development') {
         return 'http://192.168.1.232/livequery/'
-        return 'https://api.ongmatmedia.com/livequery/'
+
     }
-    if (typeof location == 'undefined' || location.hostname.includes('localhost') || location.hostname.includes('192.168')) return 'http://192.168.1.232/livequery/'
+    if (typeof location == 'undefined') return 'https://api.ongmatmedia.com/livequery/'
+    if (location.hostname.includes('localhost') || location.hostname.includes('192.168')) return 'http://192.168.1.232/livequery/'
     return `https://api.${location.hostname.split('.').slice(1).join('.')}/livequery/`
 })()
 
@@ -68,8 +71,37 @@ export const ServiceList = [
     {
         id: 'instagram',
         icon: FaInstagram,
-        color: 'orange',
+        color: '#f114ea',
         name: 'Instagram'
     },
+    {
+        id: 'youtube',
+        icon: FaYoutube,
+        color: 'red',
+        name: 'Youtube'
+    },
+    {
+        id: 'google',
+        icon: FcGoogle,
+        name: 'Google'
+    },
+    {
+        id: 'shopee',
+        icon: RiShoppingBag3Fill,
+        color: 'orange',
+        name: 'Shopee'
+    },
+    {
+        id: 'telegram',
+        icon: FaTelegram,
+        color: '#0665d0',
+        name: 'Telegram'
+    },
+    {
+        id: 'other',
+        icon: FaToolbox,
+        color: 'gray',
+        name: '... '
+    }
 
 ]

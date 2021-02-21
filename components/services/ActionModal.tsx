@@ -67,11 +67,12 @@ export const ActionModal = (props: ActionModal) => {
         for (const key in default_values) form.setValue(key, default_values[key])
     }, [JSON.stringify(form.watch())])
 
+    const values = form.watch()
 
     return (
 
         <FormProvider {...form}>
-            <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
+            <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}> 
                 <Row>
                     <Col xs={12} lg={6}>
                         {Object.keys(action?.form || {}).map(name => (
