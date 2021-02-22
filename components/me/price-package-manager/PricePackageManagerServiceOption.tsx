@@ -4,6 +4,7 @@ import { Card, Col, Modal, Row, Collapse, Form, FormControl, Badge, Button } fro
 import { Controller, useForm, useFormContext } from "react-hook-form"
 import { FiEdit2 } from "react-icons/fi"
 import { Prices } from "../../../types"
+import { Credit } from "../../common/Credit"
 import { PricePackageManagerContext } from "./PricePackageManagerContext"
 
 export type PricePackageManagerServiceOption = {
@@ -15,7 +16,7 @@ export type PricePackageManagerServiceOption = {
 export const PricePackageManagerServiceOption = ({ option, service_id }: PricePackageManagerServiceOption) => {
 
     const { import_price, price_package, edit_mode, form } = useContext(PricePackageManagerContext)
-    
+
     return (
         <Fragment>
             <Col xs={4}>
@@ -30,13 +31,13 @@ export const PricePackageManagerServiceOption = ({ option, service_id }: PricePa
                     }))
                     .map(({ old_value, is_root, type }) => (
                         <Col xs={4} className="text-center" key={type} >
-                            <Badge variant="dark">{old_value}</Badge>
+                            <Badge variant="dark"><Credit value={old_value} /></Badge>
                             <Controller
                                 name={`prices.${service_id}.${option.id}.${type}`}
                                 control={form.control}
                                 render={({ value, onChange }) => (
                                     <Fragment>
-                                        { value != old_value && <Badge variant={value > old_value ? 'success' : 'danger'} className="ml-1">{value}</Badge>}
+                                        { value != old_value && <Badge variant={value > old_value ? 'success' : 'danger'} className="ml-1"><Credit value={value} /></Badge>}
                                         { !is_root && value > old_value && <Badge variant="success" className="ml-1">+ {~~((value - old_value) / old_value * 100)}% </Badge>}
                                         { value < old_value && <Badge variant="danger" className="ml-1">{~~((value - old_value) / old_value * 100)}% </Badge>}
                                         { edit_mode && <FiEdit2 color="black"

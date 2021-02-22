@@ -9,20 +9,20 @@ import { PricePackageManagerContext } from "../../components/me/price-package-ma
 import { ServiceList } from "../../const"
 import { useCurrentUser } from "../../hooks/useCurrentUser"
 import { useDomain } from "../../hooks/useDomain"
+import { useMyDefaultPricesPackage } from "../../hooks/usePricePackages"
 import { useGroupedServices } from "../../hooks/useServices"
 import { MainLayout } from "../../layouts/MainLayout"
 import { PricePackage } from "../../types"
 
 
 
-export const PricesPage = () => { 
+export const PricesPage = () => {
     const grouped_services = useGroupedServices()
     const domain = useDomain()
     const me = useCurrentUser()
 
-    const default_level = me?.id == 'qWaArilaFUZqsq2vQ7lg5OkUnt32' ? 'root' : 'default'
-    const { item: import_price } = useDocumentData<PricePackage>(domain && me && default_level && `domains/${domain.id}/packages/${me?.level || default_level}`)
     const form = useForm() as any
+    const import_price = useMyDefaultPricesPackage()
     return (
         <MainLayout showHeaderTitle title={AppRouteList.Me.children.Prices.name}>
             {

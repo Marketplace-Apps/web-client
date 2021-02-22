@@ -29,7 +29,6 @@ export const ActionBill = (props: ActionBill) => {
     const payload = form.watch()
     const { t } = useTranslation('common')
 
-
     const my_prices_package = useMyDefaultPricesPackage()
 
     const ctx: PriceFunctionParams = { ...props, user, payload, package_prices: my_prices_package?.prices[props.service_id] }
