@@ -47,11 +47,11 @@
     "note": "Note",
     "apply": "Apply",
     "check": "Check",
-    "custom":"Custom",
+    "custom": "Custom",
     "load_more": "Load more",
     "cancel": "Cancel",
-    "maintain":"Maintain",
-    "description":"Description",
+    "maintain": "Maintain",
+    "description": "Description",
     "pricing": {
         "basic": "Basic price",
         "guarantee": "Guarantee price",
@@ -100,11 +100,12 @@
         "RECEIVER_NOT_FOUND": "Receiver not found",
         "RPC_OFFLINE": "Server problem",
         "INVAILD_URL": "Invaild URL",
-        "OVERLOAD":"Server overloaded, try another server",
-        "VIDEO_NOT_LIVE":"Livestream ended, please check !"
+        "OVERLOAD": "Server overloaded, try another server",
+        "VIDEO_NOT_LIVE": "Livestream ended, please check !"
     },
     "orders": {
-        "detail":"Oredr detail",
+        "create": "Create order",
+        "detail": "Order detail",
         "amount": "Amount",
         "total": "Bill total",
         "status": {
@@ -128,16 +129,16 @@
         "username": "Email",
         "password": "Password",
         "submit": "Login",
-        "has_username_and_password":"You have username & password ?",
-        "auth/user-not-found":"User not found",
-        "auth/wrong-password":"Wrong password",
-        "auth/invalid-email":"Invalid-email"
+        "has_username_and_password": "You have username & password ?",
+        "auth/user-not-found": "User not found",
+        "auth/wrong-password": "Wrong password",
+        "auth/invalid-email": "Invalid-email"
     },
-    "copy":"Copy",
-    "copied":"Copied",
-    "api":{
-        "alert_developers_only":"This is for developers only",
-        "overwrite_old_api_key":"This will delete your old api key",
-        "change":"Change"
+    "copy": "Copy",
+    "copied": "Copied",
+    "api": {
+        "alert_developers_only": "This is for developers only",
+        "overwrite_old_api_key": "This will delete your old api key",
+        "change": "Change"
     }
 }

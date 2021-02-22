@@ -43,11 +43,10 @@ export const MainLayout = ({ children, title, showHeaderTitle }: MainLayout) => 
 					<Col md="auto" className="d-none d-md-flex" >
 						<div style={{
 							backgroundColor: 'white',
-							padding: '40px 14px 0 60px',
-							marginLeft: 0,
-							height: 'calc(100vh - 150px)',
+							padding: '30px 10px 0 20px',
+							marginLeft: 0, 
 							borderRadius: 20,
-							width: 300,
+							width: 250,
 							border: '1px solid #e8e8e8'
 						}}>
 							<PcSidebar />

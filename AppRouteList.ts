@@ -113,15 +113,15 @@ export const AppRouteList: AppRouteList = {
 
             ServiceManager: {
                 icon: FcGenealogy,
-                name: { en: 'Manage services', vi: 'Cài đặt dịch vụ' },
+                name: { en: 'Manage services', vi: 'Cài đặt bảng giá' },
                 href: '/me/services',
                 admin: true
             },
             PayementMethodManager: {
                 icon: FcCurrencyExchange,
                 name: {
-                    en: 'Manage payment methods',
-                    vi: 'Quản lý phương thức thanh toán'
+                    en: 'Setting payments',
+                    vi: 'Cài đặt thanh toán'
                 },
                 href: '/deposit?edit=true',
                 admin: true

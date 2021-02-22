@@ -107,7 +107,7 @@ export const ActionModal = (props: ActionModal) => {
                                     loading={loading}
                                     type="submit"
                                     disabled={loading}
-                                >{t('submit')}</IconButton>
+                                >{t('orders.create')}</IconButton>
                             </Col>
                         </Form.Row>
                     </Col>

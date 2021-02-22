@@ -21,14 +21,14 @@ export const ListTransactionsItem = ({ icon, item, service_name, style }: ListTr
 			<Col xs={2} md={2} className="d-flex justify-content-center align-items-center" >
 				<img src={icon} style={{ width: 50 }} />
 			</Col>
-			<Col xs={3} md={2} className="d-flex justify-content-start align-items-center ">
+			<Col xs={10} md={2} className="d-flex justify-content-start align-items-center ">
 				<div>
 					<div style={{ fontWeight: 'bold', color: '#2b69b7' }}>{service_name}</div>
 					<div style={{ fontSize: 12 }}>{dayjs(new Date(item.created_at)).locale('vi').format('H:m')}</div>
 				</div>
 			</Col>
 
-			<Col xs={7} md={4} className="d-flex justify-content-end align-items-center ">
+			<Col xs={12} md={4} className="d-flex justify-content-end align-items-center ">
 				<div className="text-right" >
 					{item.balance_after && <Badge
 						variant="primary"

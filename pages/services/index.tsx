@@ -40,11 +40,12 @@ const ServicePage = () => {
 							{[...services.get(id)?.values() || []].map(service => (
 								<Col
 									key={service.id}
-									xs={6}
-									md={3}
+									xs={4}
+									sm={3}
+									md={4}
 									xl={2}
-									lg={3}
-									className="pt-3"
+									lg={3} 
+									style={{padding:'10px 5px 5px 5px'}}
 								>
 									<ServiceItem
 										onClick={() => router.push(`services/${service.id}`)}

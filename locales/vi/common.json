@@ -104,6 +104,7 @@
         "VIDEO_NOT_LIVE":"Livestream đã kết thúc"
     },
     "orders": {
+        "create": "Tạo đơn hàng",
         "detail":"Chi tiết đơn hàng",
         "amount": "Số lượng",
         "total": "Tổng tiền",

@@ -9,7 +9,7 @@ import { groupByCreatedTime, groupByKey } from "../../helpers/group"
 import { get_ms_end_day } from "../../helpers/time"
 import { useDomain } from "../../hooks/useDomain"
 import { useInfinityScroll } from "../../hooks/useInfinityScroll"
-import { useServices } from "../../hooks/useServices"
+import { useFullGroupedServices, useServices } from "../../hooks/useServices"
 import { PaymentHistory, User } from "../../types"
 import { CenteredSpinner } from "../common/CenteredSpinner"
 import { DatePickerWrapper } from "../common/DatePickerWrapper"
@@ -45,19 +45,8 @@ export const TransactionList = ({ user_id, show_loadmore_button, default_service
 
     const { t, lang } = useTranslation('common')
 
-    const services = groupByKey([
-        {
-            id: 'SEND_MONEY',
-            icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPaz_Rc8biOUNvof9yETcoKfH9jzLDCmRVzw&usqp=CAU',
-            name: { en: 'Send money', vi: 'Gửi tiền' }
-        },
-        {
-            id: 'RECEIVE_MONEY',
-            icon: 'https://img.icons8.com/cotton/2x/money-transfer.png',
-            name: { en: 'Receive money', vi: 'Nhận tiền' }
-        },
-        ...useServices(),
-    ], 'id')
+    const services = useFullGroupedServices()
+
     const payments = groupByCreatedTime(items)
 
     const service_types = {
@@ -89,7 +78,7 @@ export const TransactionList = ({ user_id, show_loadmore_button, default_service
                                 filter(rest)
                             }}>{t('all')}</Dropdown.Item>
                             {
-                                Object.keys(service_types).map(service_id => service_id.includes('__') ? <Dropdown.Divider key={service_id+'devider'} /> : (
+                                Object.keys(service_types).map(service_id => service_id.includes('__') ? <Dropdown.Divider key={service_id + 'devider'} /> : (
                                     <Dropdown.Item
                                         onClick={() => filter({ ...filters, service_id })}
                                         key={service_id}
@@ -112,7 +101,6 @@ export const TransactionList = ({ user_id, show_loadmore_button, default_service
                 </Fragment>
             )}
             {empty && <div className="text-center">{t('empty_data')}</div>}
-            {loading && <CenteredSpinner />}
             {
                 payments.map(({ day, list }) => (
                     <Fragment key={day}>
@@ -139,6 +127,7 @@ export const TransactionList = ({ user_id, show_loadmore_button, default_service
                     </Fragment>
                 ))
             }
+            {loading && !show_loadmore_button && <CenteredSpinner />}
             {show_loadmore_button && has_more && (
                 <Row>
                     <Col xs={12} className="text-center">

@@ -16,16 +16,18 @@ const isScrollToBottom = () => {
 		html.offsetHeight,
 	)
 	const windowBottom = windowHeight + window.pageYOffset
-	if (windowBottom >= docHeight) return true
+	if (windowBottom >= docHeight - 200) return true
 	return false
 }
-
+ 
 export function useInfinityScroll(on_bottom: Function) {
 
-	const handler = () => isScrollToBottom() && on_bottom()
+	const handler = (e) => {
+		isScrollToBottom() && on_bottom()
+	}
 
 	useEffect(() => {
 		window.addEventListener('scroll', handler)
 		return () => window.removeEventListener('scroll', handler)
-	}, [])
+	})
 }
