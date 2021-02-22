@@ -43,7 +43,7 @@ export const MainLayout = ({ children, title, showHeaderTitle }: MainLayout) => 
 					<Col md="auto" className="d-none d-md-flex" >
 						<div style={{
 							backgroundColor: 'white',
-							padding: '30px 10px 0 20px',
+							padding: '30px 15px 0 20px',
 							marginLeft: 0, 
 							borderRadius: 20,
 							width: 250,

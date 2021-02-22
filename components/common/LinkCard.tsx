@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Col, Row } from "react-bootstrap";
 import { IconType } from "react-icons/lib";
+import { useHover } from "../../hooks/useHover";
 import { I18N } from "../../types";
 
 export type LinkCard = {
@@ -10,7 +11,7 @@ export type LinkCard = {
     icon: IconType | string | any,
     color?: string,
     onClick?: Function,
-    
+
 }
 
 
@@ -24,18 +25,21 @@ export const LinkCard = ({
 }: LinkCard) => {
 
     const router = useRouter()
-    
+    const { hovering, listeners } = useHover()
+
     const Card = (
         <Row noGutters
             style={{
-                boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
+                boxShadow: hovering ? "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px" : 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
                 margin: "10px 0 0 0",
                 padding: "15px 10px 15px 10px",
                 cursor: "pointer",
                 textAlign: "center",
-                width: '100%'
+                width: '100%',
+                borderRadius:10
             }}
             onClick={onClick as any}
+            {...listeners}
         >
             <Col
                 md={12}

@@ -86,7 +86,8 @@ const MePage = () => {
 								sm={6}
 								md={4}
 								lg={3}
-								key={item.name.en}>
+								key={item.name.en}
+							>
 								<LinkCard {...item} />
 							</Col>
 						))

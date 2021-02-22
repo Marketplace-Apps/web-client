@@ -24,7 +24,7 @@ export const ServiceItem = ({ service, onClick }: ServiceItem) => {
                 height: 120,
                 cursor: service.maintain ? 'not-allowed' : 'pointer',
                 padding: '15px 0 5px 0',
-                boxShadow: !service.maintain && hovering ? 'rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px' : ' rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+                boxShadow: !service.maintain && hovering ? "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px" : 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
                 borderRadius: 10
             }}
             {...listeners}
