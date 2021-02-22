@@ -6,10 +6,8 @@ import { Order, PriceFunctionParams, PricePackage, Prices, ServiceProviderAction
 import { Bill } from "./Bill"
 import useTranslation from 'next-translate/useTranslation'
 import { Alert, Button, FormControl, InputGroup } from "react-bootstrap"
-import { useAction, useDocumentData } from "react-livequery-hooks"
-import { caculate_voucher } from "../../helpers/caculate_voucher"
-import { useDomain } from "../../hooks/useDomain"
 import { useMyDefaultPricesPackage } from "../../hooks/usePricePackages"
+import { useVoucher } from "../../hooks/useVoucher"
 
 
 
@@ -26,7 +24,6 @@ export const ActionBill = (props: ActionBill) => {
 
     const form = useFormContext()
     const user = useCurrentUser()
-    const domain = useDomain()
     const payload = form.watch()
     const { t } = useTranslation('common')
 
@@ -44,15 +41,7 @@ export const ActionBill = (props: ActionBill) => {
         }
     }, [ctx])
 
-    const { data, loading, excute, clear } = useAction(user && `domains/${user.domain_id}/vouchers`, 'GET')
-    const voucher = (data?.data?.items || [])[0]
-
-    function check_voucher() {
-        const code = (document.querySelector('#voucher-input') as any).value.trim()
-        excute({}, { code })
-    }
-
-    const discount = voucher ? caculate_voucher(voucher, props.service_id, user, total_bill.total, payload?.server || 1) : 0
+    const { discount, check, clear, error } = useVoucher(props.service_id, user, total_bill.total, payload.server || 1)
 
     return total_bill && (
         <Fragment>
@@ -67,8 +56,8 @@ export const ActionBill = (props: ActionBill) => {
                                 placeholder="Voucher"
                                 id="voucher-input"
                                 value={value}
-                                onChange={e => onChange(e.target.value)}
-                                onBlur={check_voucher}
+                                onChange={e => onChange(e.target.value.toUpperCase())}
+                                onBlur={e => check(e.target.value)}
                             />
                             <InputGroup.Append>
                                 <Button
@@ -82,7 +71,7 @@ export const ActionBill = (props: ActionBill) => {
                 />
             )}
 
-            {((data && !voucher) || (voucher && discount == 0)) && <Alert variant="danger">{t('vouchers.invalid')}</Alert>}
+            {error && <Alert variant="danger">{error}</Alert>}
 
             {
                 discount > 0 && <Bill
