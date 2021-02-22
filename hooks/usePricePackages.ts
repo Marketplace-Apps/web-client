@@ -1,11 +1,11 @@
-import { useDocumentData } from "firebase-easy-hooks"
+import { useDocumentData } from "react-livequery-hooks"
 import { User, Domain, PricePackage } from "../types"
 import { useCurrentUser } from "./useCurrentUser"
 import { useDomain } from "./useDomain"
 
 function get_ref(domain: Domain, me: User) {
 
-    if (!domain || !me) return
+    if (!domain || !me) return 
 
     // Normal user
     if (me.id != domain.owner_id) return `domains/${domain.id}/packages/${me.level || 'default'}`
@@ -18,8 +18,10 @@ function get_ref(domain: Domain, me: User) {
 }
 
 export const useMyDefaultPricesPackage = () => {
+
     const domain = useDomain()
     const me = useCurrentUser()
-    const { data } = useDocumentData<PricePackage>(get_ref(domain, me))
-    return data
+    const prices_package_ref = get_ref(domain, me)
+    const { item } = useDocumentData<PricePackage>(prices_package_ref)
+    return item
 }

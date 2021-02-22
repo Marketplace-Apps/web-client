@@ -27,7 +27,7 @@ export const PricesPage = () => {
         <MainLayout showHeaderTitle title={AppRouteList.Me.children.Prices.name}>
             {
                 ServiceList.map(category => (
-                    <Col xs={12} className="pt-2 pl-4 pr-4 pb-2">
+                    <Col xs={12} className="p-0 mt-3">
                         {import_price && <PricePackageManagerContext.Provider value={{
                             edit_mode: false,
                             form,

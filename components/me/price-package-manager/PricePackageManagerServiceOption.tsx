@@ -18,7 +18,7 @@ export const PricePackageManagerServiceOption = ({ option, service_id }: PricePa
     const { import_price, price_package, edit_mode, form } = useContext(PricePackageManagerContext)
 
     return (
-        <Fragment>
+        <Row>
             <Col xs={4}>
                 {option.id}
             </Col>
@@ -36,10 +36,10 @@ export const PricePackageManagerServiceOption = ({ option, service_id }: PricePa
                                 name={`prices.${service_id}.${option.id}.${type}`}
                                 control={form.control}
                                 render={({ value, onChange }) => (
-                                    <Fragment>
-                                        { value != old_value && <Badge variant={value > old_value ? 'success' : 'danger'} className="ml-1"><Credit value={value} /></Badge>}
+                                    <Fragment> 
+                                        { value && value != old_value && <Badge variant={value > old_value ? 'success' : 'danger'} className="ml-1"><Credit value={value} /></Badge>}
                                         { !is_root && value > old_value && <Badge variant="success" className="ml-1">+ {~~((value - old_value) / old_value * 100)}% </Badge>}
-                                        { value < old_value && <Badge variant="danger" className="ml-1">{~~((value - old_value) / old_value * 100)}% </Badge>}
+                                        { value && value < old_value && <Badge variant="danger" className="ml-1">{~~((value - old_value) / old_value * 100)}% </Badge>}
                                         { edit_mode && <FiEdit2 color="black"
                                             size={15}
                                             style={{
@@ -60,6 +60,6 @@ export const PricePackageManagerServiceOption = ({ option, service_id }: PricePa
                         </Col>
                     ))
             }
-        </Fragment>
+        </Row>
     )
 }

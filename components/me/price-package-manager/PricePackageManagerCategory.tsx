@@ -28,7 +28,7 @@ export const PricePackageManagerCategory = (props: PricePackageManagerCategory) 
 
     return (
         <Card>
-            <Card.Header style={{ cursor: 'pointer' }} onClick={() => set_open(!open)}>
+            <Card.Header style={{ cursor: 'pointer', margin: 0, marginTop: 10 }} onClick={() => set_open(!open)}>
                 <Row>
                     <Col xs={10} className="d-flex justify-content-start align-items-center">
                         <Icon color={color} />
@@ -42,12 +42,16 @@ export const PricePackageManagerCategory = (props: PricePackageManagerCategory) 
             </Card.Header>
             <Card.Body>
                 <Collapse in={open}>
-                    <Row className="p-2">
+                    <Row >
                         {
-                            props.services.map(service => <PricePackageManagerService
-                                service={service}
-                                key={service.id}
-                            />)
+                            props.services.map(service => (
+                                <Col xs={12}>
+                                    <PricePackageManagerService
+                                        service={service}
+                                        key={service.id}
+                                    />
+                                </Col>
+                            ))
                         }
                     </Row>
                 </Collapse>
