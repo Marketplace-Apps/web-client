@@ -6,15 +6,13 @@ import { User } from "../../types"
 import useTranslation from 'next-translate/useTranslation'
 import { DEFAULT_AVATAR } from "../../const"
 import { Credit } from "./Credit"
+import { useCurrentUser } from "../../hooks/useCurrentUser"
 
 export const UserInfo = () => {
 
     const { user } = useAuth()
-    const domain = useDomain()
     const { t } = useTranslation('common')
-    const { item } = useDocumentData<User>(domain && user && `domains/${domain.id}/users/${user.uid}`, {
-        cache: { update: true, use: true }
-    })
+    const me = useCurrentUser()
 
     return (
         <Row>
@@ -27,7 +25,7 @@ export const UserInfo = () => {
             <Col className="flex-grow-1 text-left" style={{ paddingLeft: 0 }}>
                 <div style={{ fontWeight: 'bold' }}>{user?.displayName || t('guest')}</div>
                 <div style={{ fontWeight: 'bold', color: 'orange' }}>
-                    <Credit value={item?.balance} />
+                    <Credit value={me?.balance} />
                 </div>
             </Col>
         </Row>

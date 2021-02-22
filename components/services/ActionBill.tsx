@@ -22,7 +22,7 @@ export type ActionBill = {
 
 
 export const ActionBill = (props: ActionBill) => {
- 
+
 
     const form = useFormContext()
     const user = useCurrentUser()
@@ -52,7 +52,7 @@ export const ActionBill = (props: ActionBill) => {
         excute({}, { code })
     }
 
-    const discount = 0//voucher ? caculate_voucher(voucher, props.service_id, user, total_bill.total, payload?.server || 1) : 0
+    const discount = voucher ? caculate_voucher(voucher, props.service_id, user, total_bill.total, payload?.server || 1) : 0
 
     return total_bill && (
         <Fragment>
@@ -85,7 +85,7 @@ export const ActionBill = (props: ActionBill) => {
                     )}
 
                 />
-            )}
+            )} 
 
             {((data && !voucher) || (voucher && discount == 0)) && <Alert variant="danger">{t('vouchers.invalid')}</Alert>}
 

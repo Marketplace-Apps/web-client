@@ -13,8 +13,8 @@ import { Credit } from './Credit'
 export const MobileHeader = () => {
 	const domain = useDomain()
 	const router = useRouter()
-	const user = useCurrentUser()
-	const { user: firebase_user } = useAuth()
+	const me = useCurrentUser()
+	const { user } = useAuth()
 
 	return (
 		<Row style={{ background: 'linear-gradient(90deg,#f64f59,#c471ed,#12c2e9)', padding: 10 }}>
@@ -26,11 +26,11 @@ export const MobileHeader = () => {
 				<Button
 					size="sm"
 					variant="outline-light"
-					onClick={() => router.push(firebase_user ? '/me' : 'auth/sign-in')}
+					onClick={() => router.push(user ? '/me' : 'auth/sign-in')}
 					style={{ borderRadius: 20 }}
 				>
-					<img src={firebase_user?.photoURL || DEFAULT_AVATAR} width={20} style={{ borderRadius: '100%', marginRight: 5 }} />
-					<span><Credit value={user?.balance} /></span>
+					<img src={user?.photoURL || DEFAULT_AVATAR} width={20} style={{ borderRadius: '100%', marginRight: 5 }} />
+					<span><Credit value={me?.balance} /></span>
 				</Button>
 				{/* <ChangeLanguage /> */}
 			</Col>
