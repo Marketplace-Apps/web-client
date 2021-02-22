@@ -14,7 +14,7 @@ function get_ref(domain: Domain, me: User) {
     if (me.id == 'qWaArilaFUZqsq2vQ7lg5OkUnt32') return `domains/qWaArilaFUZqsq2vQ7lg5OkUnt32/packages/root`
 
     // Domain owner
-    return `domains/${domain.refs[0]}/packages/${me.level || 'default'}`
+    return `domains/${domain.refs[0]}/packages/${me.root_level || 'default'}`
 }
 
 export const useMyDefaultPricesPackage = () => {

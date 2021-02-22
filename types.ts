@@ -226,6 +226,7 @@ export declare class User extends BaseEntity {
     domain_id: string;
     email: string;
     level?: string;
+    root_level?:string
     total_deposit: number;
     total_used: number;
     avatar: string;
