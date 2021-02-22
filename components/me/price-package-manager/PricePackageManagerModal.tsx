@@ -7,6 +7,7 @@ import { ServiceList } from "../../../const"
 import { groupBy2Key } from "../../../helpers/group"
 import { useCurrentUser } from "../../../hooks/useCurrentUser"
 import { useDomain } from "../../../hooks/useDomain"
+import { useMyDefaultPricesPackage } from "../../../hooks/usePricePackages"
 import { useServices } from "../../../hooks/useServices"
 import { PricePackage, ServicePriceList } from "../../../types"
 import { IconButton } from "../../common/IconButton"
@@ -199,22 +200,8 @@ export const usePricePackageManagerModal = () => {
     const [visible, set_visible] = useState<boolean>()
     const [price_package, set_price_package] = useState<PricePackage>()
 
-    const import_price_ref = useMemo(() => {
-        if (!domain || !me) return
+    const import_price = useMyDefaultPricesPackage()
 
-        // Normal user
-        if (me.id != domain.owner_id) return `domains/${domain.id}/packages/${me.level || 'default'}`
-
-        // Super admin
-        if (me.id == 'qWaArilaFUZqsq2vQ7lg5OkUnt32') return `domains/qWaArilaFUZqsq2vQ7lg5OkUnt32/packages/root`
-
-        // Domain owner
-        return `domains/${domain.refs[0]}/packages/${me.level || 'default'}`
-
-    }, [domain, me])
- 
-
-    const { item: import_price, loading } = useDocumentData<PricePackage>(import_price_ref)
     return {
         showPricePackageManagerModal: (price_package?: PricePackage) => {
             set_visible(true)
@@ -225,7 +212,7 @@ export const usePricePackageManagerModal = () => {
             onHide={() => set_visible(false)}
             import_price={import_price}
         />,
-        loading
+        loading: !import_price
     }
 
 

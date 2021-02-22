@@ -9,6 +9,7 @@ import { Alert, Button, FormControl, InputGroup } from "react-bootstrap"
 import { useAction, useDocumentData } from "react-livequery-hooks"
 import { caculate_voucher } from "../../helpers/caculate_voucher"
 import { useDomain } from "../../hooks/useDomain"
+import { useMyDefaultPricesPackage } from "../../hooks/usePricePackages"
 
 
 
@@ -28,12 +29,13 @@ export const ActionBill = (props: ActionBill) => {
     const payload = form.watch()
     const { t } = useTranslation('common')
 
-    const { item: package_prices } = useDocumentData<PricePackage>(domain && user && `domains/${domain.id}/packages/${user?.level || 'default'}`)
 
-    const ctx: PriceFunctionParams = { ...props, user, payload, package_prices: package_prices?.prices[props.service_id] }
+    const my_prices_package = useMyDefaultPricesPackage()
+
+    const ctx: PriceFunctionParams = { ...props, user, payload, package_prices: my_prices_package?.prices[props.service_id] }
 
     const total_bill = useMemo<ReturnType<ServiceProviderAction['price']>>(() => {
-        if (!user || !package_prices) return 0
+        if (!user || !my_prices_package) return 0
         try {
             return SanboxJS.eval(props.fn, ctx)
         } catch (e) {
