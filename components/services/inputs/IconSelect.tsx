@@ -30,13 +30,7 @@ export const IconSelect = (props: ServiceProviderActionFormItem) => {
                                             border: value == option.value && '4px solid #007bff', borderRadius: '100%'
                                         }}
                                         onClick={() => onChange(option.value)}
-                                    />
-                                    {/* <Button
-                                        key={option.value}
-                                        className="mr-2 mb-2"
-                                        variant={value == option.value ? 'primary' : 'outline-primary'}
-                                        onClick={() => onChange(option.value)}
-                                    > {option.label.en}</Button> */}
+                                    /> 
                                 </VisibleCheck>
                             ))
                         }

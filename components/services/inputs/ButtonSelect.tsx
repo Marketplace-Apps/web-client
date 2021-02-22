@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { Button } from "react-bootstrap";
 import { Controller, useFormContext } from "react-hook-form";
@@ -8,14 +9,15 @@ import { VisibleCheck } from "./VisibleCheck";
 export const ButtonSelect = (props: ServiceProviderActionFormItem) => {
 
     const form = useFormContext()
+    const { locale } = useRouter()
 
     return (
-        <FormItemRow {...props}> 
+        <FormItemRow {...props}>
             <Controller
                 key={props.id}
                 name={props.id}
                 control={form.control}
-                rules={{required:props.require}}
+                rules={{ required: props.require }}
                 render={({ value, onChange }) => (
                     <Fragment>
                         {
@@ -26,7 +28,7 @@ export const ButtonSelect = (props: ServiceProviderActionFormItem) => {
                                         className="mr-2 mb-2"
                                         variant={value == option.value ? 'primary' : 'outline-primary'}
                                         onClick={() => onChange(option.value)}
-                                    > {option.label.en}</Button>
+                                    > {option.label[locale] ?? option.label.en}</Button>
                                 </VisibleCheck>
                             ))
                         }
