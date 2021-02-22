@@ -212,9 +212,9 @@ export const usePricePackageManagerModal = () => {
         return `domains/${domain.refs[0]}/packages/${me.level || 'default'}`
 
     }, [domain, me])
+ 
 
     const { item: import_price, loading } = useDocumentData<PricePackage>(import_price_ref)
-
     return {
         showPricePackageManagerModal: (price_package?: PricePackage) => {
             set_visible(true)
