@@ -60,7 +60,7 @@ export const getStaticProps: GetStaticProps<{}> = async ctx => {
 	const { service_id } = ctx.params
 	const service = await fetch(`${BASE_URL}services/${service_id}`).then(r => r.json()) as ServiceProvider
 	const create_action = await fetch(`${BASE_URL}services/${service_id}/actions/create`).then(r => r.json()) as ServiceProviderAction
-	return { props: { create_action, service } }
+	return { props: { create_action, service }, revalidate: 60 }
 }
 
 

@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps<ServiceApiPage> = async ctx => {
     const service = await fetch(`${BASE_URL}services/${service_id}`).then(r => r.json()) as ServiceProvider
     const { data: { items: actions } } = await fetch(`${BASE_URL}services/${service_id}/actions`)
         .then(r => r.json()) as Response<ServiceProviderAction>
-    return { props: { service, actions } }
+    return { props: { service, actions }, revalidate: 60 }
 }
 
 export default ServiceApiPage

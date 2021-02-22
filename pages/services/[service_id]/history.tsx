@@ -38,7 +38,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<{}> = async ctx => {
     const { service_id } = ctx.params
     const service = await fetch(`${BASE_URL}services/${service_id}`).then(r => r.json()) as ServiceProvider
-    return { props: { service } }
+    return { props: { service }, revalidate: 60 }
 }
 
 
