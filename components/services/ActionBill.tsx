@@ -66,16 +66,11 @@ export const ActionBill = (props: ActionBill) => {
                             <FormControl
                                 placeholder="Voucher"
                                 id="voucher-input"
-                                ref={form.register}
-                                disabled={voucher}
-                                name="voucher"
+                                value={value}
+                                onChange={e => onChange(e.target.value)}
+                                onBlur={check_voucher}
                             />
                             <InputGroup.Append>
-                                <Button
-                                    variant="outline-primary"
-                                    onClick={voucher ? clear : check_voucher}
-                                    disabled={loading}
-                                >{voucher ? t('edit') : t('check')}</Button>
                                 <Button
                                     variant="outline-danger"
                                     onClick={() => { clear(), form.setValue('voucher', '') }}
@@ -85,7 +80,7 @@ export const ActionBill = (props: ActionBill) => {
                     )}
 
                 />
-            )} 
+            )}
 
             {((data && !voucher) || (voucher && discount == 0)) && <Alert variant="danger">{t('vouchers.invalid')}</Alert>}
 
