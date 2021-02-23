@@ -12,14 +12,7 @@ export type ApiDocumentTab = {
     service_id: string
 }
 export const ApiDocumentTab = (props: ApiDocumentTab) => {
-
-    const { lang } = useTranslation('common')
-    const domain = useDomain()
-    const { user } = useAuth()
-
-    const base_url = `https://api-authasouchdomain.awsservice.com/domains/${domain?.id}/users/${user?.uid}/services/vsdvsdv/orders`
-
-
+ 
     const [show_warning, set_show_warning] = useState(true)
 
     const {

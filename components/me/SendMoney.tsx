@@ -18,14 +18,14 @@ import { TransactionList } from "../transactions/TransactionList"
 
 export const SendMoney = ({ user }: { user: User }) => {
 
-    const domain = useDomain()
+    const {current_domain} = useDomain()
 
     const form = useForm({
         defaultValues: {
             amount: 0
         }
     })
-    const { data, error, excute, loading } = useAction(domain && `domains/${domain.id}/users/~send-money`, undefined, () => {
+    const { data, error, excute, loading } = useAction(current_domain && `domains/${current_domain.id}/users/~send-money`, undefined, () => {
         form.reset()
     })
 
@@ -66,7 +66,8 @@ export const SendMoney = ({ user }: { user: User }) => {
                     <Col xs={12} className="mt-4 font-weight-bold">{t('send_money.history')}</Col>
                     <Col xs={12} className="mt-2">
                         {user && <TransactionList
-                            user_id={user.id}
+                            user={user}
+                            domain={current_domain}
                             show_loadmore_button={true}
                             default_service_id="RECEIVE_MONEY"
                         />}

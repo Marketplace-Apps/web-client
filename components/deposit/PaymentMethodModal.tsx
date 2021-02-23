@@ -18,13 +18,13 @@ export type PaymentMethodModal = {
 
 export const PaymentMethodModal = (props: PaymentMethodModal) => {
 
-    const domain = useDomain()
+    const { current_domain } = useDomain()
 
     const form = useForm<PaymentMethod>({ defaultValues: props.payment_method })
     const { t } = useTranslation('common')
 
     const { excute, loading } = useAction(
-        `domains/${domain?.id}/payment-methods${props.payment_method ? `/${props.payment_method.id}` : ''}`,
+        `domains/${current_domain?.id}/payment-methods${props.payment_method ? `/${props.payment_method.id}` : ''}`,
         props.payment_method ? 'PATCH' : 'POST',
         (data, error) => {
             if (error) return
@@ -33,7 +33,7 @@ export const PaymentMethodModal = (props: PaymentMethodModal) => {
     )
 
     const { del, deleting } = useDeleteAction(
-        props.payment_method && `domains/${domain?.id}/payment-methods/${props.payment_method.id}`,
+        props.payment_method && `domains/${current_domain?.id}/payment-methods/${props.payment_method.id}`,
         (data, error) => {
             if (error) return
             props.onHide()

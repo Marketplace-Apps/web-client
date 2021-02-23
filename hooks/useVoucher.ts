@@ -9,7 +9,6 @@ export function useVoucher(
     server: number = 1
 ) {
 
-
     const { data, excute, clear } = useAction<{}, { data: { items: Voucher[] } }>(user && `domains/${user.domain_id}/vouchers`, 'GET')
     const voucher = data?.data?.items[0]
 

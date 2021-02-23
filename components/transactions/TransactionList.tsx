@@ -1,36 +1,34 @@
 import dayjs from "dayjs"
 import useTranslation from "next-translate/useTranslation"
-import router, { useRouter } from "next/router"
+import router from "next/router"
 import React, { Fragment, useMemo } from "react"
 import { Badge, Button, Col, Dropdown, Row } from "react-bootstrap"
 import { ImCalendar } from "react-icons/im"
 import { lt, useCollectionData } from "react-livequery-hooks"
 import { groupByCreatedTime, groupByKey } from "../../helpers/group"
 import { get_ms_end_day } from "../../helpers/time"
-import { useDomain } from "../../hooks/useDomain"
 import { useInfinityScroll } from "../../hooks/useInfinityScroll"
 import { useFullGroupedServices, useServices } from "../../hooks/useServices"
-import { PaymentHistory, User } from "../../types"
+import { Domain, PaymentHistory, User } from "../../types"
 import { CenteredSpinner } from "../common/CenteredSpinner"
 import { DatePickerWrapper } from "../common/DatePickerWrapper"
 import { IconButton } from "../common/IconButton"
 import { ListTransactionsItem } from "./TransactionItem"
 
 export type TransactionList = {
-    user_id?: string
+    user: User
+    domain: Domain
     show_loadmore_button?: boolean
     default_service_id?: string
 }
 
-export const TransactionList = ({ user_id, show_loadmore_button, default_service_id }: TransactionList) => {
+export const TransactionList = ({ user, domain, show_loadmore_button, default_service_id }: TransactionList) => {
 
-    const domain = useDomain()
 
     const payment_histories_ref = useMemo(() => {
-        if (!domain) return
-        if (user_id) return `domains/${domain?.id}/users/${user_id}/payment-histories`
+        if (user && domain) return `domains/${domain?.id}/users/${user.id}/payment-histories`
         return `domains/${domain?.id}/payment-histories`
-    }, [domain, user_id])
+    }, [domain, user])
 
     const { items, fetch_more, has_more, empty, loading, filters, filter } = useCollectionData<
         PaymentHistory

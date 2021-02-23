@@ -1,8 +1,7 @@
 import { useMemo } from "react"
 import { useCollectionData } from "react-livequery-hooks"
 import { groupBy2Key, groupByKey } from "../helpers/group"
-import { Domain, ServiceProvider } from "../types"
-import { useDomain } from "./useDomain"
+import { ServiceProvider } from "../types"
 
 export const useServices = () => {
     const { items } = useCollectionData<ServiceProvider>(`services`, { cache: { use: true, update: true } })

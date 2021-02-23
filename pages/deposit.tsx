@@ -15,14 +15,13 @@ import { CenteredSpinner } from '../components/common/CenteredSpinner'
 
 
 const DepositPage = () => {
-	const domain = useDomain()
-	const { user } = useAuth()
-	const is_owner = domain && (user?.uid == domain.owner_id)
-	const is_edit_mode = is_owner && typeof location != 'undefined' && location.search.includes('edit=true')
+	const { current_domain, is_domain_owner } = useDomain()
+	const { user } = useAuth() 
+	const is_edit_mode = is_domain_owner && typeof location != 'undefined' && location.search.includes('edit=true')
 
 	const { items: payment_methods, loading, empty } = useCollectionData<
 		PaymentMethod
-	>(domain && `domains/${domain.id}/payment-methods`)
+	>(current_domain && `domains/${current_domain.id}/payment-methods`)
 	const { t } = useTranslation('common')
 
 	const [selected_payment_method_index, set_selected_payment_method_index] = useState(-2)

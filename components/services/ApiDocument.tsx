@@ -20,7 +20,8 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
     const { t, lang } = useTranslation('common')
     const router = useRouter()
     const { copied, copy } = useCopy()
-    const domain = useDomain()
+    const { current_domain, root_domain } = useDomain()
+    const domain = root_domain || current_domain
     const { user } = useAuth()
 
     const base_url = `https://r1i47kgkp2.execute-api.us-east-1.amazonaws.com/livequery/domains/${domain?.id}/users/${user?.uid}/services/${router.query.service_id}/orders`
@@ -64,8 +65,11 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
             <Col xs={12} md={action.form ? 6 : 12}>
                 <Row>
                     <Col xs={2}>URL</Col>
-                    <Col xs={10}>
-                        <code style={{ wordBreak: 'break-all' }}> {endpoint}</code>
+                    <Col xs={10} className="pr-5 pb-3">
+                        <code style={{
+                            wordBreak: 'break-all' 
+                        }}
+                        > {endpoint}</code>
                         <Badge
                             style={{ cursor: 'pointer', border: '1px solid grey' }}
                             onClick={() => copy(endpoint)}

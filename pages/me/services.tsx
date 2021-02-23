@@ -1,12 +1,12 @@
 import useTranslation from "next-translate/useTranslation"
 import React from "react"
-import { Badge, Button, Card, Col, Row } from "react-bootstrap"
+import { Badge, Card, Col, Row } from "react-bootstrap"
 import { FcSalesPerformance, FcUnlock, FcWorkflow } from "react-icons/fc"
 import { useCollectionData } from "react-livequery-hooks"
 import { AppRouteList } from "../../AppRouteList"
 import { IconButton } from "../../components/common/IconButton"
 import { usePricePackageManagerModal } from "../../components/me/price-package-manager/PricePackageManagerModal"
-import { useCurrentUser } from "../../hooks/useCurrentUser"
+import { useDomainUser } from "../../hooks/useCurrentUser"
 import { useDomain } from "../../hooks/useDomain"
 import { MainLayout } from "../../layouts/MainLayout"
 import { PricePackage } from "../../types"
@@ -16,10 +16,11 @@ import { PricePackage } from "../../types"
 export const ServiceConfigPage = () => {
 
     const { t } = useTranslation('common')
-    const domain = useDomain()
-    const me = useCurrentUser()
+    const { current_domain } = useDomain()
+    const me = useDomainUser(current_domain)
     const { showPricePackageManagerModal, PricePackageManagerModal, loading } = usePricePackageManagerModal()
-    const { items: packages } = useCollectionData<PricePackage>(domain && `domains/${domain.id}/packages`)
+    const { items: packages } = useCollectionData<PricePackage>(current_domain && `domains/${current_domain.id}/packages`)
+
     return (
         <MainLayout showHeaderTitle title={AppRouteList.Me.children.ServiceManager.name}>
             {PricePackageManagerModal}

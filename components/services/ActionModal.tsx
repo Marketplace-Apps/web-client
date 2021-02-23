@@ -13,7 +13,7 @@ import { ActionBill } from "./ActionBill"
 import useTranslation from 'next-translate/useTranslation'
 import { TextInput } from "./inputs/TextInput"
 import { useAuth } from "firebase-easy-hooks"
-import { useCurrentUser } from "../../hooks/useCurrentUser"
+import { useDomainUser } from "../../hooks/useCurrentUser"
 import { VisibleCheck } from "./inputs/VisibleCheck"
 
 export type ActionModal = {
@@ -23,13 +23,13 @@ export type ActionModal = {
     onSuccess?: Function
 }
 
-export const ActionModal = (props: ActionModal) => {
+export const ActionModal = ({ action, service_id, onSuccess, order }: ActionModal) => {
 
+    const { current_domain, root_domain } = useDomain()
+    const domain = root_domain || current_domain
 
-    const { service_id, order, action } = props
-    const domain = useDomain()
+    const user = useDomainUser(domain)
     const { t } = useTranslation('common')
-    const { user } = useAuth()
 
     const getDefaultValues = (data = {}) => Object.keys(action?.form || {}).reduce((p, c, index) => {
         const item = action?.form?.[c] as ServiceProviderActionFormItem<any>
@@ -51,12 +51,12 @@ export const ActionModal = (props: ActionModal) => {
         excute,
         loading
     } = useAction(
-        domain && service_id && user && `domains/${domain.id}/users/${user.uid}/services/${service_id}/orders${props.order ? `/${props.order.id}/~trigger-action` : ''}`,
+        domain && service_id && user && `domains/${domain.id}/users/${user.id}/services/${service_id}/orders${order ? `/${order.id}/~trigger-action` : ''}`,
         'POST',
         async (data, error) => {
             if (error) return
             form.reset()
-            props.onSuccess && props.onSuccess()
+            onSuccess && onSuccess()
         }
     )
 
@@ -67,12 +67,10 @@ export const ActionModal = (props: ActionModal) => {
         for (const key in default_values) form.setValue(key, default_values[key])
     }, [JSON.stringify(form.watch())])
 
-    const values = form.watch()
-
     return (
 
         <FormProvider {...form}>
-            <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}> 
+            <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
                 <Row>
                     <Col xs={12} lg={6}>
                         {Object.keys(action?.form || {}).map(name => (
@@ -88,6 +86,7 @@ export const ActionModal = (props: ActionModal) => {
 
                         {
                             action?.price && service_id && <ActionBill
+                                user={user}
                                 fn={action.price.toString()}
                                 order={order}
                                 can_use_voucher={action.can_use_voucher}

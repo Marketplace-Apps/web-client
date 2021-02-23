@@ -24,13 +24,16 @@ import { useAuth } from 'firebase-easy-hooks'
 import { CenteredSpinner } from '../common/CenteredSpinner'
 
 export const ServiceOrderHistory = () => {
-
-    const domain = useDomain()
-    const { user } = useAuth()
     const router = useRouter()
     const { t } = useTranslation('common')
-
+    const { current_domain, root_domain } = useDomain()
+    
     const { service_id } = router.query
+    const domain = root_domain || current_domain
+
+    const { user } = useAuth()
+   
+   
 
     const { items, empty, filter, filters, loading } = useCollectionData<Order>(domain && user && `domains/${domain.id}/users/${user.uid}/services/${service_id}/orders`, { limit: 10 })
     const { item: service } = useDocumentData<ServiceProvider>(service_id && `services/${service_id}`)

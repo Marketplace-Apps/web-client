@@ -106,13 +106,12 @@ const EditForm = ({ domain }: { domain: Domain }) => {
 
 const SiteConfigPage = () => {
 
-    const domain = useDomain()
-    const { locale } = useRouter()
+    const {current_domain} = useDomain() 
 
     return (
         <MainLayout showHeaderTitle title={AppRouteList.Me.children.SiteConfig.name}>
-            {!domain && <CenteredSpinner />}
-            {domain && <EditForm domain={domain} />}
+            {!current_domain && <CenteredSpinner />}
+            {current_domain && <EditForm domain={current_domain} />}
         </MainLayout>
     )
 }

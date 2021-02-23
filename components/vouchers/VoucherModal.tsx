@@ -2,13 +2,13 @@ import useTranslation from "next-translate/useTranslation"
 import { useRouter } from "next/router"
 import React, { useMemo } from "react"
 import { Button, Col, Form, Modal, Row } from "react-bootstrap"
-import { Controller, ControllerRenderProps, FormProvider, useFieldArray, useForm } from "react-hook-form"
+import { Controller, FormProvider, useForm } from "react-hook-form"
 import { FaCheck } from "react-icons/fa"
 import { MdDelete } from "react-icons/md"
 import { useAction, useDeleteAction } from "react-livequery-hooks"
 import { useDomain } from "../../hooks/useDomain"
+import { useDomainPricesPackages } from "../../hooks/usePricePackages"
 import { useServices } from "../../hooks/useServices"
-import { useUserLevels } from "../../hooks/useUserLevels"
 import { Voucher } from "../../types"
 import { DateHourPicker } from "../common/DateHourPicker"
 import { IconButton } from "../common/IconButton"
@@ -23,10 +23,10 @@ export type VoucherModal = {
 
 export const VoucherModal = (props: VoucherModal) => {
 
-    const domain = useDomain()
+    const { current_domain } = useDomain()
     const services = useServices()
     const { locale } = useRouter()
-    const levels = useUserLevels()
+    const levels = useDomainPricesPackages(current_domain)
 
 
     const form = useForm<Voucher>({
@@ -47,7 +47,7 @@ export const VoucherModal = (props: VoucherModal) => {
     })
 
     const { excute, loading } = useAction(
-        `domains/${domain?.id}/vouchers${props.voucher ? `/${props.voucher.id}` : ''}`,
+        `domains/${current_domain?.id}/vouchers${props.voucher ? `/${props.voucher.id}` : ''}`,
         props.voucher ? 'PATCH' : 'POST',
         (data, error) => {
             if (error) return
@@ -56,13 +56,13 @@ export const VoucherModal = (props: VoucherModal) => {
     )
 
     const { del, deleting } = useDeleteAction(
-        props.voucher && `domains/${domain?.id}/vouchers/${props.voucher.id}`,
+        props.voucher && `domains/${current_domain?.id}/vouchers/${props.voucher.id}`,
         (data, error) => {
             if (error) return
             props.onHide()
         }
     )
- 
+
     const selected_service = useMemo(() => services.filter(s => s.id == form.watch().service_id)[0], [form.watch().service_id])
     const { t, lang } = useTranslation('common')
 
@@ -189,7 +189,7 @@ export const VoucherModal = (props: VoucherModal) => {
                                 name="levels"
                                 render={({ onChange, value }) => {
                                     const selected = new Set<string>(value)
-                                    
+
                                     return (
                                         <Col xs={12}>
                                             {levels.map(level => <Button

@@ -1,28 +1,25 @@
-import { useAuth } from "firebase-easy-hooks"
 import React from "react"
 import { Col } from "react-bootstrap"
 import { useForm } from "react-hook-form"
-import { useDocumentData } from "react-livequery-hooks"
 import { AppRouteList } from "../../AppRouteList"
 import { PricePackageManagerCategory } from "../../components/me/price-package-manager/PricePackageManagerCategory"
 import { PricePackageManagerContext } from "../../components/me/price-package-manager/PricePackageManagerContext"
 import { ServiceList } from "../../const"
-import { useCurrentUser } from "../../hooks/useCurrentUser"
+import { useDomainUser } from "../../hooks/useCurrentUser"
 import { useDomain } from "../../hooks/useDomain"
-import { useMyDefaultPricesPackage } from "../../hooks/usePricePackages"
+import { useUserDefaultPricesPackage } from "../../hooks/usePricePackages"
 import { useGroupedServices } from "../../hooks/useServices"
 import { MainLayout } from "../../layouts/MainLayout"
-import { PricePackage } from "../../types"
 
 
 
 export const PricesPage = () => {
     const grouped_services = useGroupedServices()
-    const domain = useDomain()
-    const me = useCurrentUser()
-
+    const { current_domain, root_domain } = useDomain()
+    const me = useDomainUser(root_domain || current_domain)
     const form = useForm() as any
-    const import_price = useMyDefaultPricesPackage()
+    const import_price = useUserDefaultPricesPackage(me)
+
     return (
         <MainLayout showHeaderTitle title={AppRouteList.Me.children.Prices.name}>
             {

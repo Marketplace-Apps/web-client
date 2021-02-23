@@ -1,19 +1,14 @@
-import { Badge } from "react-bootstrap"
-import { groupByKey } from "../../helpers/group"
-import { useUserLevels } from "../../hooks/useUserLevels"
+import { Badge } from "react-bootstrap" 
 import { User } from "../../types"
 import { Credit } from "../common/Credit"
 
 export type UserItem = {
     user: User
     onClick?: Function
+    level_name?: string
 }
 
 export const UserItem = (props: UserItem) => {
-
-    const packages = useUserLevels()
-    const grouped_packages = groupByKey(packages, 'id')
-
     return (
         <div
             className="d-flex justify-content-start m-2"
@@ -35,7 +30,7 @@ export const UserItem = (props: UserItem) => {
             }} />
             <div className="ml-2 mt-1">
                 <div className="font-weight-bold" style={{ color: '#1ebdea' }}>{props.user.name} <Badge variant="primary">
-                    {grouped_packages.get(props.user.level || 'default')?.name}</Badge>
+                    {props.level_name}</Badge>
                 </div>
                 <div style={{ color: '#1ebdea' }}>{props.user.email}</div>
                 <div  >

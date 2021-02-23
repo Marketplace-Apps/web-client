@@ -4,7 +4,7 @@ import { Col, Row } from "react-bootstrap"
 import { AppRouteList } from "../../AppRouteList"
 import { Credit } from "../../components/common/Credit"
 import { LinkCard } from "../../components/common/LinkCard"
-import { useCurrentUser } from "../../hooks/useCurrentUser"
+import { useDomainUser } from "../../hooks/useCurrentUser"
 import { useDomain } from "../../hooks/useDomain"
 import { LanguageList } from "../../LanguageList"
 import { MainLayout } from "../../layouts/MainLayout"
@@ -12,10 +12,9 @@ import { MainLayout } from "../../layouts/MainLayout"
 
 
 const MePage = () => {
+	const { current_domain, root_domain, is_domain_owner } = useDomain()
+	const user = useDomainUser(root_domain || current_domain)
 
-	const domain = useDomain()
-	const user = useCurrentUser()
-	const isAdmin = domain?.owner_id && domain?.owner_id == user?.id
 	const { t } = useTranslation('common')
 
 	const router = useRouter()
@@ -79,7 +78,7 @@ const MePage = () => {
 							...AppRouteList.Me.children,
 							Logout: AppRouteList.Logout
 						})
-						.filter(item => !item.admin || (item.admin && isAdmin))
+						.filter(item => !item.admin || (item.admin && is_domain_owner))
 						.map(item => (
 							<Col
 								xs={12}

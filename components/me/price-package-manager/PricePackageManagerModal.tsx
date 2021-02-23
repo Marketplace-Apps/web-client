@@ -5,11 +5,11 @@ import { Controller, FormProvider, useForm } from "react-hook-form"
 import { useCreateAction, useDeleteAction, useDocumentData, useUpdateAction } from "react-livequery-hooks"
 import { ServiceList } from "../../../const"
 import { groupBy2Key } from "../../../helpers/group"
-import { useCurrentUser } from "../../../hooks/useCurrentUser"
+import { useDomainUser } from "../../../hooks/useCurrentUser"
 import { useDomain } from "../../../hooks/useDomain"
-import { useMyDefaultPricesPackage } from "../../../hooks/usePricePackages"
+import { useUserDefaultPricesPackage } from "../../../hooks/usePricePackages"
 import { useServices } from "../../../hooks/useServices"
-import { PricePackage, ServicePriceList } from "../../../types"
+import { PricePackage } from "../../../types"
 import { IconButton } from "../../common/IconButton"
 import { PricePackageManagerCategory } from "./PricePackageManagerCategory"
 import { PricePackageManagerContext } from "./PricePackageManagerContext"
@@ -25,7 +25,7 @@ export const PricePackageManagerModal = ({ price_package, import_price, onHide }
     const services = useServices()
     const grouped_services = useMemo(() => groupBy2Key(services, 'category', 'id'), [services])
     const [edit_mode, set_edit_mode] = useState<boolean>(!price_package)
-    const domain = useDomain()
+    const { current_domain } = useDomain()
     const form = useForm<PricePackage>({
         defaultValues: {
             ...price_package || {},
@@ -36,15 +36,15 @@ export const PricePackageManagerModal = ({ price_package, import_price, onHide }
 
     const ctx: PricePackageManagerContext = { form, import_price, search, price_package, edit_mode }
 
-    const { update, updating } = useUpdateAction(domain && price_package && `domains/${domain.id}/packages/${price_package.id}`, false, (data, error) => {
+    const { update, updating } = useUpdateAction(current_domain && price_package && `domains/${current_domain.id}/packages/${price_package.id}`, false, (data, error) => {
         !error && onHide && onHide()
     })
 
-    const { create, creating } = useCreateAction(domain && `domains/${domain.id}/packages`, (data, error) => {
+    const { create, creating } = useCreateAction(current_domain && `domains/${current_domain.id}/packages`, (data, error) => {
         !error && onHide && onHide()
     })
 
-    const { del, deleting } = useDeleteAction(domain && price_package && `domains/${domain.id}/packages/${price_package.id}`, (data, error) => {
+    const { del, deleting } = useDeleteAction(current_domain && price_package && `domains/${current_domain.id}/packages/${price_package.id}`, (data, error) => {
         !error && onHide && onHide()
     })
     function batch_update(percent?: number) {
@@ -195,12 +195,12 @@ export const PricePackageManagerModal = ({ price_package, import_price, onHide }
 
 export const usePricePackageManagerModal = () => {
 
-    const domain = useDomain()
-    const me = useCurrentUser()
+    const { current_domain, root_domain } = useDomain()
+    const me = useDomainUser(root_domain || current_domain)
     const [visible, set_visible] = useState<boolean>()
     const [price_package, set_price_package] = useState<PricePackage>()
 
-    const import_price = useMyDefaultPricesPackage()
+    const import_price = useUserDefaultPricesPackage(me)
 
     return {
         showPricePackageManagerModal: (price_package?: PricePackage) => {

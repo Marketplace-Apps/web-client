@@ -4,24 +4,22 @@ import { Button, Col, Form, Row } from "react-bootstrap"
 import { useDomain } from "../../hooks/useDomain"
 import { PricePackage, User } from "../../types"
 import { useForm } from "react-hook-form"
-import { IconButton } from "../common/IconButton"
-import { useUserLevels } from "../../hooks/useUserLevels"
+import { IconButton } from "../common/IconButton" 
+import { useDomainPricesPackages } from "../../hooks/usePricePackages"
 
 export type UpdateUserLevel = { user: User }
 export const UpdateUserLevel = ({ user }: UpdateUserLevel) => {
 
-    const domain = useDomain()
+    const { current_domain } = useDomain()
     const { t } = useTranslation('common')
-    const packages = useUserLevels()
+    const packages = useDomainPricesPackages(current_domain)
 
-    const { update, updating } = useUpdateAction(domain && `domains/${domain.id}/users/${user.id}`)
+    const { update, updating } = useUpdateAction(current_domain && `domains/${current_domain.id}/users/${user.id}`)
 
     const level = user.level || 'default'
     const form = useForm({
         defaultValues: { level }
-    })
-
-    const values = form.watch() 
+    }) 
 
     return (
         <Form onSubmit={form.handleSubmit(d => update(d))}>

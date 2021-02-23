@@ -17,12 +17,10 @@ import { useRouter } from 'next/router'
 
 const HomePage = () => {
 
-	const domain = useDomain()
-	const { user } = useAuth()
+	const { current_domain, is_domain_owner } = useDomain()
 	const { locale } = useRouter()
-
-	const is_owner = domain && (domain.owner_id == user?.uid)
-	const is_edit_mode = is_owner && typeof location != 'undefined' && location.search.includes('edit=true')
+ 
+	const is_edit_mode = is_domain_owner && typeof location != 'undefined' && location.search.includes('edit=true')
 
 	const {
 		items: feeds,
@@ -33,7 +31,7 @@ const HomePage = () => {
 		filters,
 		filter
 	} = useCollectionData<Feed>(
-		domain && `domains/${domain.id}/feeds`,
+		current_domain && `domains/${current_domain.id}/feeds`,
 		!is_edit_mode && {
 			where: { language: locale }
 		}

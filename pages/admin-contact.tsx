@@ -5,44 +5,44 @@ import { MainLayout } from "../layouts/MainLayout"
 
 const AdminContact = () => {
 
-	const domain = useDomain()
+	const { current_domain } = useDomain()
 
 	const methods = []
 
-	domain?.phone_number && methods.push({
+	current_domain?.phone_number && methods.push({
 		name: 'Phone',
 		icon: 'https://image.freepik.com/free-vector/hand-hold-cell-smart-phone-application-online-call-center-client-support-banner-flat-vector-illustra_48369-3640.jpg',
-		text: domain.phone_number,
-		link: `tel:${domain.phone_number}`
+		text: current_domain.phone_number,
+		link: `tel:${current_domain.phone_number}`
 	})
 
 
-	domain?.phone_number && methods.push({
+	current_domain?.phone_number && methods.push({
 		name: 'Zalo',
 		icon: 'https://cdn.tgdd.vn/Files/2020/07/21/1272550/unnamed_800x480.png',
-		text: domain.zalo,
-		link: `https://zalo.me/${domain.zalo}`
+		text: current_domain.zalo,
+		link: `https://zalo.me/${current_domain.zalo}`
 	})
 
-	domain?.phone_number && methods.push({
+	current_domain?.phone_number && methods.push({
 		name: 'Facebook',
 		icon: 'https://blog.viecngay.vn/wp-content/uploads/2018/04/facebook-page-manager.png',
-		text: domain.telegram,
-		link: `https://fb.com/${domain.facebook}`
+		text: current_domain.telegram,
+		link: `https://fb.com/${current_domain.facebook}`
 	})
 
-	domain?.phone_number && methods.push({
+	current_domain?.phone_number && methods.push({
 		name: 'Messenger',
 		icon: 'https://isdownrightnow.net/wp-content/uploads/2015/02/Facebook-Messenger.jpg',
-		text: domain.telegram,
-		link: `https://m.me/${domain.facebook}`
+		text: current_domain.telegram,
+		link: `https://m.me/${current_domain.facebook}`
 	})
 
-	domain?.phone_number && methods.push({
+	current_domain?.phone_number && methods.push({
 		name: 'Telegram',
 		icon: 'https://www.messengerpeople.com/wp-content/uploads/2019/09/messenger-overview-telegram.png',
-		text: domain.telegram,
-		link: `https://t.me/${domain.telegram}`
+		text: current_domain.telegram,
+		link: `https://t.me/${current_domain.telegram}`
 	})
 
 	return (

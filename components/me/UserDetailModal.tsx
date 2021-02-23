@@ -3,7 +3,7 @@ import React, { Fragment, useState } from "react";
 import { Alert, Button, Card, Col, Modal, Row, Tab, Tabs } from "react-bootstrap";
 import { FcBusinessman, FcClock, FcCloth, FcMoneyTransfer, FcPositiveDynamic, FcTimeline, FcVoicemail } from "react-icons/fc";
 import { AppRouteList } from "../../AppRouteList";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useDomainUser } from "../../hooks/useCurrentUser";
 import { useDomain } from "../../hooks/useDomain";
 import { User } from "../../types";
 import { SendMoney } from "./SendMoney";
@@ -16,9 +16,9 @@ export type UserDetailModal = {
 }
 export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
 
-    const domain = useDomain()
     const { t, lang } = useTranslation('common')
-    const me = useCurrentUser()
+    const { current_domain, root_domain } = useDomain()
+    const me = useDomainUser(root_domain || current_domain)
 
     const UserInformationReports = [
         { name: t('fullname'), value: user.name, icon: FcBusinessman },
@@ -85,7 +85,7 @@ export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
                         </Tab>
                         <Tab eventKey="deposit" title={t('add_funds')}>
                             <div className="p-3" style={{ border: '1px solid #dee2e6 ', borderRadius: '0 0 10px 10px' }}>
-                                {domain && user && (domain.owner_id == user.id ? <Alert variant="danger">{t('contact')} admin</Alert> : <SendMoney user={user} />)}
+                                {current_domain && user && (current_domain.owner_id == user.id ? <Alert variant="danger">{t('contact')} admin</Alert> : <SendMoney user={user} />)}
                             </div>
                         </Tab>
                         <Tab eventKey="prices" title={t('price')}>

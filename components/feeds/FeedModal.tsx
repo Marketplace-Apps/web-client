@@ -62,7 +62,7 @@ async function UploadImages(files: File[]): Promise<UploadImagesResult> {
             url: await ref.getDownloadURL(),
             name: metadata.name,
             size: `${metadata.size}`
-        } 
+        }
         return rs
     }))
 
@@ -79,9 +79,8 @@ export type FeedModal = {
 
 export const FeedModal = (props: FeedModal) => {
 
-    const domain = useDomain()
+    const { current_domain } = useDomain()
     const services = useServices()
-    const { locale } = useRouter()
 
     const form = useForm<Feed>({
         defaultValues: props.feed || {
@@ -90,7 +89,7 @@ export const FeedModal = (props: FeedModal) => {
     })
 
     const { excute, loading } = useAction(
-        `domains/${domain?.id}/feeds${props.feed ? `/${props.feed.id}` : ''}`,
+        `domains/${current_domain?.id}/feeds${props.feed ? `/${props.feed.id}` : ''}`,
         props.feed ? 'PATCH' : 'POST',
         (data, error) => {
             if (error) return
@@ -99,7 +98,7 @@ export const FeedModal = (props: FeedModal) => {
     )
 
     const { del, deleting } = useDeleteAction(
-        props.feed && `domains/${domain?.id}/feeds/${props.feed.id}`,
+        props.feed && `domains/${current_domain?.id}/feeds/${props.feed.id}`,
         (data, error) => {
             if (error) return
             props.onHide()

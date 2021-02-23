@@ -18,13 +18,13 @@ import { Voucher } from "../types"
 
 const VoucherManagerPage = () => {
 
-    const domain = useDomain()
-    const { items: vouchers, loading, empty } = useCollectionData<Voucher>(domain && `domains/${domain.id}/vouchers`)
+    const { current_domain, is_domain_owner } = useDomain()
+    const { items: vouchers, loading, empty } = useCollectionData<Voucher>(current_domain && `domains/${current_domain.id}/vouchers`)
     const { user } = useAuth()
     const [show_create_modal, set_show_create_modal] = useState<boolean>(false)
     const [selected_voucher_index, set_selected_voucher_index] = useState<number>(-1)
-    const is_owner = domain && (user?.uid == domain?.owner_id)
-    const is_edit_mode = is_owner && typeof location != 'undefined' && location.search.includes('edit=true')
+    
+    const is_edit_mode = is_domain_owner && typeof location != 'undefined' && location.search.includes('edit=true')
     const { t } = useTranslation('common')
     const services = groupByKey(useServices(), 'id')
     const { locale } = useRouter()
