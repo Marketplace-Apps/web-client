@@ -32,7 +32,7 @@ export const FormAlert = (props: ServiceProviderFormItemAlert<any>) => {
 
             >
                 <Col style={{ wordBreak: 'break-all' }}>
-                    {props.content[locale] && SanboxJS.eval(props.content[locale], { data })}
+                    {props.content[locale] && SanboxJS.eval(props.content[locale], data)} 
                     {props.url && (
                         <Badge
                             pill
