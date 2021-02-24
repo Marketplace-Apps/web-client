@@ -47,7 +47,7 @@ export const ListTransactionsItem = ({ icon, item, service_name, style }: ListTr
 					>= <Credit value={item.balance_after} /></Badge>}
 				</div>
 			</Col>
-			<Col xs={12} md={4} style={{ wordBreak: 'break-all' }}>
+			<Col xs={12} md={4} style={{ wordBreak: 'break-word' }}>
 				<Alert variant="light">{item.description[router.locale]}</Alert>
 			</Col>
 		</Row>

@@ -35,7 +35,7 @@ export const FormAlert = (props: ServiceProviderFormItemAlert<any>) => {
                 }}
 
             >
-                <Col style={{ wordBreak: 'break-all' }}>
+                <Col style={{ wordBreak: 'break-word' }}>
                     {content}
                     {props.url && (
                         <Badge

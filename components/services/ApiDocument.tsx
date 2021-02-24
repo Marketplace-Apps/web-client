@@ -67,7 +67,7 @@ export const ActionApiDocument = ({ action }: ActionApiDocument) => {
                     <Col xs={2}>URL</Col>
                     <Col xs={10} className="pr-5 pb-3">
                         <code style={{
-                            wordBreak: 'break-all' 
+                            wordBreak: 'break-word' 
                         }}
                         > {endpoint}</code>
                         <Badge

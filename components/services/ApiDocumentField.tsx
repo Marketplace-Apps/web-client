@@ -41,7 +41,7 @@ export const ApiDocumentField = (props: ApiDocumentField) => {
                 {name}
                 {require && <Badge className="ml-1" variant="danger">{t('require')}</Badge>}
             </td>
-            <td style={{ wordBreak: 'break-all' }}>
+            <td style={{ wordBreak: 'break-word' }}>
                 {field_type} &nbsp;
                  {options && JSON.stringify(options.map(el => el.value))}
             </td>

@@ -49,7 +49,7 @@ const APIPage = () => {
                                     margin: 10,
                                     padding: 10
                                 }}>
-                                    <Col xs={10} style={{ wordBreak: 'break-all' }}>
+                                    <Col xs={10} style={{ wordBreak: 'break-word' }}>
                                         {token}
                                     </Col>
                                     <Col xs={2} className="d-flex justify-content-end align-items-center">
