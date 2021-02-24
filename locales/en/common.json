@@ -90,7 +90,15 @@
         "apply_for_all_servers": "Apply for all servers",
         "only_apply_for_server": "Only apply for server",
         "expired_in": "Expired in",
-        "invalid": "Invalid voucher"
+        "invalid": "Invalid voucher",
+        "INVAILD_VOUCHER":"Invaild voucher",
+        "INVAILD_SERVICE":"Not apply for current service",
+        "INVAILD_SERVER":"Not apply for this server provider",
+        "NOT_ACTIVE":"Voucher not active",
+        "EXPIRED":"Voucher expired",
+        "ORDER_TOO_SMALL":"Order too small",
+        "NOT_USABLE":"Out of used",
+        "INVAILD_USER_TYPE":"Not apply for you"
     },
     "server_errors": {
         "Internal server error": "Internal server error",

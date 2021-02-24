@@ -17,7 +17,8 @@ export function useVoucher(
     }
 
     const voucher_error = useMemo(() => {
-        if (!voucher) return
+        if (!data) return
+        if(data && !voucher) return 'INVAILD_VOUCHER'
         if (voucher.service_id != 'all' && voucher.service_id != service_id) return 'INVAILD_SERVICE'
         if (voucher.server != 0 && voucher?.server != server) return 'INVAILD_SERVER'
         if (voucher.start_time > Date.now()) return 'NOT_ACTIVE'

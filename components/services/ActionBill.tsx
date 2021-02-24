@@ -54,7 +54,7 @@ export const ActionBill = () => {
                 />
             )}
 
-            {voucher_error && <Alert variant="danger">{voucher_error}</Alert>}
+            {voucher_error && <Alert variant="danger">{t(`vouchers.${voucher_error}`)}</Alert>}
 
             {
                 discount > 0 && <Bill

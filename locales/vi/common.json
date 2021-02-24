@@ -42,16 +42,16 @@
     "percent": "Phần trăm",
     "name": "Tên",
     "fullname": "Họ tên",
-    "price": "Giá trên mỗi tương tác", 
+    "price": "Giá trên mỗi tương tác",
     "contact": "Liên hệ",
     "note": "Ghi chú",
     "apply": "Áp dụng",
     "check": "Kiểm tra",
     "load_more": "Xem thêm",
-    "custom":"Tùy chọn",
+    "custom": "Tùy chọn",
     "cancel": "Hủy bỏ",
-    "maintain":"Bảo trì",
-    "description":"Mô tả",
+    "maintain": "Bảo trì",
+    "description": "Mô tả",
     "pricing": {
         "basic": "Giá cơ bản",
         "guarantee": "Giá bảo hành",
@@ -90,7 +90,15 @@
         "apply_for_all_servers": "Áp dụng tất cả các server",
         "only_apply_for_server": "Chỉ áp dụng cho server ",
         "expired_in": "Hết hạn vào",
-        "invalid": "Voucher không hợp lệ"
+        "invalid": "Voucher không hợp lệ",
+        "INVAILD_VOUCHER": "Không tìm thấy voucher",
+        "INVAILD_SERVICE": "Không áp dụng cho dịch vụ này",
+        "INVAILD_SERVER": "Không áp dụng cho máy chủ này",
+        "NOT_ACTIVE": "Voucher chưa kích hoạt",
+        "EXPIRED": "Voucher hết hạn",
+        "ORDER_TOO_SMALL": "Chưa đặt tổng đơn hàng tối thiểu",
+        "NOT_USABLE": "Đã hết lượt sử dụng",
+        "INVAILD_USER_TYPE": "Không áp dụng cho bạn"
     },
     "server_errors": {
         "Internal server error": "Lỗi server bạn báo admin nhé",
@@ -100,12 +108,12 @@
         "RECEIVER_NOT_FOUND": "Không tìm thấy người nhận",
         "RPC_OFFLINE": "Máy chủ gặp vấn đề",
         "INVAILD_URL": "URL không hợp lệ",
-        "OVERLOAD":"Máy chủ quá tải, bạn chọn thử server khác nha",
-        "VIDEO_NOT_LIVE":"Livestream đã kết thúc"
+        "OVERLOAD": "Máy chủ quá tải, bạn chọn thử server khác nha",
+        "VIDEO_NOT_LIVE": "Livestream đã kết thúc"
     },
     "orders": {
         "create": "Tạo đơn hàng",
-        "detail":"Chi tiết đơn hàng",
+        "detail": "Chi tiết đơn hàng",
         "amount": "Số lượng",
         "total": "Tổng tiền",
         "status": {
@@ -129,16 +137,16 @@
         "username": "Email",
         "password": "Mật khẩu",
         "submit": "Đăng nhập",
-        "has_username_and_password":"Bạn có tên đăng nhập và mật khẩu ?",
-        "auth/user-not-found":"Không tìm thấy người dùng",
-        "auth/wrong-password":"Sai mật khẩu",
-        "auth/invalid-email":"Sai định dạng email"
+        "has_username_and_password": "Bạn có tên đăng nhập và mật khẩu ?",
+        "auth/user-not-found": "Không tìm thấy người dùng",
+        "auth/wrong-password": "Sai mật khẩu",
+        "auth/invalid-email": "Sai định dạng email"
     },
-    "copy":"Sao chép",
-    "copied":"Đã sao chép",
-    "api":{
-        "alert_developers_only":"Mục này dành riêng cho nhà phát triển",
-        "overwrite_old_api_key":"Khóa API cũ sẽ bị vô hiệu hóa",
-        "change":"Thay đổi"
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "api": {
+        "alert_developers_only": "Mục này dành riêng cho nhà phát triển",
+        "overwrite_old_api_key": "Khóa API cũ sẽ bị vô hiệu hóa",
+        "change": "Thay đổi"
     }
 }
