@@ -22,7 +22,7 @@ export const BoxSelectItem = (props: BoxSelectItem) => {
     const form = useFormContext() 
 
     const description = useMemo(() => {
-        const render_fn = props.option.description[locale]
+        const render_fn = props.option.description?.[locale]
         if (!render_fn) return ''
         return SanboxJS.eval(render_fn, form.getValues(), prices)
     }, [prices, form])
