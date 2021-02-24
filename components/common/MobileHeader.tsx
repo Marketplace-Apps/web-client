@@ -14,7 +14,7 @@ export const MobileHeader = () => {
 	const { user } = useAuth()
 
 	return (
-		<Row style={{ background: 'linear-gradient(90deg,#f64f59,#c471ed,#12c2e9)', padding: 10 }}>
+		<Row style={{ background: current_domain?.background, padding: 10 }}>
 			<Col className="p-0 d-flex justify-content-start align-items-center">
 				<img src={current_domain?.icon} style={{ width: 40, borderRadius: '100%' }} />
 				<span style={{ marginLeft: 10, color: 'white', fontSize: 25 }}>{current_domain?.name}</span>

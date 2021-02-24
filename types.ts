@@ -18,6 +18,7 @@ export declare class Domain extends BaseEntity {
     zalo: string;
     facebook: string;
     telegram: string;
+    background?: string
 }
 
 export declare class Feed extends BaseEntity {

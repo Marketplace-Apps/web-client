@@ -24,14 +24,14 @@ const APIPage = () => {
 
     const { copied, copy } = useCopy()
 
-    const { t } = useTranslation('common')
+    const { t, lang } = useTranslation('common')
 
 
     return (
         <MainLayout
             title={AppRouteList.Me.children.ApikeyManager.name}
             showHeaderTitle
-        > 
+        >
             <div style={{ padding: 20, backgroundColor: 'white' }}>
                 <Row>
                     <Col>
@@ -39,22 +39,35 @@ const APIPage = () => {
                             variant="danger"
                         >{t('api.alert_developers_only')}</Alert>
 
+                        {
+                            lang == 'vi' && <Alert
+                                variant="danger"
+                            >Bạn phải sử dụng API dưới đây để không bị hết hạn</Alert>
+                        }
+
+                        {
+                            lang == 'en' && <Alert
+                                variant="danger"
+                            >This API key never expired</Alert>
+                        }
+
                     </Col>
                     {
                         token && (
                             <Col xs={12}>
                                 <Row style={{
-
                                     boxShadow: '1px 1px 5px 0px rgba(138,138,138,1)',
-                                    margin: 10,
-                                    padding: 10
+                                    marginBottom: 20
                                 }}>
-                                    <Col xs={10} style={{ wordBreak: 'break-word' }}>
+
+                                    <Col xs={9} style={{ wordBreak: 'break-word', padding: 20 }}>
                                         {token}
                                     </Col>
-                                    <Col xs={2} className="d-flex justify-content-end align-items-center">
+
+                                    <Col xs={3} className="d-flex justify-content-end align-items-center">
                                         <Button variant="outline-dark" onClick={() => copy(token)}>{copied ? t('copied') : t('copy')}</Button>
                                     </Col>
+
                                 </Row>
                             </Col>
                         )

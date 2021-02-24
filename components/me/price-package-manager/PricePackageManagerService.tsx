@@ -1,6 +1,6 @@
 import useTranslation from "next-translate/useTranslation"
 import React, { Fragment, useContext, useEffect, useMemo, useState } from "react"
-import { Card, Col, Modal, Row, Collapse, Form, FormControl, Badge, Button } from "react-bootstrap"
+import { Card, Col, Modal, Row, Collapse, Form, FormControl, Badge, Button, Table } from "react-bootstrap"
 import { PricePackage, ServicePriceList, ServiceProvider } from "../../../types"
 import { PricePackageManagerContext } from "./PricePackageManagerContext"
 import { PricePackageManagerServiceOption } from "./PricePackageManagerServiceOption"
@@ -32,22 +32,32 @@ export const PricePackageManagerService = ({ service }: PricePackageManagerServi
             </Col>
 
             <Col xs={12}>
-                <Row>
-                    <Col xs={4}> </Col>
-                    <Col xs={4} className="text-center">{t('pricing.basic')}</Col>
-                    <Col xs={4} className="text-center">{t('pricing.guarantee')}</Col>
-                </Row>
-                {
-                    Object
-                        .entries(import_price?.prices?.[service.id] || {})
-                        .map(([option_id, option]) => (
-                            <PricePackageManagerServiceOption
-                                option={{ ...option, id: option_id }}
-                                service_id={service.id}
-                                key={option_id}
-                            />
-                        ))
-                }
+                <Table striped bordered size="sm" className="mt-2">
+                    <thead>
+                        <tr>
+                            <th> </th>
+                            <th>{t('pricing.basic')}</th>
+                            <th>{t('pricing.guarantee')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            Object
+                                .entries(import_price?.prices?.[service.id] || {})
+                                .map(([option_id, option]) => (
+                                    <PricePackageManagerServiceOption
+                                        option={{ ...option, id: option_id }}
+                                        service_id={service.id}
+                                        key={option_id}
+                                    />
+                                ))
+                        }
+                    </tbody>
+
+                </Table>
+
+
+
             </Col>
         </Row>
     )

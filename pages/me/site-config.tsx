@@ -93,6 +93,18 @@ const EditForm = ({ domain }: { domain: Domain }) => {
                 </Col>
             </Form.Group>
 
+            <Form.Group as={Row} >
+                <Form.Label column sm="2"> Background color </Form.Label>
+                <Col sm="10">
+                    <Form.Control
+                        defaultValue={domain?.background || 'linear-gradient(to right, #56ccf2, #2f80ed)'}
+                        placeholder="linear-gradient(to right, #56ccf2, #2f80ed)"
+                        ref={form.register()}
+                        name="background"
+                    />
+                </Col>
+            </Form.Group>
+
             <IconButton
                 variant="primary"
                 icon={BiCheck}

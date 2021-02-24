@@ -6,6 +6,7 @@ import { UserInfo } from './UserInfo'
 import { LinkCard } from './LinkCard'
 import { AppRouteList, RouteItem, isActivePath, isVisible } from '../../AppRouteList'
 import { useHover } from '../../hooks/useHover'
+import { useDomain } from '../../hooks/useDomain'
 
 const PcSidebarMenuItem = (props: RouteItem) => {
 
@@ -13,8 +14,9 @@ const PcSidebarMenuItem = (props: RouteItem) => {
     const visible = isVisible(props)
     const active = isActivePath(props)
     const color = active ? 'white' : (props.color || 'black')
-   
-    const {hovering, listeners} = useHover()
+    const { current_domain } = useDomain()
+
+    const { hovering, listeners } = useHover()
 
     if (!visible) return null
 
@@ -25,12 +27,13 @@ const PcSidebarMenuItem = (props: RouteItem) => {
         className="d-flex justify-content-start align-items-center"
         style={{
             padding: 10,
-            backgroundColor: active ? '#17a2b8' : 'white',
+            backgroundColor: !active && 'white',
+            background: active && current_domain?.background,
             borderRadius: '20px 0 0 20px',
             marginTop: 10,
-            boxShadow:hovering && 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px'
-        }} 
-        {... listeners}
+            boxShadow: hovering && 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px'
+        }}
+        {...listeners}
     >
         <props.icon style={{ color, fontSize: '3rem', padding: '5px', height: 40 }} />
 
