@@ -27,14 +27,14 @@ const AdminContact = () => {
 	current_domain?.phone_number && methods.push({
 		name: 'Facebook',
 		icon: 'https://blog.viecngay.vn/wp-content/uploads/2018/04/facebook-page-manager.png',
-		text: current_domain.telegram,
+		text: current_domain.facebook,
 		link: `https://fb.com/${current_domain.facebook}`
 	})
 
 	current_domain?.phone_number && methods.push({
 		name: 'Messenger',
 		icon: 'https://isdownrightnow.net/wp-content/uploads/2015/02/Facebook-Messenger.jpg',
-		text: current_domain.telegram,
+		text: current_domain.facebook,
 		link: `https://m.me/${current_domain.facebook}`
 	})
 
