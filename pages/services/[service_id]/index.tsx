@@ -32,7 +32,6 @@ const ServiceCreateOrderPage = ({ create_action, service }: ServiceCreateOrderPa
 				<Col xs={12} ><ServiceNav service={service} />	</Col>
 				<Col xs={12}>
 					{create_action && <ActionModal
-						service_id={create_action.service_id}
 						onSuccess={() => {
 							router.push(`/services/${router.query.service_id}/history`)
 							setTimeout(() => window.scroll(0, 0), 1000)

@@ -47,17 +47,7 @@ const usePriceCaculator = (props: usePriceCaculator) => {
     }
 }
 
-const PriceCaculatorContext = createContext<ReturnType<typeof usePriceCaculator>>({
-    apply_voucher: () => { },
-    clear: () => { },
-    discount: 0,
-    min_user_price: 0,
-    price: 0,
-    price_option: '',
-    total: 0,
-    voucher: null,
-    voucher_error: ''
-})
+const PriceCaculatorContext = createContext<ReturnType<typeof usePriceCaculator>>(null)
 
 
 export const PriceCaculatorContextProvider = (props: PropsWithChildren<usePriceCaculator>) => {
