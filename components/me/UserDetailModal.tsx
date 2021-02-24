@@ -88,7 +88,7 @@ export const UserDetailModal = ({ onHide, user }: UserDetailModal) => {
                                 {current_domain && user && (current_domain.owner_id == user.id ? <Alert variant="danger">{t('contact')} admin</Alert> : <SendMoney user={user} />)}
                             </div>
                         </Tab>
-                        <Tab eventKey="prices" title={t('price')}>
+                        <Tab eventKey="prices" title={t('change_price')}>
                             <div className="p-3" style={{ border: '1px solid #dee2e6 ', borderRadius: '0 0 10px 10px' }}>
                                 {me && me.id == user.id ? <Alert variant="danger">{t('contact')} admin</Alert> : <UpdateUserLevel user={user} />}
                             </div>
