@@ -29,13 +29,14 @@ export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<LiveQueryContextProvider
 			websocket_url={WS_URL}
-			options={async () => ({
-				prefix: BASE_URL,
-				headers: {
-					authorization: await firebase.auth().currentUser?.getIdToken()
-				},
-				retry: 3
-			})}>
+			options={async () => {
+				const authorization = await firebase.auth().currentUser?.getIdToken()
+				return {
+					prefix: BASE_URL,
+					headers: authorization ? { authorization } : {},
+					retry: 3
+				}
+			}}>
 			<ToastContainer />
 			{
 				NO_PROTECTED_ROUTES.includes(router.pathname) ? <Component {...pageProps} /> : <ProtectedRoute Component={Component} pageProps={pageProps} />
