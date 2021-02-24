@@ -30,7 +30,8 @@ export default function App({ Component, pageProps }: AppProps) {
 		<LiveQueryContextProvider
 			websocket_url={WS_URL}
 			options={async () => {
-				const authorization = await firebase.auth().currentUser?.getIdToken()
+				const user = firebase.auth().currentUser
+				const authorization = await user?.getIdToken()
 				return {
 					prefix: BASE_URL,
 					headers: authorization ? { authorization } : {},

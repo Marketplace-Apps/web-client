@@ -7,7 +7,7 @@ export const useDomain = () => {
     const { user } = useAuth()
 
     // Current domain
-    const { item: current_domain, loading: loading_current_domain } = useDocumentData<Domain>('domains/current', {
+    const { item: current_domain, loading: loading_current_domain } = useDocumentData<Domain>(`domains/current${user ? '?reload' : ''}`, {
         cache: { use: true, update: true }
     })
 
@@ -16,8 +16,9 @@ export const useDomain = () => {
     const { item: root_domain, loading: loading_root_domain } = useDocumentData<Domain>(root_domain_ref && `domains/${root_domain_ref}`, {
         cache: { use: true, update: true }
     })
-    
-    const is_domain_owner = current_domain && current_domain.owner_id == user?.uid 
+
+    const is_domain_owner = current_domain && user && current_domain.owner_id == user.uid
+
 
     return {
         current_domain: !loading_current_domain && !loading_root_domain && current_domain,

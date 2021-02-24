@@ -10,7 +10,7 @@ export const DEFAULT_AVATAR = 'https://api.time.com/wp-content/uploads/2019/04/m
 
 export const BASE_URL = (() => {
     if (process.env.NODE_ENV == 'development') {
-        return 'https://api.ongmatmedia.com/livequery/'
+        // return 'https://api.ongmatmedia.com/livequery/'
         return 'http://192.168.1.232/livequery/'
     }
     if (typeof location == 'undefined') return 'https://api.ongmatmedia.com/livequery/'
