@@ -1,52 +1,32 @@
 import { Fragment, useMemo } from "react"
 import { Controller, useFormContext } from "react-hook-form"
-import { SanboxJS } from "../../helpers/sandboxjs"
-import { useDomainUser } from "../../hooks/useCurrentUser"
-import { Order, PriceFunctionParams, PricePackage, Prices, ServiceProviderAction, User } from "../../types"
+import { Order, User } from "../../types"
 import { Bill } from "./Bill"
 import useTranslation from 'next-translate/useTranslation'
 import { Alert, Button, FormControl, InputGroup } from "react-bootstrap"
-import { useVoucher } from "../../hooks/useVoucher"
-import { useDomain } from "../../hooks/useDomain"
-import { useUserDefaultPricesPackage } from "../../hooks/usePricePackages"
+import { usePriceCaculatorContext } from "../../hooks/usePriceCaculator"
 
 
 
-export type ActionBill = {
-    user: User,
-    order?: Order,
-    fn: string,
-    can_use_voucher?: boolean,
-    service_id: string
-}
+export const ActionBill = () => {
 
-
-export const ActionBill = (props: ActionBill) => {
-
+    const {
+        final_total,
+        apply_voucher,
+        clear_voucher,
+        voucher_error,
+        discount,
+        total,
+        price,
+        action,
+        user
+    } = usePriceCaculatorContext()
     const form = useFormContext()
-    const payload = form.watch()
     const { t } = useTranslation('common')
 
-    const my_prices_package = useUserDefaultPricesPackage(props.user)
-
-    const ctx: PriceFunctionParams = { ...props, user:props.user, payload, package_prices: my_prices_package?.prices[props.service_id] }
-
-    const total_bill = useMemo<ReturnType<ServiceProviderAction['price']>>(() => {
-        if (!props.user || !my_prices_package) return 0
-        try {
-            return SanboxJS.eval(props.fn, ctx)
-        } catch (e) {
-            console.error(e)
-            return null
-        }
-    }, [ctx])
-
-    const { discount, check, clear, error } = useVoucher(props.service_id, props.user, total_bill.total, payload.server || 1)
-
-    return total_bill && (
+    return final_total && (
         <Fragment>
-
-            {props.can_use_voucher && (
+            {action.can_use_voucher && (
                 <Controller
                     name="voucher"
                     control={form.control}
@@ -57,12 +37,15 @@ export const ActionBill = (props: ActionBill) => {
                                 id="voucher-input"
                                 value={value}
                                 onChange={e => onChange(e.target.value.toUpperCase())}
-                                onBlur={e => check(e.target.value)}
+                                onBlur={e => apply_voucher(e.target.value)}
                             />
                             <InputGroup.Append>
                                 <Button
                                     variant="outline-danger"
-                                    onClick={() => { clear(), form.setValue('voucher', '') }}
+                                    onClick={() => {
+                                        clear_voucher()
+                                        form.setValue('voucher', '')
+                                    }}
                                 >{t('cancel')}</Button>
                             </InputGroup.Append>
                         </InputGroup>
@@ -71,7 +54,7 @@ export const ActionBill = (props: ActionBill) => {
                 />
             )}
 
-            {error && <Alert variant="danger">{error}</Alert>}
+            {voucher_error && <Alert variant="danger">{voucher_error}</Alert>}
 
             {
                 discount > 0 && <Bill
@@ -81,19 +64,19 @@ export const ActionBill = (props: ActionBill) => {
             }
 
             <Bill
-                total={total_bill.price}
+                total={price}
                 text={t('price')}
                 background="linear-gradient(to right, #ff512f, #f09819)"
             />
 
             <Bill
-                total={total_bill.total - discount}
+                total={final_total}
                 text={t('order_total')}
-                old_value={discount > 0 && total_bill.total}
+                old_value={discount > 0 && total}
             />
 
             <Bill
-                total={props.user?.balance}
+                total={user?.balance}
                 text={t('my_balance')}
                 background="linear-gradient(to right, #76b852, #8dc26f)"
             />

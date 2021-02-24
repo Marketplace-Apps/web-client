@@ -140,7 +140,7 @@ const SignInPage = () => {
 							src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1004px-Google_%22G%22_Logo.svg.png"
 							width={20}
 							className="mr-2"
-						/>Google</div>
+						/>Đăng nhập với Google/Sign in with Google</div>
 				</Form.Group>
 				{
 					!allow_password && (

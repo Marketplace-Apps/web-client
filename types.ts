@@ -140,25 +140,41 @@ export declare class ServiceProvider extends BaseEntity {
 
 
 
+export declare type PriceFunctionParams<T = any> = {
+    user: User;
+    order?: Order;
+    payload?: T;
+    package_prices: Prices;
+};
+export declare type PriceFunctionResponse = {
+    total: number;
+    price: number;
+    min_user_price: number;
+    price_option: string;
+};
+export declare type InfoFunction<T, R> = (data: T, prices: PriceFunctionResponse) => R;
 export declare class ServiceProviderItemOption<T> {
     label?: I18N;
     value: any;
     icon?: string;
     color?: string;
-    visible_condition?: (data: T) => boolean;
+    description?: {
+        [key in keyof I18N]: InfoFunction<T, string>;
+    };
+    visible_condition?: InfoFunction<T, boolean>;
 }
 export declare class ServiceProviderFormItemAlert<T> {
     content: {
-        [key in keyof I18N]: (data: T) => string;
+        [key in keyof I18N]: InfoFunction<T, string>;
     };
     icon?: string;
-    visible_condition: (data: T) => boolean;
+    visible_condition: InfoFunction<T, boolean>;
     type: 'alert';
     level: 'info' | 'success' | 'warning' | 'error';
     url?: I18N;
     urlText?: I18N;
 }
-declare type InputMask = 'text' | 'number' | 'switch' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-profile-page' | 'image' | 'facebook-post';
+declare type InputMask = 'text' | 'number' | 'switch' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-post' | 'facebook-profile-page' | 'image' | 'price' | 'box-select'
 export declare type ServiceProviderActionForm<T> = {
     [name: string]: ServiceProviderActionFormItem<T>;
 };
@@ -172,21 +188,9 @@ export interface ServiceProviderActionFormItem<T = any> {
     optional?: boolean;
     type: string;
     input_mask: InputMask;
-    visible_condition: (data: T) => boolean;
+    visible_condition: InfoFunction<T, boolean>;
     options: ServiceProviderItemOption<any>[];
 }
-export declare type PriceFunctionParams<T = any> = {
-    user: User;
-    order?: Order;
-    payload?: T;
-    package_prices: Prices;
-};
-export declare type PriceFunctionResponse = {
-    total: number;
-    price: number;
-    min_user_price: number;
-    price_option: string;
-};
 export declare type ActionMetadata<T = any> = {
     requester: { uid: string, email: string };
     user: User;
@@ -226,7 +230,6 @@ export declare class User extends BaseEntity {
     domain_id: string;
     email: string;
     level?: string;
-    root_level?:string
     total_deposit: number;
     total_used: number;
     avatar: string;

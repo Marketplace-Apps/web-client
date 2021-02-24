@@ -7,9 +7,11 @@ import { ServiceProviderActionFormItem } from "../../../types"
 import { NumberInput } from "./NumberInput"
 import { PriceInput } from "./PriceInput"
 import { IconSelect } from "./IconSelect"
+import { BoxSelect } from "./BoxSelect"
 
 export const GenericInput = (props: ServiceProviderActionFormItem) => {
 
+    if(props.input_mask == 'box-select') return <BoxSelect {...props} />
     if (props.input_mask == 'text') return <TextInput {...props} />
     if (props.input_mask == 'textarea') return <Textarea {...props} />
     if (props.input_mask == 'facebook-video') return <FacebookVideo {...props} />

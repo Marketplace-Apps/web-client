@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import { Fragment, useEffect, useState } from "react"
-import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap"
+import { Alert, Badge, Button, Card, Col, Form, ListGroup, Modal, Row } from "react-bootstrap"
 import { FormProvider, useForm } from "react-hook-form"
 import { FaCheck } from "react-icons/fa"
 import { useAction, useDocumentData } from "react-livequery-hooks"
@@ -15,15 +15,15 @@ import { TextInput } from "./inputs/TextInput"
 import { useAuth } from "firebase-easy-hooks"
 import { useDomainUser } from "../../hooks/useCurrentUser"
 import { VisibleCheck } from "./inputs/VisibleCheck"
+import { PriceCaculatorContextProvider } from "../../hooks/usePriceCaculator"
 
 export type ActionModal = {
-    service_id: string
     order?: Order
     action: ServiceProviderAction
     onSuccess?: Function
 }
 
-export const ActionModal = ({ action, service_id, onSuccess, order }: ActionModal) => {
+export const ActionModal = ({ action, onSuccess, order }: ActionModal) => {
 
     const { current_domain, root_domain } = useDomain()
     const domain = root_domain || current_domain
@@ -51,7 +51,7 @@ export const ActionModal = ({ action, service_id, onSuccess, order }: ActionModa
         excute,
         loading
     } = useAction(
-        domain && service_id && user && `domains/${domain.id}/users/${user.id}/services/${service_id}/orders${order ? `/${order.id}/~trigger-action` : ''}`,
+        domain && action.service_id && user && `domains/${domain.id}/users/${user.id}/services/${action.service_id}/orders${order ? `/${order.id}/~trigger-action` : ''}`,
         'POST',
         async (data, error) => {
             if (error) return
@@ -67,53 +67,55 @@ export const ActionModal = ({ action, service_id, onSuccess, order }: ActionModa
         for (const key in default_values) form.setValue(key, default_values[key])
     }, [JSON.stringify(form.watch())])
 
+
     return (
+        <PriceCaculatorContextProvider
+            action={action}
+            payload={form.watch()}
+            user={user}
+            order={order}
+        >
+            <FormProvider {...form}>
+                <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
+                    <Row>
+                        <Col xs={12} >
+                            {Object.keys(action?.form || {}).map(name => (
+                                <VisibleCheck
+                                    condition={action.form[name]?.visible_condition?.toString()}
+                                    key={name}
+                                >
+                                    <GenericInput key={name} {... (action?.form[name])} />
+                                </VisibleCheck>
+                            ))}
 
-        <FormProvider {...form}>
-            <Form style={{ padding: 20 }} onSubmit={form.handleSubmit(data => excute(data, { action_id: action.id }))}>
-                <Row>
-                    <Col xs={12} lg={6}>
-                        {Object.keys(action?.form || {}).map(name => (
-                            <VisibleCheck
-                                condition={action.form[name]?.visible_condition?.toString()}
-                                key={name}
-                            >
-                                <GenericInput key={name} {... (action?.form[name])} />
-                            </VisibleCheck>))}
-                    </Col>
-                    <Col xs={12} lg={6}>
 
+                        </Col>
 
-                        {
-                            action?.price && service_id && <ActionBill
-                                user={user}
-                                fn={action.price.toString()}
-                                order={order}
-                                can_use_voucher={action.can_use_voucher}
-                                service_id={service_id}
-                            />
-                        }
-                        {error?.message && <Alert variant="danger">{t('server_errors.' + error.message)}</Alert>}
-                        <Form.Row >
-                            <Col
-                                xs={12}
-                                className="d-flex justify-content-center align-items-center"
-                            >
-                                <IconButton
-                                    icon={FaCheck}
-                                    variant="primary"
-                                    loadingtext="Đang xử lí"
-                                    loading={loading}
-                                    type="submit"
-                                    disabled={loading}
-                                >{t('orders.create')}</IconButton>
-                            </Col>
-                        </Form.Row>
-                    </Col>
-                </Row>
-            </Form>
-        </FormProvider>
+                        <Col xs={12} >
 
+                            {action?.price && action.service_id && <ActionBill />}
+
+                            {error?.message && <Alert variant="danger">{t('server_errors.' + error.message)}</Alert>}
+                            <Form.Row >
+                                <Col
+                                    xs={12}
+                                    className="d-flex justify-content-center align-items-center"
+                                >
+                                    <IconButton
+                                        icon={FaCheck}
+                                        variant="primary"
+                                        loadingtext="Đang xử lí"
+                                        loading={loading}
+                                        type="submit"
+                                        disabled={loading}
+                                    >{t('orders.create')}</IconButton>
+                                </Col>
+                            </Form.Row>
+                        </Col>
+                    </Row>
+                </Form>
+            </FormProvider>
+        </PriceCaculatorContextProvider>
     )
 }
 
@@ -139,7 +141,6 @@ export const useActionModal = (
 
                 </Modal.Header>
                 <ActionModal
-                    service_id={service_id}
                     onSuccess={() => {
                         onSuccess && onSuccess()
                         set_action_id({})

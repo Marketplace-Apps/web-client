@@ -12,11 +12,11 @@ export function useVoucher(
     const { data, excute, clear } = useAction<{}, { data: { items: Voucher[] } }>(user && `domains/${user.domain_id}/vouchers`, 'GET')
     const voucher = data?.data?.items[0]
 
-    function check(code: string) {
+    function apply_voucher(code: string) {
         excute({}, { code })
     }
 
-    const error = useMemo(() => {
+    const voucher_error = useMemo(() => {
         if (!voucher) return
         if (voucher.service_id != 'all' && voucher.service_id != service_id) return 'INVAILD_SERVICE'
         if (voucher.server != 0 && voucher?.server != server) return 'INVAILD_SERVER'
@@ -27,12 +27,13 @@ export function useVoucher(
         if (!voucher.levels.includes(user.level)) return 'INVAILD_USER_TYPE'
     }, [])
 
-    const discount = !error && voucher ? Math.min(voucher.max, ~~(total_bill * voucher.percent / 100)) : 0
+    const discount = !voucher_error && voucher ? Math.min(voucher.max, ~~(total_bill * voucher.percent / 100)) : 0
 
     return {
-        check,
-        clear,
+        apply_voucher,
+        clear_voucher: clear,
         discount,
-        error
+        voucher_error,
+        voucher
     }
 }
