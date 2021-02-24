@@ -5,6 +5,7 @@ import { ServiceProviderFormItemAlert } from "../../../types";
 import { SanboxJS } from "../../../helpers/sandboxjs";
 import { VisibleCheck } from "./VisibleCheck";
 import { useRouter } from "next/router";
+import { usePriceCaculatorContext } from "../../../hooks/usePriceCaculator";
 
 const BackgroundMapper: { [key in ServiceProviderFormItemAlert<any>["level"]]: string } = {
     error: 'linear-gradient(to right, #ed213a, #93291e)',
@@ -18,6 +19,9 @@ export const FormAlert = (props: ServiceProviderFormItemAlert<any>) => {
     const form = useFormContext()
     const data = form.watch()
     const { locale } = useRouter()
+    const prices = usePriceCaculatorContext()
+
+    const content = useMemo(() => props.content[locale] && SanboxJS.eval(props.content[locale], data, prices), [locale, data])
 
     return (
 
@@ -32,7 +36,7 @@ export const FormAlert = (props: ServiceProviderFormItemAlert<any>) => {
 
             >
                 <Col style={{ wordBreak: 'break-all' }}>
-                    {props.content[locale] && SanboxJS.eval(props.content[locale], data)} 
+                    {content}
                     {props.url && (
                         <Badge
                             pill
