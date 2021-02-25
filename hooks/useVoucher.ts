@@ -18,7 +18,7 @@ export function useVoucher(
 
     const voucher_error = useMemo(() => {
         if (!data) return
-        if(data && !voucher) return 'INVAILD_VOUCHER'
+        if (data && !voucher) return 'INVAILD_VOUCHER'
         if (voucher.service_id != 'all' && voucher.service_id != service_id) return 'INVAILD_SERVICE'
         if (voucher.server != 0 && voucher?.server != server) return 'INVAILD_SERVER'
         if (voucher.start_time > Date.now()) return 'NOT_ACTIVE'
@@ -26,7 +26,7 @@ export function useVoucher(
         if (voucher.min_require > total_bill) return 'ORDER_TOO_SMALL'
         if (voucher.used >= voucher.limit) return 'NOT_USABLE'
         if (!voucher.levels.includes(user.level)) return 'INVAILD_USER_TYPE'
-    }, [])
+    }, [data]) 
 
     const discount = !voucher_error && voucher ? Math.min(voucher.max, ~~(total_bill * voucher.percent / 100)) : 0
 
