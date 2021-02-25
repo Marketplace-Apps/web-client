@@ -1,7 +1,20 @@
+import { useRouter } from "next/router"
 import { Alert, Card, Col, Row } from "react-bootstrap"
 import { AppRouteList } from "../AppRouteList"
 import { useDomain } from "../hooks/useDomain"
 import { MainLayout } from "../layouts/MainLayout"
+
+export const AdminContactGuide = () => {
+
+	const { locale } = useRouter()
+
+	return (
+		<Row className="mt-4"><Col xs={12}>
+			{locale == 'en' && <Alert variant="info">You can click bellow methods to contact with admin</Alert>} 
+			{locale == 'vi' && <Alert variant="info">Bạn chọn một phương thức dưới để liên hệ với admin nhé</Alert>} 
+		</Col></Row>
+	)
+}
 
 const AdminContact = () => {
 
@@ -11,7 +24,7 @@ const AdminContact = () => {
 
 	current_domain?.phone_number && methods.push({
 		name: 'Phone',
-		icon: 'https://image.freepik.com/free-vector/hand-hold-cell-smart-phone-application-online-call-center-client-support-banner-flat-vector-illustra_48369-3640.jpg',
+		icon: 'https://image.freepik.com/free-vector/cartoon-mobile-phone-screen-during-call_68708-765.jpg',
 		text: current_domain.phone_number,
 		link: `tel:${current_domain.phone_number}`
 	})
@@ -47,16 +60,18 @@ const AdminContact = () => {
 
 	return (
 		<MainLayout title={AppRouteList.Contact.name} showHeaderTitle>
+			<AdminContactGuide />
 			<Row>
+				
 				{
 					methods.map(method => (
-						<Col xs={12} sm={6} md={6} xl={3} lg={4} key={method.id}>
-							<div className="p-2">
+						<Col xs={6} sm={6} md={6} xl={2} lg={3} key={method.id}>
+							<div className="p-0 mt-4">
 								<Card
 									style={{ cursor: 'pointer', width: '100%' }}
 									onClick={() => typeof window != 'undefined' && window.open(method.link, '_blank')}
 								>
-									<Card.Img height={120} src={method.icon} />
+									<Card.Img height={120} src={method.icon} style={{objectFit:'cover'}} />
 									<Card.Body>
 										<Card.Title>{method.name}</Card.Title>
 										<Card.Text>{method.text}</Card.Text>

@@ -19,19 +19,17 @@ export const PricePackageManagerService = ({ service }: PricePackageManagerServi
             noGutters
             style={{
                 display: search && !JSON.stringify(service.name).includes(search) && 'none',
-                boxShadow: ' rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px',
-                padding: 10,
                 margin: 0,
                 marginTop: 15,
                 borderRadius: 10
             }}
         >
             <Col xs={12}>
-                <img src={service.icon} width={30} />
-                <span className="ml-1">{service.name[lang]}</span>
+                <img src={service.icon} width={30} style={{ borderRadius: '100%' }} />
+                <span className="ml-2 font-weight-bold">{service.name[lang]}</span>
             </Col>
 
-            <Col xs={12}>
+            <Col xs={12} className="mt-1">
                 <Table striped bordered size="sm" className="mt-2">
                     <thead>
                         <tr>
