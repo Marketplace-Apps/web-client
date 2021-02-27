@@ -18,7 +18,7 @@ export declare class Domain extends BaseEntity {
     zalo: string;
     facebook: string;
     telegram: string;
-    background?: string
+    background: string;
 }
 
 export declare class Feed extends BaseEntity {
@@ -36,7 +36,6 @@ export declare class I18N {
 }
 export declare const LanguageList: readonly ["vi-VN", "en-US"];
 
-
 export declare type OrderStatus = 'created' | 'running' | 'error' | 'error-refunded' | 'done' | 'deleted';
 export declare class Order<T = any> extends BaseEntity {
     user_id: string;
@@ -46,7 +45,6 @@ export declare class Order<T = any> extends BaseEntity {
     title: string;
     description?: string;
     thumbnail: string;
-    running?: boolean;
     active?: boolean;
     error?: boolean;
     refunded?: boolean;
@@ -56,17 +54,12 @@ export declare class Order<T = any> extends BaseEntity {
     server?: number;
     note: string;
     amount: number;
-    end_time?: number;
     remain_amount?: number;
-    voucher?: string;
-    metadata: T;
-    logs: Array<{
-        created_at: number;
-        message: I18N;
-        admin: boolean;
-    }>;
     start_count?: number;
-    last_count?: number;
+    current_amount?: number;
+    target_amount?: number;
+    end_time?: number;
+    voucher?: string;
 }
 export declare class OrderInput {
     active?: boolean;
@@ -74,7 +67,6 @@ export declare class OrderInput {
     refunded?: boolean;
     done?: boolean;
     deleted?: boolean;
-    metadata: any;
     voucher?: string;
 }
 
@@ -175,7 +167,7 @@ export declare class ServiceProviderFormItemAlert<T> {
     url?: I18N;
     urlText?: I18N;
 }
-declare type InputMask = 'text' | 'number' | 'switch' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-post' | 'facebook-profile-page' | 'image' | 'price' | 'box-select'
+declare type InputMask = 'text' | 'number' | 'switch' | 'textarea' | 'select' | 'icon-select' | 'button-select' | 'facebook-video' | 'facebook-post' | 'facebook-profile-page' | 'image' | 'price' | 'box-select';
 export declare type ServiceProviderActionForm<T> = {
     [name: string]: ServiceProviderActionFormItem<T>;
 };
@@ -193,7 +185,7 @@ export interface ServiceProviderActionFormItem<T = any> {
     options: ServiceProviderItemOption<any>[];
 }
 export declare type ActionMetadata<T = any> = {
-    requester: { uid: string, email: string };
+    requester: { uid: string };
     user: User;
     service: ServiceProvider;
     action_id: string;
@@ -217,6 +209,15 @@ export declare class ServiceProviderAction<T = any, Utils = any> extends BaseEnt
     name: I18N;
 }
 export { };
+export declare class ServiceRunningReport {
+    target: string;
+    service_id: string;
+    reports: Array<{
+        id:string;
+        created_at: number;
+        amount: number;
+    }>;
+}
 
 
 export declare class ServiceStatic extends BaseEntity {

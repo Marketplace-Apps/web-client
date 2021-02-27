@@ -2,8 +2,8 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Badge, Col, Row } from 'react-bootstrap'
 import { BiBullseye, BiTimeFive } from 'react-icons/bi'
-import { Order } from '../../types' 
-import { Router, useRouter } from 'next/router' 
+import { Order } from '../../types'
+import { Router, useRouter } from 'next/router'
 import { OrderStatusList } from '../../const'
 
 export type OrderItem = { order: Order, onClick?: Function }
@@ -13,9 +13,8 @@ function get_order_color(order: Order) {
 	if (order.error) return OrderStatusList.error.color
 	if (order.done || order.refunded) return OrderStatusList.done.color
 	if (!order.active) return OrderStatusList.active.color
-	if (order.running) return OrderStatusList.running.color
 
-	return 'linear-gradient(to right, #bbd2c5, #536976)'
+	return OrderStatusList.running.color
 }
 
 export const OrderItem = (props: OrderItem) => {
@@ -46,9 +45,14 @@ export const OrderItem = (props: OrderItem) => {
 						<Col xs={6} className="d-flex justify-content-start align-items-center">
 							<BiBullseye />
 							<span style={{ marginLeft: 5 }}>{props.order.amount}</span>
-							<Badge pill className="ml-2 mb-1" variant="light">{
-								// OrderStatus[props.order.status][locale] || props.order.status
-							}</Badge>
+							{
+								props.order.target_amount && <Badge
+									pill
+									className="ml-2 mb-1"
+									variant={props.order.current_amount >= props.order.target_amount ? 'light' : 'danger'}
+								>{props.order.current_amount}/{props.order.target_amount}</Badge>
+							}
+
 						</Col>
 						<Col xs={6} style={{ fontSize: 12 }} className="d-flex justify-content-end align-items-center">
 							<BiTimeFive size={20} />

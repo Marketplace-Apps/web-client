@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 import React, { Fragment, useState } from "react";
 import { Alert, Badge, Button, Col, Modal, Row, Spinner } from "react-bootstrap";
 import { BsClockFill } from "react-icons/bs";
-import {  Order, ServiceProvider, ServiceProviderAction } from "../../types";
-import { VscError } from 'react-icons/vsc'
+import { Order, ServiceProvider, ServiceProviderAction, ServiceRunningReport } from "../../types";
+import { VscError, VscLoading } from 'react-icons/vsc'
 import { FcBusinessman, FcClock, FcFlowChart, FcHeatMap, FcRating, FcSettings } from "react-icons/fc";
 import { useRouter } from "next/router";
 import { OrderStatusBadge } from "./OrderStatus";
@@ -12,6 +12,8 @@ import { ImPause2 } from "react-icons/im";
 import { useActionModal } from "./ActionModal";
 import { useCollectionData, ne } from "react-livequery-hooks";
 import useTranslation from "next-translate/useTranslation";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { ReportChart } from "./ReportChart";
 
 
 
@@ -27,11 +29,80 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
 
     const { ActionModal, showActionModal } = useActionModal(props.service.id)
     const { t } = useTranslation('common')
+
     const { items: actions } = useCollectionData<ServiceProviderAction>(`services/${props.service.id}/actions`, {
         where: {
-            id: ne('create') 
+            id: ne('create')
         }
     })
+
+    const { items: reports, empty } = useCollectionData<ServiceRunningReport['reports'][0]>(`services/${props.service.id}/targets/${props.order.target}/reports`)
+
+    const StatusList = [
+        {
+            icon: BsClockFill,
+            text: 'orders.status.created'
+        },
+        {
+            icon: ImPause2,
+            text: 'orders.status.paused',
+            visible: props.order.active == false
+        },
+        {
+            icon: props.order.done ? <VscLoading size={30} /> : <Spinner animation="border" variant="primary" />,
+            text: 'orders.status.running',
+            visible: props.order.active
+        },
+        {
+            icon: VscError,
+            text: 'orders.status.error',
+            visible: props.order.error
+        },
+        {
+            icon: MdAssignmentReturn,
+            text: 'orders.status.refunded',
+            visible: props.order.refunded
+        },
+        {
+            icon: MdDone,
+            text: 'orders.status.done',
+            visible: props.order.done
+        },
+    ]
+
+    const OrderInfoList = [
+        { icon: FcBusinessman, text: 'id', value: props.order.target, variant: 'primary' },
+        {
+            icon: FcClock,
+            text: 'create_at',
+            value: dayjs(props.order.created_at).format('DD/MM/YYYY H:m'),
+            variant: 'info'
+        },
+        {
+            icon: FcFlowChart,
+            text: 'orders.start_count',
+            value: props.order.start_count,
+            variant: 'warning'
+        },
+        {
+            icon: FcFlowChart,
+            text: 'orders.buy_amount',
+            value: props.order.amount,
+            variant: 'warning'
+        }, ,
+        {
+            icon: FcFlowChart,
+            text: 'orders.target_amount',
+            value: props.order.target_amount,
+            variant: 'warning'
+        }, ,
+        {
+            icon: FcFlowChart,
+            text: 'orders.total',
+            value: props.order.total,
+            variant: 'success'
+        },
+    ]
 
     return (
         <Fragment>
@@ -69,98 +140,29 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                 </Col>
                             </Row>
                             <div className="d-flex justify-content-around align-items-center mt-4">
-                                <OrderStatusBadge
-                                    icon={BsClockFill}
-                                    text={t('orders.status.created')}
-                                    has_previous={false}
-                                />
-                                <OrderStatusBadge
-                                    icon={ImPause2}
-                                    color="#fd8e2d"
-                                    text={t('orders.status.paused')}
-                                    visible={props.order.active == false}
-                                />
-                                <OrderStatusBadge
-                                    icon={<Spinner animation="border" variant="primary" />}
-                                    text={t('orders.status.running')}
-                                    visible={props.order.running}
-                                />
-                                <OrderStatusBadge
-                                    icon={VscError}
-                                    text={t('orders.status.error')}
-                                    color="red"
-                                    visible={props.order.error}
-                                />
-                                <OrderStatusBadge
-                                    icon={MdAssignmentReturn}
-                                    text={t('orders.status.refunded')}
-                                    color="orange"
-                                    visible={props.order.refunded}
-                                />
-                                <OrderStatusBadge
-                                    icon={MdDone}
-                                    text={t('orders.status.done')}
-                                    color="green"
-                                    visible={props.order.done}
-                                />
+                                {
+                                    StatusList.map(({ icon, text, visible }, index) => <OrderStatusBadge
+                                        icon={icon}
+                                        text={t(text)}
+                                        visible={visible}
+                                        has_previous={index > 0}
+                                    />)
+                                }
                             </div>
                             <Row className="mt-3" style={{ color: '#1176c0' }} >
-                                <Col xs={5} className="d-flex justify-content-start align-items-center">
-                                    <FcBusinessman size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">ID </span>
-                                </Col>
-                                <Col xs={7}>
-                                    <h4> <Badge variant="primary">{props.order.target}</Badge></h4>
-                                </Col>
-                                <Col xs={5} className="d-flex justify-content-start align-items-center">
-                                    <FcClock size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">{t('create_at')} </span>
-                                </Col>
-                                <Col xs={7}>
-                                    <h4> <Badge variant="info">{dayjs(props.order.created_at).format('DD/MM/YYYY H:m')}</Badge></h4>
-                                </Col>
-
-                                {/* <Col xs={5} className="d-flex justify-content-start align-items-center">
-                                    <FcFlowChart size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">Số lượng ban đầu </span>
-                                </Col>
-                                <Col xs={7}>
-                                    <h4> <Badge variant="warning">{props.order.amount}</Badge></h4>
-                                </Col> */}
-
-                                <Col xs={5} className="d-flex justify-content-start align-items-center">
-                                    <FcFlowChart size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold" >{t('orders.amount')}</span>
-                                </Col>
-                                <Col xs={7}>
-                                    <h4> <Badge variant="warning">{props.order.amount}</Badge></h4>
-                                </Col>
-
-                                {/* <Col xs={5} className="d-flex justify-content-start align-items-center">
-                                    <FcFlowChart size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">Số lượng hiện tại </span>
-                                </Col>
-                                <Col xs={7}>
-                                    <h4> <Badge variant="warning">{props.order.amount}</Badge></h4>
-                                </Col> */}
-
-
-                                {/* <Col xs={5} className="d-flex justify-content-start align-items-center">
-                                    <FcHeatMap size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">Còn lại</span>
-                                </Col>
-                                <Col xs={7}>
-                                    <h4> <Badge variant="warning">{props.order.amount}</Badge></h4>
-                                </Col> */}
-
-                                <Col xs={5} className="d-flex justify-content-start align-items-center">
-                                    <FcRating size={30} />
-                                    <span className="mr-1 ml-2 font-weight-bold">{t('orders.total')} </span>
-                                </Col>
-                                <Col xs={7}>
-                                    <h4> <Badge variant="success">{props.order.total.toLocaleString()}</Badge></h4>
-                                </Col>
-
+                                {
+                                    OrderInfoList.map(({ icon: Icon, text, value, variant }) => value != undefined && (
+                                        <Fragment>
+                                            <Col xs={5} className="d-flex justify-content-start align-items-center">
+                                                <Icon size={30} />
+                                                <span className="mr-1 ml-2 font-weight-bold">{t(text)}</span>
+                                            </Col>
+                                            <Col xs={7}>
+                                                <h4> <Badge variant={variant}>{value}</Badge></h4>
+                                            </Col>
+                                        </Fragment>
+                                    ))
+                                }
                             </Row >
                             <Row className="mt-3" >
                                 <Col xs={12}>
@@ -182,6 +184,10 @@ export const OrderDetailModal = (props: OrderDetailModal) => {
                                     ))
                                 }
                             </div>
+
+                            {
+                                !empty && <ReportChart reports={reports} />
+                            }
                         </Modal.Body >
 
                         <Modal.Footer>

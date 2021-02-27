@@ -1,4 +1,5 @@
 {
+    "id": "ID",
     "history": "Lịch sử",
     "yes": "Có",
     "no": "Không",
@@ -115,6 +116,9 @@
         "detail": "Chi tiết đơn hàng",
         "amount": "Số lượng",
         "total": "Tổng tiền",
+        "buy_amount": "Số lượng mua",
+        "start_count": "Số lượng ban đầu",
+        "target_amount": "Số lượng đủ",
         "status": {
             "created": "Đã tạo",
             "pased": "Đã dừng",

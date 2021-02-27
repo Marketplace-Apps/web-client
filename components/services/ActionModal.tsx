@@ -42,7 +42,6 @@ export const ActionModal = ({ action, onSuccess, order }: ActionModal) => {
 
     const form = useForm<any>({
         defaultValues: getDefaultValues({
-            ...order?.metadata || {},
             ...order || {}
         })
     })

@@ -1,27 +1,22 @@
 
 import { Badge, Col, Row } from 'react-bootstrap'
-import { useDomain } from '../../hooks/useDomain'
-import { groupBy2Key } from '../../helpers/group'
-import { ImFacebook2 } from 'react-icons/im'
-import { SiTiktok } from 'react-icons/si'
-import { useCollectionData } from 'react-livequery-hooks' 
+import { groupBy2Key } from '../../helpers/group' 
 import { useRouter } from 'next/router'
 import { MainLayout } from '../../layouts/MainLayout'
 import { AppRouteList } from '../../AppRouteList'
 import { ServiceItem } from '../../components/services/ServiceItem'
 import { Fragment } from 'react'
-import { FaInstagram } from 'react-icons/fa'
-import { CenteredSpinner } from '../../components/common/CenteredSpinner'
-import { ServiceList } from '../../const'
+import { BASE_URL, ServiceList } from '../../const'
 import { ServiceProvider } from '../../types'
+import { GetStaticProps } from 'next'
+import { Response } from 'react-livequery-hooks'
 
 
+export type ServicePage = { services: ServiceProvider[] }
+const ServicePage = (props: ServicePage) => {
 
-
-const ServicePage = () => {
 	const router = useRouter()
-	const { items, loading } = useCollectionData<ServiceProvider>('services', { cache: { update: true, use: true } })
-	const services = groupBy2Key(items, 'category', 'id')
+	const services = groupBy2Key(props.services, 'category', 'id')
 
 	return (
 		<MainLayout title={AppRouteList.Services.name}>
@@ -36,7 +31,6 @@ const ServicePage = () => {
 							</Col>
 						</Row>
 						<Row>
-							{loading && <Col xs={12}><CenteredSpinner variant="info" size="sm" animation="grow" /></Col>}
 							{[...services.get(id)?.values() || []].map(service => (
 								<Col
 									key={service.id}
@@ -44,8 +38,8 @@ const ServicePage = () => {
 									sm={3}
 									md={4}
 									xl={2}
-									lg={3} 
-									style={{padding:'10px 5px 5px 5px'}}
+									lg={3}
+									style={{ padding: '10px 5px 5px 5px' }}
 								>
 									<ServiceItem
 										onClick={() => router.push(`services/${service.id}`)}
@@ -62,3 +56,9 @@ const ServicePage = () => {
 }
 
 export default ServicePage
+
+export const getStaticProps: GetStaticProps<ServicePage> = async ctx => {
+	const { data: { items } } = await fetch(`${BASE_URL}services`).then(r => r.json()) as Response<ServiceProvider>
+	return { props: { services: items }, revalidate: 60 }
+}
+

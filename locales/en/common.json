@@ -1,4 +1,5 @@
 {
+    "id":"ID",
     "history": "History",
     "yes": "Yes",
     "no": "No",
@@ -115,6 +116,9 @@
         "detail": "Order detail",
         "amount": "Amount",
         "total": "Bill total",
+        "buy_amount":"Buy amount",
+        "start_count":"Start count",
+        "target_amount":"Target amount",
         "status": {
             "created": "Created",
             "pased": "Paused",
