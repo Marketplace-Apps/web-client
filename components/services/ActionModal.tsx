@@ -31,19 +31,17 @@ export const ActionModal = ({ action, onSuccess, order }: ActionModal) => {
     const user = useDomainUser(domain)
     const { t } = useTranslation('common')
 
-    const getDefaultValues = (data = {}) => Object.keys(action?.form || {}).reduce((p, c, index) => {
+    const getDefaultValues = (form = {}, order?: Order) => Object.keys(action?.form || {}).reduce((p, c, index) => {
         const item = action?.form?.[c] as ServiceProviderActionFormItem<any>
         if (!item?.default_value) return p
-        const value = SanboxJS.eval(item.default_value, data)
+        const value = SanboxJS.eval(item.default_value, form, order)
         if (value !== undefined) p[c] = value
 
         return p
     }, {})
 
     const form = useForm<any>({
-        defaultValues: getDefaultValues({
-            ...order || {}
-        })
+        defaultValues: getDefaultValues({}, order)
     })
     const {
         error,
@@ -107,7 +105,7 @@ export const ActionModal = ({ action, onSuccess, order }: ActionModal) => {
                                         loading={loading}
                                         type="submit"
                                         disabled={loading}
-                                    >{t('orders.create')}</IconButton>
+                                    >{t(action.id == 'create' ? 'orders.create' : 'submit')}</IconButton>
                                 </Col>
                             </Form.Row>
                         </Col>

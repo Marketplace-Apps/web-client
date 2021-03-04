@@ -2,15 +2,17 @@ import React from 'react'
 import { ChartData, Line } from "react-chartjs-2"
 import chartjs from 'chart.js'
 import { ServiceRunningReport } from '../../types'
+import { useCollectionData } from 'react-livequery-hooks'
 
 type ViewersReportChartProps = {
-    reports: ServiceRunningReport['reports']
+    service_id: string
+    target: string
 }
 
 
-export const ReportChart = ({ reports }: ViewersReportChartProps) => {
+export const ReportChart = (props: ViewersReportChartProps) => {
 
-
+    const { items: reports } = useCollectionData<ServiceRunningReport['reports'][0]>(`services/${props.service_id}/targets/${props.target}/reports`)
 
     const data: ChartData<chartjs.ChartData> = {
         labels: reports.map(i => new Date(i.created_at).toLocaleTimeString()),

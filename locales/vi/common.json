@@ -117,17 +117,22 @@
         "amount": "Số lượng",
         "total": "Tổng tiền",
         "buy_amount": "Số lượng mua",
+        "vip_amount":"Số lượt đã mua",
+        "vip_remain_amount":"Số lượt còn lại",
         "start_count": "Số lượng ban đầu",
         "target_amount": "Số lượng đủ",
+        "remain_amount":"Số lượng còn lại",
         "status": {
             "created": "Đã tạo",
-            "pased": "Đã dừng",
+            "paused": "Đã dừng",
             "running": "Đang chạy",
             "error": "Lỗi",
             "refunded": "Đã hoàn tiền",
-            "done": "Đã xong"
+            "done": "Đã xong",
+            "deleted": "Đã xóa"
         },
-        "discount": "Giảm giá"
+        "discount": "Giảm giá",
+        "mins":"Số phút"
     },
     "payments": {
         "balance": "Số dư ban đầu",

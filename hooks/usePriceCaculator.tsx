@@ -15,10 +15,12 @@ export type usePriceCaculator = {
 const usePriceCaculator = (props: usePriceCaculator) => {
     const { user, payload, action, order } = props
     const my_prices_package = useUserDefaultPricesPackage(user)
+    
     const ctx: PriceFunctionParams = {
         user,
         payload,
-        package_prices: my_prices_package?.prices[action.service_id]
+        package_prices: my_prices_package?.prices[action.service_id],
+        order: props.order
     }
 
     const bill = useMemo<ReturnType<ServiceProviderAction['price']>>(() => {
@@ -35,7 +37,7 @@ const usePriceCaculator = (props: usePriceCaculator) => {
         action.service_id,
         user,
         bill.total,
-        payload.server || order.server || 1
+        payload?.server || order?.server || 1
     )
 
     return {

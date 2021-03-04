@@ -22,9 +22,9 @@ export const ActionBill = () => {
         user
     } = usePriceCaculatorContext()
     const form = useFormContext()
-    const { t } = useTranslation('common') 
+    const { t } = useTranslation('common')
 
-    return final_total && (
+    return final_total != 0 && (
         <Fragment>
             {action.can_use_voucher && (
                 <Controller

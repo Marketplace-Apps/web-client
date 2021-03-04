@@ -22,26 +22,28 @@ import { get_ms_end_day } from '../../helpers/time'
 import { OrderStatusClear, OrderStatusList } from '../../const'
 import { useAuth } from 'firebase-easy-hooks'
 import { CenteredSpinner } from '../common/CenteredSpinner'
+import { useInfinityScroll } from '../../hooks/useInfinityScroll'
 
 export const ServiceOrderHistory = () => {
     const router = useRouter()
     const { t } = useTranslation('common')
     const { current_domain, root_domain } = useDomain()
-    
+
     const { service_id } = router.query
     const domain = root_domain || current_domain
 
     const { user } = useAuth()
-   
-   
 
-    const { items, empty, filter, filters, loading } = useCollectionData<Order>(domain && user && `domains/${domain.id}/users/${user.uid}/services/${service_id}/orders`, { limit: 10 })
+
+
+    const { items, empty, filter, filters, loading, fetch_more, has_more } = useCollectionData<Order>(domain && user && `domains/${domain.id}/users/${user.uid}/services/${service_id}/orders`, { limit: 20 })
     const { item: service } = useDocumentData<ServiceProvider>(service_id && `services/${service_id}`)
     const orders = groupByCreatedTime<Order>(items)
 
     const [active_order, set_active_order] = useState<string>()
+    const [search, set_search] = useState<string>()
 
-
+    useInfinityScroll(() => !loading && has_more && fetch_more())
 
     return (
         <Fragment>
@@ -83,10 +85,14 @@ export const ServiceOrderHistory = () => {
                         </Dropdown>
                         <FormControl
                             className="ml-1"
-                            placeholder={`${t('search')} UID`}
+                            placeholder={t('search')}
+                            value={search}
+                            onChange={e => set_search(e.target.value)}
+                            onBlur={e => filter({ ...filters, _q: e.target.value })}
+                            onFocus={e => e.target.select()}
                         />
                         <InputGroup.Append>
-                            <Button variant="outline-danger" onClick={() => filter({})}><AiOutlineClear /></Button>
+                            <Button variant="outline-danger" onClick={() => { filter({}); set_search('') }}><AiOutlineClear /></Button>
                         </InputGroup.Append>
                     </InputGroup>
 

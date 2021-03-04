@@ -1,3 +1,5 @@
+export type FirebaseUser = { uid: string }
+
 export declare class BaseEntity {
     id: string;
     created_at: number;
@@ -53,11 +55,12 @@ export declare class Order<T = any> extends BaseEntity {
     total: number;
     server?: number;
     note: string;
+    metadata?: any;
     amount: number;
     remain_amount?: number;
-    start_count?: number;
-    current_amount?: number;
     target_amount?: number;
+    start_amount?: number;
+    current_amount?: number;
     end_time?: number;
     voucher?: string;
 }
@@ -117,14 +120,15 @@ export declare class SendMoneyPayload {
 }
 
 
+export declare type Widget = 'amount_log' | 'vip_log' | 'buff_history' | 'vip_transaction' | 'file';
 export declare class ServiceProvider extends BaseEntity {
     user_id?: string;
     maintain?: boolean;
     name: I18N;
-    type: 'one-time' | 'duration' | 'times';
     icon: string;
     category: string;
 }
+
 
 
 
@@ -145,7 +149,7 @@ export declare type PriceFunctionResponse = {
     min_user_price: number;
     price_option: string;
 };
-export declare type InfoFunction<T, R> = (data: T, prices: PriceFunctionResponse) => R;
+export declare type InfoFunction<T, R> = (data: T, prices: PriceFunctionResponse, order?: Order) => R;
 export declare class ServiceProviderItemOption<T> {
     label?: I18N;
     value: any;
@@ -184,11 +188,20 @@ export interface ServiceProviderActionFormItem<T = any> {
     visible_condition: InfoFunction<T, boolean>;
     options: ServiceProviderItemOption<any>[];
 }
+export declare class ServiceProviderAction<T = any> extends BaseEntity {
+    service_id: string;
+    price?: (params: PriceFunctionParams<T>) => PriceFunctionResponse;
+    process: Function;
+    form?: ServiceProviderActionForm<T>;
+    visible_condition?: (order: Order) => boolean;
+    can_use_voucher?: boolean;
+    name: I18N;
+}
 export declare type ActionMetadata<T = any> = {
-    requester: { uid: string };
+    requester: FirebaseUser;
     user: User;
     service: ServiceProvider;
-    action_id: string;
+    action: ServiceProviderAction<T>;
     order?: Order;
     payload: T;
     prices?: PriceFunctionResponse & {
@@ -197,25 +210,14 @@ export declare type ActionMetadata<T = any> = {
         voucher?: Voucher;
         voucher_discount?: number;
         final_total: number;
-    };
+    } 
 };
-export declare class ServiceProviderAction<T = any, Utils = any> extends BaseEntity {
-    service_id: string;
-    price?: (params: PriceFunctionParams<T>) => PriceFunctionResponse;
-    process: (utils: Utils & ActionMetadata<T>) => Promise<void>;
-    form?: ServiceProviderActionForm<T>;
-    visible_condition?: (order: Order) => boolean;
-    can_use_voucher?: boolean;
-    name: I18N;
-}
 export { };
 export declare class ServiceRunningReport {
     target: string;
     service_id: string;
     reports: Array<{
-        id:string;
-        created_at: number;
-        amount: number;
+        id: string, created_at: number, amount: number
     }>;
 }
 

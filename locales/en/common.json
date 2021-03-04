@@ -119,15 +119,18 @@
         "buy_amount":"Buy amount",
         "start_count":"Start count",
         "target_amount":"Target amount",
+        "remain_amount":"Remain amount",
         "status": {
             "created": "Created",
-            "pased": "Paused",
+            "paused": "Paused",
             "running": "Running",
             "error": "Error",
             "refunded": "Refunded",
-            "done": "done"
+            "done": "done",
+            "deleted":"Deleted"
         },
-        "discount": "Giảm giá"
+        "discount": "Discount",
+        "mins":"Mins"
     },
     "payments": {
         "balance": "Balance",

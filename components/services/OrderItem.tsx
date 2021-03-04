@@ -46,7 +46,7 @@ export const OrderItem = (props: OrderItem) => {
 							<BiBullseye />
 							<span style={{ marginLeft: 5 }}>{props.order.amount}</span>
 							{
-								props.order.target_amount && <Badge
+								props.order.target_amount && !props.order.done && <Badge
 									pill
 									className="ml-2 mb-1"
 									variant={props.order.current_amount >= props.order.target_amount ? 'light' : 'danger'}
