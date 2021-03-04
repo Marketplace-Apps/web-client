@@ -31,6 +31,7 @@ export const DepositGuide = () => {
 
 const DepositPage = () => {
 	const { current_domain, is_domain_owner } = useDomain()
+	console.log({ current_domain, is_domain_owner})
 	const { user } = useAuth()
 	const is_edit_mode = is_domain_owner && typeof location != 'undefined' && location.search.includes('edit=true')
 
