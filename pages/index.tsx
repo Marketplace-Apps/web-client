@@ -38,7 +38,7 @@ const HomePage = () => {
 	)
 
 	useEffect(() => {
-		filters.language.value != locale && filter({ language: locale })
+		filters.language?.value != locale && filter({ language: locale })
 	}, [locale])
 
 	const [selected_feed_index, set_selected_feed_index] = useState(-2)
