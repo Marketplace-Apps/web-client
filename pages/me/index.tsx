@@ -13,7 +13,6 @@ import { MainLayout } from "../../layouts/MainLayout"
 
 const MePage = () => {
 	const { current_domain, root_domain, is_domain_owner } = useDomain()
-	console.log({ current_domain, root_domain, is_domain_owner })
 	const user = useDomainUser(root_domain || current_domain)
 
 	const { t } = useTranslation('common')

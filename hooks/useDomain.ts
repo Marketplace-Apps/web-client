@@ -7,9 +7,10 @@ export const useDomain = () => {
     const { user } = useAuth()
 
     // Current domain
-    const { item: current_domain, loading: loading_current_domain } = useDocumentData<Domain>(`domains/current${user ? '?reload' : ''}`, {
+    const ref = `domains/current${user ? '?reload' : ''}`
+    const { item: current_domain, loading: loading_current_domain } = useDocumentData<Domain>(ref, {
         cache: { use: true, update: true }
-    })
+    }) 
 
     // Root domain if is admin 
     const root_domain_ref = current_domain?.refs?.[0]
