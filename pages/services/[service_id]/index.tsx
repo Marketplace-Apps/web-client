@@ -19,13 +19,10 @@ export type ServiceCreateOrderPage = {
 
 const ServiceCreateOrderPage = ({ create_action, service }: ServiceCreateOrderPage) => {
 
-	const router = useRouter()
-	const { t } = useTranslation('common')
-
-	const { item: domain_service } = useDocumentData<ServiceProvider>(create_action && `services/${create_action.service_id}`)
+	const router = useRouter() 
 
 	return (
-		<MainLayout title={domain_service?.name || { en: 'Services', vi: 'Dịch vụ' }}>
+		<MainLayout title={service?.name || { en: 'Services', vi: 'Dịch vụ' }}>
 
 			<Row style={{ marginTop: 10, marginBottom: 15 }}>
 
@@ -40,9 +37,6 @@ const ServiceCreateOrderPage = ({ create_action, service }: ServiceCreateOrderPa
 					/>}
 				</Col>
 			</Row>
-
-
-
 		</MainLayout>
 	)
 }
@@ -59,6 +53,7 @@ export const getStaticProps: GetStaticProps<{}> = async ctx => {
 	const { service_id } = ctx.params
 	const service = await fetch(`${BASE_URL}services/${service_id}`).then(r => r.json()) as ServiceProvider
 	const create_action = await fetch(`${BASE_URL}services/${service_id}/actions/create`).then(r => r.json()) as ServiceProviderAction
+
 	return { props: { create_action, service }, revalidate: 60 }
 }
 

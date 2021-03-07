@@ -1,6 +1,6 @@
 
 import { Badge, Col, Row } from 'react-bootstrap'
-import { groupBy2Key } from '../../helpers/group' 
+import { groupBy2Key } from '../../helpers/group'
 import { useRouter } from 'next/router'
 import { MainLayout } from '../../layouts/MainLayout'
 import { AppRouteList } from '../../AppRouteList'
