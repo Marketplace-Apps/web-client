@@ -44,7 +44,7 @@ export const OrderItem = (props: OrderItem) => {
 					<Row style={{ padding: '10px 15px 10px 0' }}>
 						<Col xs={6} className="d-flex justify-content-start align-items-center">
 							<BiBullseye />
-							<span style={{ marginLeft: 5 }}>{props.order.amount}</span>
+							<span style={{ marginLeft: 5 }}>{props.order.remain_amount || props.order.amount}</span>
 							{
 								props.order.target_amount && !props.order.done && <Badge
 									pill
